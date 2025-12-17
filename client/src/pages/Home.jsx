@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Taskbar from "../components/taskbar";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
@@ -31,6 +32,9 @@ const Home = () => {
         <p>
           Back to home : <Link to="/">Home</Link>
         </p>
+      </div>
+      <div>
+        <Footer />
       </div>
     </div>
   );
