@@ -25,6 +25,14 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter password"],
     },
+    hall: {
+      type: String,
+      required: [true, "Please enter your hall of residence"],
+    },
+    roomNo: {
+      type: String,
+      required: [true, "Please enter your room number"],
+    },
     isSeller: {
       type: Bool,
       required: true,
