@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
+import Taskbar from "../components/taskbar";
 
 const Home = () => {
   return (
     <div>
+      <div>
+        <Taskbar />
+      </div>
       <h2>Welcome Back User!</h2>
 
       <div>
