@@ -8,7 +8,7 @@ const Navbar = () => {
     <nav
       role="navigation"
       aria-label="navigation bar"
-      class="bg-blue-300 flex flex-nowrap flex-auto justify-between align-bottom font-bold ml-[100px] mr-[100px]"
+      class="flex flex-nowrap flex-auto justify-between align-bottom font-bold ml-[100px] mr-[100px] mt-[10px]"
     >
       {/* logo section */}
       <div class="text-[32px]">cubazzar</div>
