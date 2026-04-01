@@ -4,8 +4,10 @@ import Hero from "./components/Hero";
 function App() {
   return (
     <>
-      <Navbar />
-      <Hero />
+      <main class="flex flex-col">
+        <Navbar />
+        <Hero />
+      </main>
     </>
   );
 }
