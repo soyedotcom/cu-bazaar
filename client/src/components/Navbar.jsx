@@ -8,13 +8,13 @@ const Navbar = () => {
     <nav
       role="navigation"
       aria-label="navigation bar"
-      class="flex flex-nowrap flex-auto justify-between align-bottom font-bold ml-[100px] mr-[100px] mt-[20px] mb-[20px]"
+      class="flex flex-nowrap flex-auto justify-between align-bottom font-bold ml-25 mr-25 mt-5 mb-5"
     >
       {/* logo section */}
       <div class="text-[32px]">cubazzar</div>
 
       {/* page links */}
-      <div class="flex justify-between gap-[48px]">
+      <div class="flex justify-between gap-12">
         <div>Shop</div>
         <div>Services</div>
         <div>Deals & Discounts</div>
@@ -22,7 +22,7 @@ const Navbar = () => {
       </div>
 
       {/* user interaction icons*/}
-      <div class="flex justify-between gap-[21px]">
+      <div class="flex justify-between gap-5.25">
         <div>
           <DeliveryIcon />
         </div>
