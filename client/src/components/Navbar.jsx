@@ -14,7 +14,7 @@ const Navbar = () => {
       class="flex flex-nowrap flex-auto justify-between align-bottom font-bold ml-25 mr-25 mt-5 mb-5"
     >
       {/* logo section */}
-      <Link to="/home">
+      <Link to="/">
         <div class="text-[32px]">cubazzar</div>
       </Link>
 
@@ -32,7 +32,7 @@ const Navbar = () => {
           <div>Deals & Discounts</div>
         </Link>
 
-        <Link to="/newsand events">
+        <Link to="/newsandevents">
           <div>News & Events</div>
         </Link>
       </div>
