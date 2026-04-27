@@ -39,18 +39,26 @@ const Navbar = () => {
 
       {/* user interaction icons*/}
       <div class="flex justify-between gap-5.25">
-        <div>
-          <DeliveryIcon />
-        </div>
-        <div>
-          <ProfileIcon />
-        </div>
-        <div>
-          <WishlistIcon />
-        </div>
-        <div>
-          <CartIcon />
-        </div>
+        <Link to="/deliveries">
+          <div>
+            <DeliveryIcon />
+          </div>
+        </Link>
+        <Link to="/profile">
+          <div>
+            <ProfileIcon />
+          </div>
+        </Link>
+        <Link to="/wishlist">
+          <div>
+            <WishlistIcon />
+          </div>
+        </Link>
+        <Link to="/cart">
+          <div>
+            <CartIcon />
+          </div>
+        </Link>
       </div>
     </nav>
   );

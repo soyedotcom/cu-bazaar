@@ -8,6 +8,8 @@ import Services from "./pages/Services";
 import DealsandDiscounts from "./pages/DealsandDiscounts";
 import NewsandEvents from "./pages/NewsandEvents";
 
+import Showcase from "./pages/Showcase";
+
 function App() {
   return (
     <>
@@ -20,6 +22,8 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/dealsanddiscounts" element={<DealsandDiscounts />} />
           <Route path="/newsandevents" element={<NewsandEvents />} />
+
+          <Route path="/showcase" element={<Showcase />} />
         </Routes>
       </main>
     </>
