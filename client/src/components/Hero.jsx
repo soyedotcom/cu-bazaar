@@ -11,7 +11,7 @@ const Hero = () => {
         <p>What are you looking for today?</p>
       </div>
 
-      <div class="flex p-2.5 gap-3.75 border-2 rounded-full h-12 w-169.28 mt-13.75">
+      <div class="flex p-2.5 gap-3.75 border-2 rounded-full h-12 w-169 mt-13.75">
         <SearchIcon />
         <input type="text" placeholder="Browse and buy items" />
       </div>

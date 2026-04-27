@@ -1,8 +1,14 @@
 import React from "react";
 
+import Navbar from "../components/Navbar";
+
 // component showcase
 const Showcase = () => {
-  return <div>Showcase</div>;
+  return (
+    <main>
+      <Navbar />
+    </main>
+  );
 };
 
 export default Showcase;
