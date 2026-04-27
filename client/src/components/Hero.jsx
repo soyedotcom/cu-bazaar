@@ -19,10 +19,10 @@ const Hero = () => {
       </section>
 
       <section className="flex flex-row gap-5 justify-center align-middle items-center">
-        <div className="w-[240px] h-[240px] bg-pink-300 rounded-2xl"></div>
-        <div className="w-[240px] h-[240px] bg-pink-300 rounded-2xl"></div>
-        <div className="w-[240px] h-[240px] bg-pink-300 rounded-2xl"></div>
-        <div className="w-[240px] h-[240px] bg-pink-300 rounded-2xl"></div>
+        <div className="w-[240px] h-[240px] bg-pink-300 rounded-2xl hover:cursor-pointer"></div>
+        <div className="w-[240px] h-[240px] bg-pink-300 rounded-2xl hover:cursor-pointer"></div>
+        <div className="w-[240px] h-[240px] bg-pink-300 rounded-2xl hover:cursor-pointer"></div>
+        <div className="w-[240px] h-[240px] bg-pink-300 rounded-2xl hover:cursor-pointer"></div>
       </section>
 
       <section>
