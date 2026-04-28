@@ -6,13 +6,13 @@ import { Link } from "react-router-dom";
 const Hero = () => {
   return (
     <>
-      <section class="flex flex-col justify-center align-middle items-center mt-20 mb-10">
-        <div class="flex flex-col gap-3.75 text-[30px] font-bold">
+      <section className="flex flex-col justify-center align-middle items-center mt-20 mb-10">
+        <div className="flex flex-col gap-3.75 text-[30px] font-bold">
           <p>Hello there,</p>
           <p>What are you looking for today?</p>
         </div>
 
-        <div class="flex p-2.5 gap-3.75 border-2 rounded-full h-12 w-169 mt-10">
+        <div className="flex p-2.5 gap-3.75 border-2 rounded-full h-12 w-169 mt-10">
           <SearchIcon />
           <input type="text" placeholder="Browse and buy items" />
         </div>
@@ -26,9 +26,9 @@ const Hero = () => {
       </section>
 
       <section>
-        <div class="m-5">
+        <div className="m-5">
           <Link to="/shop">
-            <button class="bg-black text-white border-none rounded-full h-12 w-60.75 hover:cursor-pointer">
+            <button className="bg-black text-white border-none rounded-full h-12 w-60.75 hover:cursor-pointer">
               <p>
                 Start Shopping <LinkIcon />
               </p>
