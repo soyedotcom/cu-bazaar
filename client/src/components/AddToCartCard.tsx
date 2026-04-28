@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router";
 import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import CartIcon from "@mui/icons-material/ShoppingBagOutlined";
