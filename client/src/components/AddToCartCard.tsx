@@ -5,12 +5,12 @@ import LinkIcon from "@mui/icons-material/ArrowForward";
 
 const AddToCartCard = () => {
   return (
-    <main className="bg-[#00000017] w-[100vh - 5] h-screen z-50">
+    <main className="bg-[#0000004f] w-[100vh - 5] h-screen z-50 absolute top-0 right-0 left-0 bottom-0 flex justify-center items-center">
       <section className="bg-green-200 flex flex-row w-200 h-100 rounded-xl p-4">
         <section className="bg-blue-300 flex-1 rounded-l-xl">
           <img
             className="rounded-xl h-full w-full"
-            src=""
+            src="/"
             alt="product image"
           />
         </section>
@@ -25,7 +25,7 @@ const AddToCartCard = () => {
 
           <section>
             <p className="font-bold">Product Price</p>
-            <img src="" alt="Product Rating" />
+            <img src="/" alt="Product Rating" />
           </section>
 
           <div className="flex-1">Procuct Specifications</div>
