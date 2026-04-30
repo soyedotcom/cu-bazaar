@@ -5,9 +5,9 @@ import LinkIcon from "@mui/icons-material/ArrowForward";
 
 const AddToCartCard = () => {
   return (
-    <main className="bg-[#0000004f] w-[100vh - 5] h-screen z-50 absolute top-0 right-0 left-0 bottom-0 flex justify-center items-center">
-      <section className="bg-green-200 flex flex-row w-200 h-100 rounded-xl p-4">
-        <section className="bg-blue-300 flex-1 rounded-l-xl">
+    <main className="bg-[#d9d9d9af] w-screen h-screen z-50 absolute top-0 right-0 left-0 bottom-0 flex justify-center items-center">
+      <section className="bg-white flex flex-row w-185 h-100 rounded-xl p-4">
+        <section className="bg-blue-300 flex-1 rounded-xl">
           <img
             className="rounded-xl h-full w-full"
             src="/"
@@ -15,26 +15,32 @@ const AddToCartCard = () => {
           />
         </section>
 
-        <section className="bg-pink-300 flex-1 rounded-r-xl text-left pl-5">
-          <section className="mb-5">
-            <p className="font-bold">Product Name</p>
+        <section className="flex flex-col flex-1 rounded-r-xl text-left pl-10 h-full">
+          <section className="mb-6 flex flex-col gap-2">
+            <p className="font-bold text-[24px]">Product Name</p>
             <p>
-              Sold by <span className="font-bold">Product Vendor</span>
+              Sold by{" "}
+              <Link
+                className="font-bold hover:underline hover:cursor-pointer"
+                to="/"
+              >
+                Product Vendor
+              </Link>
             </p>
           </section>
 
-          <section>
-            <p className="font-bold">Product Price</p>
+          <section className="flex flex-col gap-4">
+            <p className="font-bold text-[32px]">Product Price</p>
             <img src="/" alt="Product Rating" />
           </section>
 
-          <div className="flex-1">Procuct Specifications</div>
+          <div className="grow mt-4">Procuct Specifications</div>
 
           <section>
-            <div className="flex items-center">
+            <div className="flex items-center gap-5 mb-3">
               <div>
                 <Link to="/shop">
-                  <button className="bg-purple-400 border-none rounded-full h-12 w-60.75 hover:cursor-pointer">
+                  <button className="bg-purple-400 border-none rounded-full h-10.5 w-50 font-bold hover:cursor-pointer">
                     <p>
                       <CartIcon /> Add to Cart
                     </p>
@@ -46,7 +52,7 @@ const AddToCartCard = () => {
               </div>
             </div>
 
-            <Link to="/">
+            <Link to="/" className="text-[16px]">
               More details
               <LinkIcon />
             </Link>
