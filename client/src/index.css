@@ -14,7 +14,7 @@
   --accent-border: rgba(170, 59, 255, 0.5);
   --social-bg: #d9d9d9;
 
-  font: 18px/145% var(--font-inter);
+  font: 16px/145% var(--font-inter);
   letter-spacing: 0.18px;
   color-scheme: light dark;
   color: var(--text);
