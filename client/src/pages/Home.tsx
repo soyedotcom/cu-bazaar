@@ -1,11 +1,8 @@
-import React from "react";
-
-import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 
 const Home = () => {
   return (
-    <main class="flex flex-col">
+    <main className="flex flex-col">
       <Hero />
     </main>
   );
