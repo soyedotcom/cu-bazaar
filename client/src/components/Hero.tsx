@@ -5,7 +5,7 @@ const Hero = () => {
   return (
     <>
       <section className="flex flex-col justify-center align-middle items-center mt-20">
-        <div className="flex flex-col gap-3.75 text-[30px] font-bold">
+        <div className="flex flex-col gap-3.75 text-[30px] font-bold mb-10">
           <p>Hello there,</p>
           <p>What are you looking for today?</p>
         </div>

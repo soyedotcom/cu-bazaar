@@ -1,10 +1,10 @@
-import ProductCard from "../components/ProductCard";
+import NavBarSearch from "../components/NavBarSearch";
 
 // component showcase
 const Showcase = () => {
   return (
     <main className="flex flex-col gap-4">
-      <ProductCard />
+      <NavBarSearch />
     </main>
   );
 };
