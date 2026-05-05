@@ -1,14 +1,23 @@
-import AddToCartBtn from "./AddToCartBtn";
 import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import InfoIcon from "@mui/icons-material/InfoOutlineRounded";
+import CloseIcon from "@mui/icons-material/CloseRounded";
 
-const WishlistProductCard = () => {
+import { useState } from "react";
+
+const CartProductCard = () => {
+  const [quantity, setQuantity] = useState(1);
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    setQuantity(value);
+  };
+
   return (
     <section className="flex flex-row h-39 w-120">
       <div>
         <img
           className="h-full w-39 object-center object-cover"
-          src="glasses.jpg"
+          src="watch.jpg"
           alt="product image"
         />
       </div>
@@ -18,17 +27,26 @@ const WishlistProductCard = () => {
           <div className="flex gap-2">
             <InfoIcon className="hover:cursor-pointer" />
             <WishlistIcon className="hover:cursor-pointer" />
+            <CloseIcon className="hover:cursor-pointer" />
           </div>
         </div>
         <div>
           <p className="font-bold">Product Price</p>
         </div>
-        <div className="mt-auto text-right">
-          <AddToCartBtn />
+        <div className="mt-auto text-right flex flex-row gap-2 p-2">
+          <p>Quantity:</p>
+          <input
+            type="number"
+            min="1"
+            max="20"
+            value={quantity}
+            onChange={handleQuantityChange}
+            className="outline-none appearance-none"
+          />
         </div>
       </div>
     </section>
   );
 };
 
-export default WishlistProductCard;
+export default CartProductCard;
