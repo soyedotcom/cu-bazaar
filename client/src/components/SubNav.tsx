@@ -26,7 +26,7 @@ const SubNav = () => {
         {subNavData
           .find((category) => category.name === activeMenu)
           ?.subcategories?.map((subcat) => (
-            <div key={subcat.name} className="sub-item">
+            <div key={subcat.name} className="hover:cursor-pointer">
               <span className="icon">{subcat.icon}</span>
               <span>{subcat.name}</span>
             </div>
