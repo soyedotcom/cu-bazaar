@@ -1,5 +1,5 @@
 import DropDownIcon from "@mui/icons-material/KeyboardArrowDownRounded";
-import { subNavData } from "./subNavData";
+import { subNavData } from "../data/subNavData";
 import { useState } from "react";
 
 const SubNav = () => {
