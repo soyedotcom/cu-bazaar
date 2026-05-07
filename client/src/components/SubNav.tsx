@@ -36,20 +36,28 @@ const SubNav = () => {
             onClick={() => setActiveSubCategory(subcat.name)}
             className={`cursor-pointer font-bold ${activeSubCategory === subcat.name ? "text-black" : "text-gray-500"}`}
           >
-            {subcat.name}
+            <div className="flex gap-1">
+              {subcat.icon}
+              {subcat.name}
+            </div>
           </button>
         ))}
       </div>
 
       <div className="flex flex-col text-left gap-5 my-10">
-        <div className="text-[32px] font-bold">{activeSubCategory}</div>
+        <div className="text-[32px] font-bold">
+          {currentSubcategory?.icon}
+          {activeSubCategory}
+        </div>
         <div className="flex gap-5 text-sm">
           {currentSubcategory?.sections?.map((section) => (
             <button
               key={section.name}
               className="cursor-pointer hover:text-black text-gray-600"
             >
-              {section.name}
+              <div>
+                {section.icon} {section.name}
+              </div>
             </button>
           ))}
         </div>
