@@ -1,5 +1,5 @@
 const Services = () => {
-  return <div>Services</div>;
+  return <main className="flex flex-col mx-25 my-15">Services</main>;
 };
 
 export default Services;

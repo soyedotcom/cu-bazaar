@@ -1,6 +1,6 @@
 const DealsandDiscounts = () => {
   return (
-    <div>DealsandDiscounts</div>
+    <main className="flex flex-col mx-25 my-15">DealsandDiscounts</main>
   )
 }
 
