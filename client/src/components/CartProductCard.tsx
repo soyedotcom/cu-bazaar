@@ -13,7 +13,7 @@ const CartProductCard = () => {
   };
 
   return (
-    <section className="flex flex-row h-39 w-120">
+    <section className="flex flex-row h-39 w-130">
       <div>
         <img
           className="h-full w-39 object-center object-cover"
@@ -21,7 +21,7 @@ const CartProductCard = () => {
           alt="product image"
         />
       </div>
-      <div className="flex-1 flex flex-col text-left ml-5">
+      <div className="flex-1 flex flex-col text-left ml-10">
         <div className="flex justify-between mb-1">
           <div>Product Name</div>
           <div className="flex gap-2">
