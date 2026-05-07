@@ -14,7 +14,7 @@ const OrderSummary = () => {
         <p className="font-bold text-[24px]">N10,000.00</p>
       </div>
 
-      <div className="my-10">
+      <div className="my-20">
         <CheckoutBtn />
       </div>
     </section>
