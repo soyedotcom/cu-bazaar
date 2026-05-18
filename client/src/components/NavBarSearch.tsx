@@ -12,7 +12,7 @@ const NavBarSearch = () => {
     <nav
       role="navigation"
       aria-label="navigation bar"
-      className="flex flex-nowrap flex-auto justify-between align-bottom font-bold ml-25 mr-25 mt-5 mb-5"
+      className="flex flex-nowrap flex-auto justify-between align-middle font-bold ml-25 mr-25 mt-5 mb-5"
     >
       {/* logo section */}
       <Link to="/">
