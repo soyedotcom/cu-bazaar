@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -17,12 +17,13 @@ import SignIn from "./pages/SignIn";
 import Showcase from "./pages/Showcase";
 
 function App() {
-  const isProfile = useLocation().pathname === "/signup" || "/signin";
+  const page = useLocation();
+  const isProfile = page.pathname === "/signin" || "/signup";
 
   return (
     <>
       <main className="flex flex-col">
-        {isProfile ? <></> : <Navbar />}
+        {isProfile ? <>no navbar</> : <Navbar />}
 
         <Routes>
           <Route path="/" element={<Home />} />

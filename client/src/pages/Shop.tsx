@@ -1,4 +1,4 @@
-import SubNav from "../components/SubNav";
+import SubNav from "../components/SubNav"
 
 const Shop = () => {
   return (
