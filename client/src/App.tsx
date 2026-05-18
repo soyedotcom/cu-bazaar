@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router";
+import { useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -16,10 +17,12 @@ import SignIn from "./pages/SignIn";
 import Showcase from "./pages/Showcase";
 
 function App() {
+  const isProfile = useLocation().pathname === "/signup" || "/signin";
+
   return (
     <>
       <main className="flex flex-col">
-        <Navbar />
+        {isProfile ? <></> : <Navbar />}
 
         <Routes>
           <Route path="/" element={<Home />} />
@@ -31,7 +34,7 @@ function App() {
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<SignIn />} />
+          <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
 
           <Route path="/showcase" element={<Showcase />} />
