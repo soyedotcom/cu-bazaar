@@ -18,12 +18,12 @@ import Showcase from "./pages/Showcase";
 
 function App() {
   const page = useLocation();
-  const isProfile = page.pathname === "/signin" || "/signup";
+  const isProfile = page.pathname === "/signin" || page.pathname === "/signup";
 
   return (
     <>
       <main className="flex flex-col">
-        {isProfile ? <>no navbar</> : <Navbar />}
+        {isProfile ? <></> : <Navbar />}
 
         <Routes>
           <Route path="/" element={<Home />} />
