@@ -31,11 +31,11 @@ const SignUpForm = () => {
         action="/signup"
         method="POST"
         onSubmit={handleSubmit}
-        className="flex flex-col p-5 w-100"
+        className="flex flex-col px-5"
       >
         <h1 className="text-4xl font-bold mb-2">Create Your Bazaar Account!</h1>
 
-        <div className="flex flex-col gap-7 my-5">
+        <div className="flex flex-col gap-7 my-5 items-center">
           <div className="flex flex-col">
             <label
               htmlFor="username"
@@ -53,7 +53,7 @@ const SignUpForm = () => {
               onChange={(e) => {
                 setName(e.target.value);
               }}
-              className="border border-gray-400 rounded-full px-4 py-2 h-12"
+              className="border border-gray-400 rounded-full w-100 px-4 py-2 h-12"
             />
           </div>
 
@@ -71,7 +71,7 @@ const SignUpForm = () => {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              className="border border-gray-400 rounded-full px-4 py-2 h-12"
+              className="border border-gray-400 rounded-full w-100 px-4 py-2 h-12"
             />
           </div>
 
@@ -92,7 +92,7 @@ const SignUpForm = () => {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              className="border border-gray-400 rounded-full px-4 py-2 h-12"
+              className="border border-gray-400 rounded-full w-100 px-4 py-2 h-12"
             />
           </div>
 
@@ -113,27 +113,26 @@ const SignUpForm = () => {
               onChange={(e) => {
                 setConfirmPassword(e.target.value);
               }}
-              className="border border-gray-400 rounded-full px-4 py-2 h-12"
+              className="border border-gray-400 rounded-full w-100 px-4 py-2 h-12"
             />
           </div>
+          <button
+            type="submit"
+            className="font-bold my-4 bg-purple-400 text-white p-2 h-12 w-100 rounded-full cursor-pointer"
+          >
+            Start Shopping
+          </button>
         </div>
 
-        <button
-          type="submit"
-          className="font-bold my-4 bg-purple-400 text-white p-2 h-12 w-full rounded-full cursor-pointer"
-        >
-          Start Shopping
-        </button>
+        <p>
+          Already have an account?{" "}
+          <span>
+            <Link to="/signin" className="cursor-pointer hover:text-purple-600">
+              Sign In
+            </Link>
+          </span>
+        </p>
       </form>
-
-      <p>
-        Already have an account?{" "}
-        <span>
-          <Link to="/signin" className="cursor-pointer hover:text-purple-600">
-            Sign In
-          </Link>
-        </span>
-      </p>
     </div>
   );
 };

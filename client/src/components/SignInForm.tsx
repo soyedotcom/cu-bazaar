@@ -57,10 +57,7 @@ const SignInForm = () => {
           </div>
 
           <div className="flex flex-col">
-            <label
-              htmlFor="password"
-              className="font-bold my-2 text-left pl-2"
-            >
+            <label htmlFor="password" className="font-bold my-2 text-left pl-2">
               Password:
             </label>
 
@@ -82,24 +79,23 @@ const SignInForm = () => {
               Forgot Password?
             </Link>
           </div>
+          <button
+            type="submit"
+            className="font-bold my-4 bg-purple-400 text-white p-2 h-12 w-full rounded-full cursor-pointer"
+          >
+            Continue Shopping
+          </button>
         </div>
 
-        <button
-          type="submit"
-          className="font-bold my-4 bg-purple-400 text-white p-2 h-12 w-full rounded-full cursor-pointer"
-        >
-          Continue Shopping
-        </button>
+        <p>
+          Don't have an account yet?{" "}
+          <span>
+            <Link to="/signup" className="cursor-pointer hover:text-purple-600">
+              Sign Up
+            </Link>
+          </span>
+        </p>
       </form>
-
-      <p>
-        Don't have an account yet?{" "}
-        <span>
-          <Link to="/signup" className="cursor-pointer hover:text-purple-600">
-            Sign Up
-          </Link>
-        </span>
-      </p>
     </div>
   );
 };
