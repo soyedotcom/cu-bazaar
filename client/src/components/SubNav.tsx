@@ -45,11 +45,11 @@ const SubNav = () => {
       </div>
 
       <div className="flex flex-col text-left gap-5 my-10">
-        <div className="text-[32px] font-bold">
+        <div className="text-[32px] font-bold flex align-middle gap-2">
           {currentSubcategory?.icon}
           {activeSubCategory}
         </div>
-        <div className="flex gap-5 text-sm">
+        <div className="flex align-middle gap-5 text-sm">
           {currentSubcategory?.sections?.map((section) => (
             <button
               key={section.name}
