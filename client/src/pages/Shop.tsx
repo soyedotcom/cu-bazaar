@@ -7,8 +7,12 @@ const Shop = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q")?.toLocaleLowerCase() || "";
 
-  const filteredProducts = products.filter((p) =>
-    p.name.toLocaleLowerCase().includes(query),
+  const filteredProducts = products.filter(
+    (p) =>
+      p.name.toLocaleLowerCase().includes(query) ||
+      p.category.toLocaleLowerCase().includes(query) ||
+      p.subcategory.toLocaleLowerCase().includes(query) ||
+      p.section.toLocaleLowerCase().includes(query),
   );
 
   return (
