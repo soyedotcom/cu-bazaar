@@ -1,5 +1,7 @@
+import { useState } from "react";
 import type { Product } from "../data/products";
 
+import AddToCartCard from "./AddToCartCard";
 import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import CartIcon from "@mui/icons-material/ShoppingBagOutlined";
 import InfoIcon from "@mui/icons-material/InfoOutlineRounded";
@@ -9,6 +11,8 @@ interface Props {
 }
 
 const ProductCard = ({ product }: Props) => {
+  const [showCard, setShowCard] = useState(false);
+
   return (
     <div className="h-78 max-h-78 w-41 max-w-41 flex flex-col">
       <section className="w-full h-37">
@@ -40,7 +44,12 @@ const ProductCard = ({ product }: Props) => {
               <WishlistIcon />
             </button>
 
-            <button className="cursor-pointer">
+            <button
+              className="cursor-pointer"
+              onClick={() => {
+                setShowCard(true);
+              }}
+            >
               <CartIcon />
             </button>
           </div>
@@ -50,6 +59,14 @@ const ProductCard = ({ product }: Props) => {
           </div>
         </section>
       </section>
+      {showCard && (
+        <AddToCartCard
+          product={product}
+          onClose={() => {
+            setShowCard(false);
+          }}
+        />
+      )}
     </div>
   );
 };
