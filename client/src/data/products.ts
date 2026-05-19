@@ -3,6 +3,7 @@ export interface Product {
   name: string;
   image: string;
   price: number;
+  seller: string;
 
   category: string;
   subcategory: string;
@@ -16,6 +17,7 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82",
 
     price: 2500,
+    seller: "SBU",
 
     category: "Products",
     subcategory: "Fashion",
@@ -28,6 +30,7 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1718220130188-428c7dc27fd2",
 
     price: 45000,
+    seller: "SBU",
 
     category: "Products",
     subcategory: "Fashion",
@@ -39,6 +42,7 @@ export const products: Product[] = [
     name: "Graphic Hoodie",
     image: "https://images.unsplash.com/photo-1680292783974-a9a336c10366",
     price: 18000,
+    seller: "SBU",
     category: "Products",
     subcategory: "Fashion",
     section: "Tops",
@@ -48,6 +52,7 @@ export const products: Product[] = [
     name: "Blue Denim Jacket",
     image: "https://images.unsplash.com/photo-1614693348454-1e0710d21c60",
     price: 22000,
+    seller: "SBU",
     category: "Products",
     subcategory: "Fashion",
     section: "Tops",
@@ -57,6 +62,7 @@ export const products: Product[] = [
     name: "White Plain T-Shirt",
     image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
     price: 8000,
+    seller: "SBU",
     category: "Products",
     subcategory: "Fashion",
     section: "Tops",
@@ -66,6 +72,7 @@ export const products: Product[] = [
     name: "Cargo Pants",
     image: "https://images.unsplash.com/photo-1584865288642-42078afe6942",
     price: 17000,
+    seller: "SBU",
     category: "Products",
     subcategory: "Fashion",
     section: "Bottoms",
@@ -75,6 +82,7 @@ export const products: Product[] = [
     name: "Slim Fit Jeans",
     image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246",
     price: 15000,
+    seller: "SBU",
     category: "Products",
     subcategory: "Fashion",
     section: "Bottoms",
@@ -84,6 +92,7 @@ export const products: Product[] = [
     name: "Joggers",
     image: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8",
     price: 12000,
+    seller: "SBU",
     category: "Products",
     subcategory: "Fashion",
     section: "Bottoms",
@@ -93,6 +102,7 @@ export const products: Product[] = [
     name: "Nike Sneakers",
     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
     price: 45000,
+    seller: "SBU",
     category: "Products",
     subcategory: "Fashion",
     section: "Shoes",
@@ -102,6 +112,7 @@ export const products: Product[] = [
     name: "Leather Sandals",
     image: "https://images.unsplash.com/photo-1562273138-f46be4ebdf33",
     price: 12000,
+    seller: "SBU",
     category: "Products",
     subcategory: "Fashion",
     section: "Shoes",
@@ -111,6 +122,7 @@ export const products: Product[] = [
     name: "Formal Shoes",
     image: "https://images.unsplash.com/photo-1520639888713-7851133b1ed0",
     price: 28000,
+    seller: "SBU",
     category: "Products",
     subcategory: "Fashion",
     section: "Shoes",
@@ -120,6 +132,7 @@ export const products: Product[] = [
     name: "Gold Necklace",
     image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed",
     price: 60000,
+    seller: "SBU",
     category: "Products",
     subcategory: "Fashion",
     section: "Jewelry and Accessories",
