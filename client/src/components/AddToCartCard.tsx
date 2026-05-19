@@ -78,7 +78,11 @@ const AddToCartCard = ({ product, onClose }: Props) => {
 
           <section>
             <div className="flex items-center gap-3 mb-3">
-              <AddToCartBtn />
+              <AddToCartBtn
+                product={product}
+                selectedColor={selectedColor}
+                selectedSize={selectedSize}
+              />
               <div>
                 <WishlistIcon />
               </div>
