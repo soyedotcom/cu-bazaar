@@ -21,6 +21,10 @@ const Product = () => {
     (p) => p.id === Number(id),
   );
 
+  if (!product) {
+    throw new Error("Product Not Found");
+  }
+
   return (
     <main className="flex flex-col mx-25 my-10 text-left">
       <nav>
