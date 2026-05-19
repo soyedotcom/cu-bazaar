@@ -12,43 +12,45 @@ const SubNav = () => {
   );
 
   return (
-    <nav className="flex flex-col gap-8 mx-25 my-5">
-      <div className="flex gap-10 font-bold">
-        {subNavData.map((category) => (
-          <section
-            key={category.name}
-            onMouseEnter={() => setActiveMenu(category.name)}
-            className={`flex gap-2 cursor-pointer pb-2 ${activeMenu === category.name ? "border-b-3 border-black " : "text-gray-500"}`}
-          >
-            <div className="flex align-middle">
-              <span>{category.name}</span>
-              <div>
-                <DropDownIcon />
+    <nav className="flex flex-col gap-15 mx-25 my-5">
+      <section className="flex flex-col gap-8 h-22">
+        <div className="flex gap-10 font-bold">
+          {subNavData.map((category) => (
+            <section
+              key={category.name}
+              onMouseEnter={() => setActiveMenu(category.name)}
+              className={`flex gap-2 cursor-pointer pb-2 ${activeMenu === category.name ? "border-b-3 border-black " : "text-gray-500"}`}
+            >
+              <div className="flex align-middle">
+                <span>{category.name}</span>
+                <div>
+                  <DropDownIcon />
+                </div>
               </div>
-            </div>
-          </section>
-        ))}
-      </div>
+            </section>
+          ))}
+        </div>
 
-      <div className="flex gap-8">
-        {currentCategory?.subcategories?.map((subcat) => (
-          <button
-            key={subcat.name}
-            onClick={() => {
-              setActiveSubCategory(subcat.name);
-              setSelectedSubCategory(subcat);
-            }}
-            className={`cursor-pointer font-bold ${activeSubCategory === subcat.name ? "text-black" : "text-gray-500"}`}
-          >
-            <div className="flex gap-2">
-              <div>{subcat.icon}</div>
-              <div>{subcat.name}</div>
-            </div>
-          </button>
-        ))}
-      </div>
+        <div className="flex gap-8">
+          {currentCategory?.subcategories?.map((subcat) => (
+            <button
+              key={subcat.name}
+              onClick={() => {
+                setActiveSubCategory(subcat.name);
+                setSelectedSubCategory(subcat);
+              }}
+              className={`cursor-pointer font-bold ${activeSubCategory === subcat.name ? "text-black" : "text-gray-500"}`}
+            >
+              <div className="flex gap-2">
+                <div>{subcat.icon}</div>
+                <div>{subcat.name}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </section>
 
-      <div className="flex flex-col text-left gap-8 my-8">
+      <section className="flex flex-col text-left gap-8">
         <div className="text-[32px] font-bold flex gap-2">
           {selectedSubCategory?.icon}
           {selectedSubCategory?.name}
@@ -65,7 +67,7 @@ const SubNav = () => {
             </button>
           ))}
         </div>
-      </div>
+      </section>
     </nav>
   );
 };
