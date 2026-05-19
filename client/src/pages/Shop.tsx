@@ -4,7 +4,7 @@ import SubNav from "../components/SubNav";
 
 const Shop = () => {
   return (
-    <main className="flex flex-col mx-25 my-15">
+    <main className="flex flex-col mx-25 my-10">
       <SubNav />
       <ProductDisplay products={products} />
     </main>
