@@ -4,6 +4,7 @@ import InfoIcon from "@mui/icons-material/InfoOutlineRounded";
 
 import { Link } from "react-router-dom";
 import type { WishListItem } from "../data/wishlist";
+import { useWishlist } from "../context/WishlistContext";
 
 interface Props {
   wishListItem: WishListItem;
@@ -11,6 +12,7 @@ interface Props {
 
 const WishlistProductCard = ({ wishListItem }: Props) => {
   const { product } = wishListItem;
+  const { removeFromWishlist } = useWishlist();
 
   return (
     <section className="flex flex-row h-39 w-120">
@@ -32,14 +34,23 @@ const WishlistProductCard = ({ wishListItem }: Props) => {
               <InfoIcon />
             </Link>
 
-            <WishlistIcon className="hover:cursor-pointer" />
+            <button
+              className="cursor-pointer"
+              onClick={() => removeFromWishlist(product.id)}
+            >
+              <WishlistIcon />
+            </button>
           </div>
         </div>
         <div>
           <p className="font-bold">₦{product.price.toLocaleString()}</p>
         </div>
         <div className="mt-auto text-right">
-          <AddToCartBtn />
+          <AddToCartBtn
+            product={product}
+            selectedColor={undefined}
+            selectedSize={undefined}
+          />
         </div>
       </div>
     </section>
