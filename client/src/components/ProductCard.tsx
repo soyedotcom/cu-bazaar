@@ -13,7 +13,7 @@ const ProductCard = ({ product }: Props) => {
     <div className=" h-74 w-41 flex flex-col">
       <section className="w-full h-37">
         <img
-          className="h-full w-full object-fill object-center"
+          className="h-full w-full object-cover object-center"
           src={product.image}
           alt={product.name}
         />
