@@ -3,13 +3,20 @@ import InfoIcon from "@mui/icons-material/InfoOutlineRounded";
 import CloseIcon from "@mui/icons-material/CloseRounded";
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import type { CartItem } from "../data/cart";
 
-const CartProductCard = () => {
-  const [quantity, setQuantity] = useState(1);
+interface Props {
+  cartItem: CartItem;
+}
+
+const CartProductCard = ({ cartItem }: Props) => {
+  const { product, quantity } = cartItem;
+  const [productQuantity, setProductQuantity] = useState(quantity);
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
-    setQuantity(value);
+    setProductQuantity(value);
   };
 
   return (
@@ -17,21 +24,27 @@ const CartProductCard = () => {
       <div>
         <img
           className="h-full w-39 object-center object-cover"
-          src="watch.jpg"
-          alt="product image"
+          src={product.image}
+          alt={product.name}
         />
       </div>
       <div className="flex-1 flex flex-col text-left ml-10">
         <div className="flex justify-between mb-1">
-          <div>Product Name</div>
+          <div>{product.name}</div>
           <div className="flex gap-2">
-            <InfoIcon className="hover:cursor-pointer" />
+            <Link
+              to={`/product/${product.id}`}
+              className="hover:cursor-pointer"
+            >
+              <InfoIcon />
+            </Link>
+
             <WishlistIcon className="hover:cursor-pointer" />
             <CloseIcon className="hover:cursor-pointer" />
           </div>
         </div>
         <div>
-          <p className="font-bold">Product Price</p>
+          <p className="font-bold">₦{product.price.toLocaleString()}</p>
         </div>
         <div className="mt-auto text-right flex flex-row gap-2 p-2">
           <p>Quantity:</p>
@@ -39,7 +52,7 @@ const CartProductCard = () => {
             type="number"
             min="1"
             max="20"
-            value={quantity}
+            value={productQuantity}
             onChange={handleQuantityChange}
             className="outline-none appearance-none"
           />
