@@ -88,7 +88,7 @@ const Product = () => {
 
             <p>
               Sold by{" "}
-              <span className="font-semibold hover:text-purple-500">
+              <span className="font-semibold hover:text-purple-500 hover:underline">
                 <Link to="/">{product.seller}</Link>
               </span>
             </p>
@@ -126,7 +126,7 @@ const Product = () => {
 
               {isFeaturesOpen && (
                 <div>
-                  <p>feature description to be inputed by user</p>
+                  <p>{product.features}</p>
                 </div>
               )}
             </section>
@@ -150,7 +150,7 @@ const Product = () => {
 
               {isMeasurementsOpen && (
                 <div>
-                  <p>feature description to be inputed by user</p>
+                  <p>{product.measurements}</p>
                 </div>
               )}
             </section>
@@ -174,10 +174,7 @@ const Product = () => {
 
               {isMaterialsOpen && (
                 <div>
-                  <p>
-                    Made with cotton and polyester. Hand wash with cold water
-                    and soap.
-                  </p>
+                  <p>{product.materialsandcare}</p>
                 </div>
               )}
             </section>
