@@ -12,7 +12,7 @@ const SubNav = () => {
   );
 
   return (
-    <nav className="flex flex-col gap-15 mx-25 my-5">
+    <nav className="flex flex-col gap-15">
       <section className="flex flex-col gap-8 h-22">
         <div className="flex gap-10 font-bold">
           {subNavData.map((category) => (
