@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { products } from "../data/products";
 import type { Product } from "../data/products";
@@ -25,12 +26,14 @@ const Product = () => {
     throw new Error("Product Not Found");
   }
 
+  const navigate = useNavigate();
+
   return (
     <main className="flex flex-col mx-25 my-10 text-left">
       <nav>
-        <Link to="/shop" className="cursor-pointer font-bold ">
+        <button onClick={() => navigate(-1)} className="cursor-pointer">
           <BackIcon /> Back To Shop
-        </Link>
+        </button>
       </nav>
 
       <section className="flex flex-row w-full my-5">
