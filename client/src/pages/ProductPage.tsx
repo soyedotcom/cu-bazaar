@@ -13,7 +13,7 @@ import BackIcon from "@mui/icons-material/ArrowBackRounded";
 import DropDownActive from "@mui/icons-material/KeyboardArrowDownRounded";
 import DropDownInactive from "@mui/icons-material/KeyboardArrowRightRounded";
 
-const Product = () => {
+const ProductPage = () => {
   const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(false);
   const [isMaterialsOpen, setIsMaterialsOpen] = useState(false);
@@ -215,4 +215,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductPage;
