@@ -70,6 +70,11 @@ export const subNavData: Category[] = [
         name: "Hair Styling",
         icon: <FashionIcon />,
       },
+
+      {
+        name: "Repair and Maintainence",
+        icon: <FashionIcon />,
+      },
     ],
   },
 
