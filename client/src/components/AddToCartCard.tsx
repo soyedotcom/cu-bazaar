@@ -56,7 +56,7 @@ const AddToCartCard = ({ product, onClose }: Props) => {
               </div>
             </div>
 
-            <Link to="/">
+            <Link to={`/product/${product.id}`}>
               More details
               <LinkIcon />
             </Link>

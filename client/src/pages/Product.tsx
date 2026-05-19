@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { products } from "../data/products";
+import type { Product } from "../data/products";
 
 import AddToCartBtn from "../components/AddToCartBtn";
 import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
@@ -12,8 +16,13 @@ const Product = () => {
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(false);
   const [isMaterialsOpen, setIsMaterialsOpen] = useState(false);
 
+  const { id } = useParams<{ id: string }>();
+  const product: Product | undefined = products.find(
+    (p) => p.id === Number(id),
+  );
+
   return (
-    <main className="flex flex-col mx-25 my-15 text-left">
+    <main className="flex flex-col mx-25 my-10 text-left">
       <nav>
         <Link to="/shop" className="cursor-pointer font-bold ">
           <BackIcon /> Back To Shop
@@ -25,8 +34,8 @@ const Product = () => {
           <div className="flex flex-col gap-5 w-80">
             <div className="h-80 w-80">
               <img
-                src="watch.jpg"
-                alt="product-image"
+                src={product.image}
+                alt={product.name}
                 className="h-full w-full rounded-md object-cover object-center"
               />
             </div>
@@ -34,29 +43,29 @@ const Product = () => {
             <div className="w-full flex justify-between align-middle h-15">
               <button className="w-15 cursor-pointer">
                 <img
-                  src="glasses.jpg"
-                  alt="product-image"
+                  src={product.image}
+                  alt={product.name}
                   className="h-full w-full rounded-md object-cover object-center"
                 />
               </button>
               <button className="w-15 cursor-pointer">
                 <img
-                  src="shoe.jpg"
-                  alt="product-image"
+                  src={product.image}
+                  alt={product.name}
                   className="h-full w-full rounded-md object-cover object-center"
                 />
               </button>
               <button className="w-15 cursor-pointer">
                 <img
-                  src="watch.jpg"
-                  alt="product-image"
+                  src={product.image}
+                  alt={product.name}
                   className="h-full w-full rounded-md object-cover object-center"
                 />
               </button>
               <button className="w-15 cursor-pointer">
                 <img
-                  src="glasses.jpg"
-                  alt="product-image"
+                  src={product.image}
+                  alt={product.name}
                   className="h-full w-full rounded-md object-cover object-center"
                 />
               </button>
@@ -66,18 +75,20 @@ const Product = () => {
 
         <section className="flex flex-col pl-10 flex-1 max-w-170">
           <div className="flex flex-col gap-2.5">
-            <h1 className="font-semibold text-[24px]">Product Name</h1>
+            <h1 className="font-semibold text-[24px]">{product.name}</h1>
 
-            <p>Product description</p>
+            <p>{product.description}</p>
 
             <p>
               Sold by{" "}
               <span className="font-semibold hover:text-purple-500">
-                <Link to="/">Sellers Name</Link>
+                <Link to="/">{product.seller}</Link>
               </span>
             </p>
 
-            <p className="font-bold text-[32px] py-3">N12,000.00</p>
+            <p className="font-bold text-[32px] py-3">
+              ₦{product.price.toLocaleString()}
+            </p>
           </div>
 
           <div className="flex gap-5 align-middle mt-auto">

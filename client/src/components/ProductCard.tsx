@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import type { Product } from "../data/products";
 
 import AddToCartCard from "./AddToCartCard";
@@ -36,9 +37,9 @@ const ProductCard = ({ product }: Props) => {
           <div className="font-bold ">₦{product.price.toLocaleString()}</div>
 
           <div className="flex gap-2 align-middle mt-auto">
-            <button className="cursor-pointer">
+            <Link to={`/product/${product.id}`} className="cursor-pointer">
               <InfoIcon />
-            </button>
+            </Link>
 
             <button className="cursor-pointer">
               <WishlistIcon />

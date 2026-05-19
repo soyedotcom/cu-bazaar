@@ -2,6 +2,8 @@ export interface Product {
   id: number;
   name: string;
   image: string;
+  description: string;
+
   price: number;
   seller: string;
 
@@ -15,7 +17,7 @@ export const products: Product[] = [
     id: 1,
     name: "White Socks",
     image: "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82",
-
+    description: "This product is for sale",
     price: 2500,
     seller: "SBU",
 
@@ -28,7 +30,7 @@ export const products: Product[] = [
     id: 2,
     name: "Adidas Sneakers",
     image: "https://images.unsplash.com/photo-1718220130188-428c7dc27fd2",
-
+    description: "This product is for sale",
     price: 45000,
     seller: "SBU",
 
@@ -41,6 +43,7 @@ export const products: Product[] = [
     id: 3,
     name: "Graphic Hoodie",
     image: "https://images.unsplash.com/photo-1680292783974-a9a336c10366",
+    description: "This product is for sale",
     price: 18000,
     seller: "SBU",
     category: "Products",
@@ -51,6 +54,7 @@ export const products: Product[] = [
     id: 4,
     name: "Blue Denim Jacket",
     image: "https://images.unsplash.com/photo-1614693348454-1e0710d21c60",
+    description: "This product is for sale",
     price: 22000,
     seller: "SBU",
     category: "Products",
@@ -61,6 +65,7 @@ export const products: Product[] = [
     id: 5,
     name: "White Plain T-Shirt",
     image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
+    description: "This product is for sale",
     price: 8000,
     seller: "SBU",
     category: "Products",
@@ -71,6 +76,7 @@ export const products: Product[] = [
     id: 6,
     name: "Cargo Pants",
     image: "https://images.unsplash.com/photo-1584865288642-42078afe6942",
+    description: "This product is for sale",
     price: 17000,
     seller: "SBU",
     category: "Products",
@@ -81,6 +87,7 @@ export const products: Product[] = [
     id: 7,
     name: "Slim Fit Jeans",
     image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246",
+    description: "This product is for sale",
     price: 15000,
     seller: "SBU",
     category: "Products",
@@ -91,6 +98,7 @@ export const products: Product[] = [
     id: 8,
     name: "Joggers",
     image: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8",
+    description: "This product is for sale",
     price: 12000,
     seller: "SBU",
     category: "Products",
@@ -101,6 +109,7 @@ export const products: Product[] = [
     id: 9,
     name: "Nike Sneakers",
     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+    description: "This product is for sale",
     price: 45000,
     seller: "SBU",
     category: "Products",
@@ -111,6 +120,7 @@ export const products: Product[] = [
     id: 10,
     name: "Leather Sandals",
     image: "https://images.unsplash.com/photo-1562273138-f46be4ebdf33",
+    description: "This product is for sale",
     price: 12000,
     seller: "SBU",
     category: "Products",
@@ -121,6 +131,7 @@ export const products: Product[] = [
     id: 11,
     name: "Formal Shoes",
     image: "https://images.unsplash.com/photo-1520639888713-7851133b1ed0",
+    description: "This product is for sale",
     price: 28000,
     seller: "SBU",
     category: "Products",
@@ -131,6 +142,7 @@ export const products: Product[] = [
     id: 12,
     name: "Gold Necklace",
     image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed",
+    description: "This product is for sale",
     price: 60000,
     seller: "SBU",
     category: "Products",
