@@ -10,7 +10,7 @@ interface Props {
 
 const ProductCard = ({ product }: Props) => {
   return (
-    <div className=" h-74 w-41 flex flex-col">
+    <div className=" h-78 max-h-78 w-41 flex flex-col">
       <section className="w-full h-37">
         <img
           className="h-full w-full object-cover object-center"
@@ -20,22 +20,35 @@ const ProductCard = ({ product }: Props) => {
       </section>
 
       <section className=" w-full h-37 flex flex-col text-left mt-4">
-        <div className="mb-1">{product.name}</div>
-        <div className="font-bold mb-5">₦{product.price.toLocaleString()}</div>
-        <div className="flex gap-2 align-middle">
-          <button>
-            <InfoIcon />
-          </button>
-          <button>
-            <WishlistIcon />
-          </button>
-          <button>
-            <CartIcon />
-          </button>
+        <div className="flex flex-col">
+          <div className="mb-1">
+            {product.name.length > 31
+              ? product.name.slice(0, 31) + "..."
+              : product.name}
+          </div>
         </div>
-        <div className="mt-auto">
-          <img src="/" alt="product rating" />
-        </div>
+
+        <section className="flex flex-col gap-3 mt-auto">
+          <div className="font-bold ">₦{product.price.toLocaleString()}</div>
+
+          <div className="flex gap-2 align-middle mt-auto">
+            <button className="cursor-pointer">
+              <InfoIcon />
+            </button>
+
+            <button className="cursor-pointer">
+              <WishlistIcon />
+            </button>
+
+            <button className="cursor-pointer">
+              <CartIcon />
+            </button>
+          </div>
+
+          <div className="mt-auto">
+            <img src="/" alt="product rating" />
+          </div>
+        </section>
       </section>
     </div>
   );
