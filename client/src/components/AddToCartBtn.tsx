@@ -13,7 +13,7 @@ type Props = {
 };
 
 const AddToCartBtn = ({ product, selectedColor, selectedSize }: Props) => {
-  const { addToCart } = useCart;
+  const { addToCart } = useCart();
 
   return (
     <button
