@@ -3,12 +3,17 @@ export interface Product {
   name: string;
   image: string;
   description: string;
-  features?: string;
+  features?: string[];
   measurements?: string;
   materialsandcare?: string;
 
   price: number;
   seller: string;
+
+  variants?: {
+    colors?: string[];
+    sizes?: string[];
+  };
 
   category: string;
   subcategory: string;
@@ -52,10 +57,15 @@ export const products: Product[] = [
     category: "Products",
     subcategory: "Fashion",
     section: "Tops",
+
+    variants: {
+      colors: ["Black", "White", "Red"],
+      sizes: ["S", "M", "L", "XL"],
+    },
   },
   {
     id: 4,
-    name: "Blue Denim Jacket",
+    name: "Denim Jacket",
     image: "https://images.unsplash.com/photo-1614693348454-1e0710d21c60",
     description: "This product is for sale",
     price: 22000,
@@ -63,6 +73,11 @@ export const products: Product[] = [
     category: "Products",
     subcategory: "Fashion",
     section: "Tops",
+
+    variants: {
+      colors: ["Black", "White", "Red"],
+      sizes: ["M", "L", "XL"],
+    },
   },
   {
     id: 5,
@@ -74,6 +89,9 @@ export const products: Product[] = [
     category: "Products",
     subcategory: "Fashion",
     section: "Tops",
+    variants: {
+      sizes: ["S", "M", "L", "XL"],
+    },
   },
   {
     id: 6,
@@ -85,6 +103,10 @@ export const products: Product[] = [
     category: "Products",
     subcategory: "Fashion",
     section: "Bottoms",
+    variants: {
+      colors: ["Black", "White", "Red"],
+      sizes: ["S", "M", "L", "XL"],
+    },
   },
   {
     id: 7,

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import type { Product } from "../data/products";
+import { useState } from "react";
+import VariantSelector from "./VariantSelector";
 
 import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import LinkIcon from "@mui/icons-material/ArrowForward";
@@ -11,12 +13,18 @@ interface Props {
 }
 
 const AddToCartCard = ({ product, onClose }: Props) => {
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
   return (
     <main
-      className="bg-[#d9d9d9af] fixed w-screen h-screen z-50 top-0 right-0 left-0 bottom-0 flex justify-center items-center"
+      className="bg-[#d9d9d9af] fixed w-screen h-screen z-10 top-0 right-0 left-0 bottom-0 flex justify-center items-center"
       onClick={onClose}
     >
-      <section className="bg-white flex flex-row w-185 h-100 rounded-xl p-6">
+      <section
+        className="bg-white relative z-20 flex flex-row w-185 h-100 rounded-xl p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
         <section className="bg-blue-300 flex-1 rounded-xl">
           <img
             className="rounded-xl h-full w-full object-cover object-center"
@@ -46,7 +54,27 @@ const AddToCartCard = ({ product, onClose }: Props) => {
             <img src="/" alt="Product Rating" />
           </section>
 
-          <div className="grow mt-4">Procuct Specifications</div>
+          <div className="grow mt-4">
+            <div className="flex flex-col gap-4">
+              {product.variants?.sizes && (
+                <VariantSelector
+                  label="Size"
+                  options={product.variants.sizes}
+                  value={selectedSize}
+                  onChange={setSelectedSize}
+                />
+              )}
+
+              {product.variants?.colors && (
+                <VariantSelector
+                  label="Color"
+                  options={product.variants.colors}
+                  value={selectedColor}
+                  onChange={setSelectedColor}
+                />
+              )}
+            </div>
+          </div>
 
           <section>
             <div className="flex items-center gap-3 mb-3">

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { products } from "../data/products";
 import type { Product } from "../data/products";
+import VariantSelector from "../components/VariantSelector";
 
 import AddToCartBtn from "../components/AddToCartBtn";
 import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
@@ -16,6 +17,9 @@ const Product = () => {
   const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(false);
   const [isMaterialsOpen, setIsMaterialsOpen] = useState(false);
+
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   const { id } = useParams<{ id: string }>();
   const product: Product | undefined = products.find(
@@ -96,10 +100,34 @@ const Product = () => {
             <p className="font-bold text-[32px] py-3">
               ₦{product.price.toLocaleString()}
             </p>
+
+            <div className="flex flex-col gap-5">
+              {product.variants?.sizes && (
+                <VariantSelector
+                  label="Size"
+                  options={product.variants.sizes}
+                  value={selectedSize}
+                  onChange={setSelectedSize}
+                />
+              )}
+
+              {product.variants?.colors && (
+                <VariantSelector
+                  label="Color"
+                  options={product.variants.colors}
+                  value={selectedColor}
+                  onChange={setSelectedColor}
+                />
+              )}
+            </div>
           </div>
 
           <div className="flex gap-5 align-middle mt-auto">
-            <AddToCartBtn />
+            <AddToCartBtn
+              product={product}
+              selectedColor={selectedColor}
+              selectedSize={selectedSize}
+            />
 
             <button className="cursor-pointer">
               <WishlistIcon />
