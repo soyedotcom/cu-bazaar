@@ -1,8 +1,15 @@
 import DropDownIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+
 import { subNavData } from "../data/subNavData";
 import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const SubNav = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const initialCategory = searchParams.get("category") || "";
+  const initialSubCategory = searchParams.get("subcategory") || "";
   const [activeMenu, setActiveMenu] = useState<string>("");
   const [activeSubCategory, setActiveSubCategory] = useState<string>("");
   const [selectedSubCategory, setSelectedSubCategory] = useState<any>(null);
@@ -36,6 +43,9 @@ const SubNav = () => {
             <button
               key={subcat.name}
               onClick={() => {
+                navigate(
+                  `/shop?category=${activeMenu}&subcategory=${encodeURIComponent(subcat.name)}`,
+                );
                 setActiveSubCategory(subcat.name);
                 setSelectedSubCategory(subcat);
               }}
@@ -60,6 +70,11 @@ const SubNav = () => {
             <button
               key={section.name}
               className="cursor-pointer hover:text-black text-gray-600"
+              onClick={() => {
+                navigate(
+                  `/shop?category=${activeMenu}&subcategory=${activeSubCategory}&section=${section.name}`,
+                );
+              }}
             >
               <div>
                 {section.icon} {section.name}
