@@ -80,7 +80,7 @@ const Product = () => {
             <p className="font-bold text-[32px] py-3">N12,000.00</p>
           </div>
 
-          <div className="flex justify-between align-middle mt-auto">
+          <div className="flex gap-5 align-middle mt-auto">
             <AddToCartBtn />
 
             <button className="cursor-pointer">
@@ -93,7 +93,7 @@ const Product = () => {
           <h2 className="text-[24px] font-semibold">Product Information</h2>
 
           <div className="flex flex-col gap-5 my-5">
-            <section>
+            <section className="flex flex-col gap-1">
               <div className="font-semibold flex align-middle">
                 <p>Features </p>
                 <span>
@@ -113,7 +113,7 @@ const Product = () => {
               )}
             </section>
 
-            <section>
+            <section className="flex flex-col gap-1">
               <div className="font-semibold flex align-middle">
                 <p>Measurements </p>
                 <span>
@@ -137,7 +137,7 @@ const Product = () => {
               )}
             </section>
 
-            <section>
+            <section className="flex flex-col gap-1">
               <div className="font-semibold flex align-middle">
                 <p>Materials and Care </p>
                 <span>
@@ -157,7 +157,8 @@ const Product = () => {
               {isMaterialsOpen && (
                 <div>
                   <p>
-                    Made with cotton and polyester. Hand wash with cold water and soap.
+                    Made with cotton and polyester. Hand wash with cold water
+                    and soap.
                   </p>
                 </div>
               )}
