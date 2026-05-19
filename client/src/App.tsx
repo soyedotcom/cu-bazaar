@@ -8,7 +8,7 @@ import Product from "./pages/Product";
 import Services from "./pages/Services";
 import DealsandDiscounts from "./pages/DealsandDiscounts";
 import NewsandEvents from "./pages/NewsandEvents";
-import Deliveries from "./Deliveries";
+import Deliveries from "./pages/Deliveries";
 import UserProfile from "./UserProfile";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
