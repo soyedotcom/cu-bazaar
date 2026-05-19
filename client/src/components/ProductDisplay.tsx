@@ -7,7 +7,7 @@ interface Props {
 
 const ProductDisplay = ({ products }: Props) => {
   return (
-    <section className="grid grid-cols-6 gap-y-10 justify-between py-10">
+    <section className="grid grid-cols-6 justify-between py-10 gap-y-5">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

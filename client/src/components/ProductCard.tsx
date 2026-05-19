@@ -10,7 +10,7 @@ interface Props {
 
 const ProductCard = ({ product }: Props) => {
   return (
-    <div className=" h-78 max-h-78 w-41 flex flex-col">
+    <div className="h-78 max-h-78 w-41 max-w-41 flex flex-col">
       <section className="w-full h-37">
         <img
           className="h-full w-full object-cover object-center"
@@ -19,7 +19,7 @@ const ProductCard = ({ product }: Props) => {
         />
       </section>
 
-      <section className=" w-full h-37 flex flex-col text-left mt-4">
+      <section className="w-full h-37 flex flex-col text-left mt-4">
         <div className="flex flex-col">
           <div className="mb-1">
             {product.name.length > 31
