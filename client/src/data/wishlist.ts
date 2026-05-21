@@ -4,6 +4,10 @@ export interface WishListItem {
   product: Product;
 }
 
+export interface Wishlist {
+  wishlist: WishListItem[];
+}
+
 export const wishlist: WishListItem[] = [
   {
     product: {
