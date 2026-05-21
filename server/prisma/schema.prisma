@@ -5,111 +5,112 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url = env("DATABASE_URL")
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  name      String
-  email     String @unique
-  password  String
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
 
-  cartItems CartItem[]
+  cartItems     CartItem[]
   wishlistItems WishlistItem[]
-  orders Order[]
+  orders        Order[]
 
-  isSeller  Boolean @default(false)
+  isSeller      Boolean        @default(false)
   sellerProfile SellerProfile?
 }
 
-model SellerProfile{
-  userId Int @unique
-  user     User @relation(fields: [userId], references: [id])
-  shopName String
+model SellerProfile {
+  userId      Int     @unique
+  user        User    @relation(fields: [userId], references: [id])
+  shopName    String
   description String?
-  logo String?
+  logo        String?
 
-  products  Product[]
-  orders    OrderItem[]
+  products Product[]
+  orders   OrderItem[]
 
   createdAt DateTime @default(now())
 }
 
 model Product {
-  id        Int      @id @default(autoincrement())
-  name      String
-  image     String
+  id          Int    @id @default(autoincrement())
+  name        String
+  image       String
   description String
-  price     Float
+  price       Float
 
   sellerId Int
-  seller    SellerProfile @relation(fields: [sellerId], references: [userId])
+  seller   SellerProfile @relation(fields: [sellerId], references: [userId])
 
-  measurements      String?
-  materialsAndCare  String?
+  measurements     String?
+  materialsAndCare String?
 
   category    String
   subcategory String
   section     String
 
-  features    String[] @default([])
-  tags        String[] @default([])
-  variants    Json?
+  features String[] @default([])
+  tags     String[] @default([])
+  variants Json?
 
   cartItems     CartItem[]
   wishlistItems WishlistItem[]
   orderItems    OrderItem[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-
 model Order {
-  id        Int @id @default(autoincrement())
-  userId    Int
+  id     Int @id @default(autoincrement())
+  userId Int
 
-  user      User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
-  status    String @default("pending")
+  status String @default("pending")
 
-  items     OrderItem[]
+  items OrderItem[]
 
   createdAt DateTime @default(now())
 }
 
 model OrderItem {
-  id        Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   orderId   Int
   productId Int
   sellerId  Int
 
-  quantity  Int
-  price     Float
+  quantity Int
+  price    Float
 
-  status    String @default("processing") 
+  status String @default("processing")
 
-  order     Order         @relation(fields: [orderId], references: [id])
-  product   Product       @relation(fields: [productId], references: [id])
-  seller    SellerProfile @relation(fields: [sellerId], references: [userId])
+  order   Order         @relation(fields: [orderId], references: [id])
+  product Product       @relation(fields: [productId], references: [id])
+  seller  SellerProfile @relation(fields: [sellerId], references: [userId])
 }
 
 model CartItem {
-  @@unique([userId, productId, selectedSize, selectedColor])
-  id        Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   userId    Int
   productId Int
 
-  quantity  Int @default(1)
+  quantity Int @default(1)
 
   selectedSize  String?
   selectedColor String?
 
-  user     User    @relation(fields: [userId], references: [id])
-  product  Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 
   createdAt DateTime @default(now())
+
+  @@unique([userId, productId, selectedSize, selectedColor])
 }
 
 model WishlistItem {
@@ -117,8 +118,8 @@ model WishlistItem {
   userId    Int
   productId Int
 
-  user     User    @relation(fields: [userId], references: [id])
-  product  Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 
   createdAt DateTime @default(now())
 }
