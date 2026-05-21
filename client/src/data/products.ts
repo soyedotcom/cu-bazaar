@@ -18,6 +18,7 @@ export interface Product {
   category: string;
   subcategory: string;
   section: string;
+  tags?: string[];
 }
 
 export const products: Product[] = [
