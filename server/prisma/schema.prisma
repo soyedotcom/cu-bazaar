@@ -11,12 +11,15 @@ model User {
   id       String @id @default(uuid())
   name     String
   email    String @unique
+  hall     String
+  room     String
   password String
 
   cartItems     CartItem[]
   wishlistItems WishlistItem[]
   orders        Order[]
 
+  role UserRole @default(USER)
   isSeller      Boolean        @default(false)
   sellerProfile SellerProfile?
 
@@ -127,6 +130,12 @@ model WishlistItem {
   product Product @relation(fields: [productId], references: [id])
 
   createdAt DateTime @default(now())
+}
+
+enum UserRole {
+  USER
+  SELLER
+  ADMIN
 }
 
 enum OrderStatus {
