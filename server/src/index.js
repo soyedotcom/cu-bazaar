@@ -5,16 +5,23 @@ import { connectToDB, disconnectFromDB } from "./config/database.js";
 import productRoutes from "./routes/productRoutes.js";
 
 config();
-connectToDB();
+
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+app.use(express.json());
 app.use("/products", productRoutes);
+
+app.get("/", (req, res) => {
+  res.json("cu-bazaar api is running");
+});
+
+const startServer = async () => {
+  await connectToDB();
+};
 
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
 });
 
-app.get("/", (req, res) => {
-  res.json("cu-bazaar api is running");
-});
+startServer();
