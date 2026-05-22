@@ -17,10 +17,10 @@ const SignUpForm = () => {
   //   e.preventDefault();
 
   //   axios
-  //     .post("http://localhost:3030/register", { name, email, password })
+  //     .post("http://localhost:3030/register", { name, email, hall, room, password, confirmPassword })
   //     .then((result) => {
   //       console.log(result);
-  //       navigate("/login");
+  //       navigate("/signin");
   //     })
   //     .catch((err) => console.log(err));
   // };
@@ -38,7 +38,7 @@ const SignUpForm = () => {
         <div className="flex flex-col gap-7 my-5 items-center">
           <div className="flex flex-col">
             <label
-              htmlFor="username"
+              htmlFor="name"
               className="font-bold py-2.5 pl-2 text-left"
             >
               Name:
@@ -46,8 +46,8 @@ const SignUpForm = () => {
 
             <input
               type="text"
-              id="username"
-              name="username"
+              id="name"
+              name="name"
               placeholder="Enter name"
               required
               onChange={(e) => {
@@ -70,6 +70,42 @@ const SignUpForm = () => {
               required
               onChange={(e) => {
                 setEmail(e.target.value);
+              }}
+              className="border border-gray-400 rounded-full w-100 px-4 py-2 h-12"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label htmlFor="hall" className="font-bold py-2.5 pl-2 text-left">
+              Hall:
+            </label>
+
+            <input
+              type="text"
+              id="hall"
+              name="hall"
+              placeholder="Enter hall of residence"
+              required
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              className="border border-gray-400 rounded-full w-100 px-4 py-2 h-12"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label htmlFor="room" className="font-bold py-2.5 pl-2 text-left">
+              Room Number:
+            </label>
+
+            <input
+              type="text"
+              id="room"
+              name="room"
+              placeholder="Enter room number"
+              required
+              onChange={(e) => {
+                setName(e.target.value);
               }}
               className="border border-gray-400 rounded-full w-100 px-4 py-2 h-12"
             />
