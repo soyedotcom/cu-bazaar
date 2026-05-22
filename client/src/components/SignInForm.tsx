@@ -7,11 +7,7 @@ const SignInForm = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    console.log("Hello");
-  };
-
-  // const handleSubmit = (e) => {
+   // const handleSubmit = (e) => {
   //   e.preventDefault();
 
   //   axios

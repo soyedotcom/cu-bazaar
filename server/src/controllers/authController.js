@@ -40,9 +40,37 @@ const signup = async (req, res) => {
       user: {
         id: newUser.id,
         name: newUser.name,
+        email: newUser.email,
       },
     },
   });
 };
 
-export { signup };
+const signin = async (req, res) => {
+  const body = req.body;
+  const { email, password } = body;
+
+  const user = await prisma.user.findUnique({ where: { email: email } });
+  if (!user) {
+    return res.status(401).json({ error: "Invalid email" });
+  }
+
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword) {
+    return res.status(401).json({ error: "Invalid password" });
+  }
+
+  
+
+  res.status(201).json({
+    status: "success",
+    data: {
+      user: {
+        id: user.id,
+        email: user.email,
+      },
+    },
+  });
+};
+
+export { signup, signin };
