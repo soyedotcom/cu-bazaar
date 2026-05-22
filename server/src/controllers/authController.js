@@ -78,4 +78,14 @@ const signin = async (req, res) => {
   });
 };
 
-export { signup, signin };
+const signout = (req, res) => {
+  res.cookie("jwt_cookie", "", {
+    expires: new Date(0),
+    httpOnly: true,
+  });
+  res
+    .status(200)
+    .json({ status: "success", message: "Logged out successfully" });
+};
+
+export { signup, signin, signout };

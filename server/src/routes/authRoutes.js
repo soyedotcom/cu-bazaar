@@ -1,10 +1,11 @@
 import express from "express";
-import { signup, signin } from "../controllers/authController.js";
+import { signup, signin, signout } from "../controllers/authController.js";
 
 const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/signin", signin);
+router.post("/signout", signout);
 
 router.put("/update", (req, res) => {
   res.json("update products route is working");
