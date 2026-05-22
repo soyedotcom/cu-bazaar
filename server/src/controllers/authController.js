@@ -1,5 +1,6 @@
 import { prisma } from "../config/database.js";
 import bcrypt from "bcryptjs";
+import { createToken } from "../utils/createToken.js";
 
 const signup = async (req, res) => {
   const body = req.body;
@@ -34,6 +35,8 @@ const signup = async (req, res) => {
       room,
     },
   });
+
+  const token = createToken(newUser.id);
   res.status(201).json({
     status: "success",
     data: {
@@ -42,6 +45,7 @@ const signup = async (req, res) => {
         name: newUser.name,
         email: newUser.email,
       },
+      token,
     },
   });
 };
@@ -60,7 +64,7 @@ const signin = async (req, res) => {
     return res.status(401).json({ error: "Invalid password" });
   }
 
-  
+  const token = createToken(user.id);
 
   res.status(201).json({
     status: "success",
@@ -69,6 +73,7 @@ const signin = async (req, res) => {
         id: user.id,
         email: user.email,
       },
+      token,
     },
   });
 };
