@@ -1,5 +1,10 @@
 import express from "express";
-import { addToCart, deleteCartItem, updateCartItem } from "../controllers/cartController.js";
+import {
+  addToCart,
+  deleteCartItem,
+  updateCartItem,
+  getCartItems,
+} from "../controllers/cartController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -9,7 +14,7 @@ router.post("/", addToCart);
 
 router.put("/:id", updateCartItem);
 
-router.get("/", showCart);
+router.get("/", getCartItems);
 
 router.delete("/:id", deleteCartItem);
 

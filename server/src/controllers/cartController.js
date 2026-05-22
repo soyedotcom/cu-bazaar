@@ -110,4 +110,27 @@ const updateCartItem = async (req, res) => {
   });
 };
 
-export { addToCart, deleteCartItem, updateCartItem };
+const getCartItems = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const cartItems = await prisma.cartItem.findMany({
+      where: { userId },
+      include: {
+        product: true,
+      },
+
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: { cartItems, length: cartItems.length },
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to load cart items" });
+  }
+};
+
+export { addToCart, deleteCartItem, updateCartItem, getCartItems };
