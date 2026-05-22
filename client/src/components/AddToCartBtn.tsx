@@ -8,11 +8,17 @@ type Props = {
     price: number;
     image: string;
   };
+  quantity?: number;
   selectedColor?: string | null;
   selectedSize?: string | null;
 };
 
-const AddToCartBtn = ({ product, selectedColor, selectedSize }: Props) => {
+const AddToCartBtn = ({
+  product,
+  quantity,
+  selectedColor,
+  selectedSize,
+}: Props) => {
   const { addToCart } = useCart();
 
   return (
@@ -24,7 +30,7 @@ const AddToCartBtn = ({ product, selectedColor, selectedSize }: Props) => {
           name: product.name,
           price: product.price,
           image: product.image,
-          quantity: 1,
+          quantity: quantity,
           color: selectedColor,
           size: selectedSize,
         })

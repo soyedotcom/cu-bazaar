@@ -1,14 +1,14 @@
 import type { Product } from "./products";
 
-export interface WishListItem {
+export interface WishlistItem {
   product: Product;
 }
 
 export interface Wishlist {
-  wishlist: WishListItem[];
+  wishlist: WishlistItem[];
 }
 
-export const wishlist: WishListItem[] = [
+export const wishlist: WishlistItem[] = [
   {
     product: {
       id: 16,

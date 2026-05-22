@@ -15,6 +15,7 @@ interface Props {
 const AddToCartCard = ({ product, onClose }: Props) => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
 
   return (
     <main
@@ -82,6 +83,7 @@ const AddToCartCard = ({ product, onClose }: Props) => {
                 product={product}
                 selectedColor={selectedColor}
                 selectedSize={selectedSize}
+                quantity={quantity}
               />
               <div>
                 <WishlistIcon />

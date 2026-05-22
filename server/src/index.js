@@ -4,6 +4,7 @@ import { connectToDB, disconnectFromDB } from "./config/database.js";
 
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
 
 config();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/products", productRoutes);
 app.use("/auth", authRoutes);
+app.use("/cart", cartRoutes);
 
 app.get("/", (req, res) => {
   res.json("cu-bazaar api is running");

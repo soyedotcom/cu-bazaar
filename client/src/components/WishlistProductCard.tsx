@@ -3,15 +3,15 @@ import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import InfoIcon from "@mui/icons-material/InfoOutlineRounded";
 
 import { Link } from "react-router-dom";
-import type { WishListItem } from "../data/wishlist";
+import type { WishlistItem } from "../data/wishlist";
 import { useWishlist } from "../context/WishlistContext";
 
 interface Props {
-  wishListItem: WishListItem;
+  wishlistItem: WishlistItem;
 }
 
-const WishlistProductCard = ({ wishListItem }: Props) => {
-  const { product } = wishListItem;
+const WishlistProductCard = ({ wishlistItem }: Props) => {
+  const { product } = wishlistItem;
   const { removeFromWishlist } = useWishlist();
 
   return (
@@ -43,14 +43,10 @@ const WishlistProductCard = ({ wishListItem }: Props) => {
           </div>
         </div>
         <div>
-          <p className="font-bold">₦{product.price.toLocaleString()}</p>
+          <p className="font-bold">₦{Number(product.price).toLocaleString()}</p>
         </div>
         <div className="mt-auto text-right">
-          <AddToCartBtn
-            product={product}
-            selectedColor={undefined}
-            selectedSize={undefined}
-          />
+          <AddToCartBtn product={product} />
         </div>
       </div>
     </section>
