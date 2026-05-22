@@ -2,6 +2,7 @@ import express from "express";
 import {
   addToWishlist,
   deleteWishlistItem,
+  getWishlist,
 } from "../controllers/WishlistController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
@@ -10,7 +11,7 @@ router.use(authMiddleware);
 
 router.post("/", addToWishlist);
 
-router.get("/", showWishlist);
+router.get("/", getWishlist);
 
 router.delete("/", deleteWishlistItem);
 
