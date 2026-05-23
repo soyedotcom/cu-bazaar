@@ -15,9 +15,7 @@ const getCartItems = async (req, res) => {
     });
 
     if (cartItems.length === 0) {
-      return res.status(400).json({
-        error: "Cart is empty",
-      });
+      throw new Error("Cart is empty");
     }
 
     return res.status(200).json({

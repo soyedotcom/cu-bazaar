@@ -1,4 +1,5 @@
 import { prisma } from "../config/database.js";
+import { createOrderFromCart } from "../utils/createOrderFromCart.js";
 
 const getOrders = async (req, res) => {
   try {
@@ -34,10 +35,10 @@ const createOrder = async (req, res) => {
       include: { product: true },
     });
 
+    // const order = await createOrderFromCart(userId);
+
     if (cartItems.length === 0) {
-      return res.status(400).json({
-        error: "Cart is empty",
-      });
+      throw new Error("Cart is empty");
     }
 
     const order = await prisma.order.create({

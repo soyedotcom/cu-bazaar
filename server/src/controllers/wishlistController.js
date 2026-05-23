@@ -14,6 +14,10 @@ const getWishlist = async (req, res) => {
       },
     });
 
+    if (wishlistItems.length === 0) {
+      throw new Error("Wishlist is empty");
+    }
+
     return res.status(200).json({
       status: "success",
       data: { wishlistItems, length: wishlistItems.length },
