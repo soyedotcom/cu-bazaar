@@ -4,7 +4,7 @@ const getCartItems = async (req, res) => {
   try {
     const userId = req.user.id;
     const cartItems = await prisma.cartItem.findMany({
-      where: { userId },
+      where: { userId: userId },
       include: {
         product: true,
       },
@@ -13,6 +13,12 @@ const getCartItems = async (req, res) => {
         createdAt: "desc",
       },
     });
+
+    if (cartItems.length === 0) {
+      return res.status(400).json({
+        error: "Cart is empty",
+      });
+    }
 
     return res.status(200).json({
       status: "success",
@@ -124,7 +130,7 @@ const deleteCartItem = async (req, res) => {
       .json({ error: "You are not authorized to delete this cart item" });
   }
 
-  await prisma.cartItem.deleteMany({
+  await prisma.cartItem.delete({
     where: { id: req.params.id, userId: req.user.id },
   });
 
