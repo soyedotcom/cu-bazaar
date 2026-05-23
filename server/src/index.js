@@ -4,7 +4,7 @@ import { config } from "dotenv";
 import { connectToDB, disconnectFromDB } from "./config/database.js";
 
 import authRoutes from "./routes/authRoutes.js";
-import shopRoutes from "./routes/shopRoutes.js"
+import shopRoutes from "./routes/shopRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/ordersRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -13,7 +13,7 @@ import sellerRoutes from "./routes/sellerRoutes.js";
 config();
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT;
 const startServer = async () => {
   await connectToDB();
 };

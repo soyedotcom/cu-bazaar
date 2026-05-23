@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import type { Product } from "../data/products";
 import { useState } from "react";
 import VariantSelector from "./VariantSelector";
 
@@ -7,10 +6,35 @@ import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import LinkIcon from "@mui/icons-material/ArrowForward";
 import AddToCartBtn from "./AddToCartBtn";
 
-interface Props {
+type Product = {
+  id: number;
+  name: string;
+  image: string;
+  description: string;
+  features?: string[];
+  measurements?: string;
+  materialsandcare?: string;
+
+  price: number;
+  seller: {
+    shopName: string;
+  };
+
+  variants?: {
+    colors?: string[];
+    sizes?: string[];
+  };
+
+  category: string;
+  subcategory: string;
+  section: string;
+  tags?: string[];
+};
+
+type Props = {
   product: Product;
   onClose: () => void;
-}
+};
 
 const AddToCartCard = ({ product, onClose }: Props) => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -43,7 +67,7 @@ const AddToCartCard = ({ product, onClose }: Props) => {
                 className="font-bold cursor-pointer hover:underline hover: hover:text-purple-500"
                 to="/"
               >
-                {product.seller}
+                {product.seller.shopName}
               </Link>
             </p>
           </section>
