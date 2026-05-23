@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { config } from "dotenv";
 import { connectToDB, disconnectFromDB } from "./config/database.js";
 
@@ -16,6 +17,7 @@ const startServer = async () => {
   await connectToDB();
 };
 
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

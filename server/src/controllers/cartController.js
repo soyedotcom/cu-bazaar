@@ -71,7 +71,7 @@ const addToCart = async (req, res) => {
       userId: req.user.id,
       productId,
       quantity,
-      status:"IN_CART",
+      status: "IN_CART",
       selectedSize,
       selectedColor,
     },
