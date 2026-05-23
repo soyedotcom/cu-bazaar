@@ -38,7 +38,7 @@ const Shop = () => {
   const [hasMore, setHasMore] = useState(false);
   const [page, setPage] = useState(1);
 
-  const prevFilterKey = useRef(""); 
+  const prevFilterKey = useRef("");
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q")?.toLocaleLowerCase() || "";
@@ -46,7 +46,7 @@ const Shop = () => {
   const subcategory = searchParams.get("subcategory");
   const section = searchParams.get("section");
 
-   const filterKey = `${query}-${category}-${subcategory}-${section}`;
+  const filterKey = `${query}-${category}-${subcategory}-${section}`;
 
   useEffect(() => {
     const filtersChanged = prevFilterKey.current !== filterKey;
@@ -77,7 +77,7 @@ const Shop = () => {
 
         if (filtersChanged) {
           setProducts(incoming);
-          setPage(1);
+          setPage(1); //remove later?
         } else {
           setProducts((prev) => [...prev, ...incoming]);
         }
