@@ -1,8 +1,12 @@
 import OrderSummary from "../components/OrderSummary";
 import CartProductCard from "../components/CartProductCard";
-import { cart } from "../data/cart";
+import { useCart } from "../context/CartContext";
 
 const Cart = () => {
+  const { cart, loading } = useCart();
+
+  if (loading) return <p>Loading...</p>;
+
   return (
     <main className="flex flex-col mx-25 my-15">
       <div className="flex flex-row">
@@ -11,11 +15,9 @@ const Cart = () => {
             Cart ({cart.length})
           </h1>
 
-          {cart.map((cartItem) => {
-            return (
-              <CartProductCard key={cartItem.product.id} cartItem={cartItem} />
-            );
-          })}
+          {cart.map((cartItem) => (
+            <CartProductCard key={cartItem.id} cartItem={cartItem} />
+          ))}
         </section>
         <section>
           <OrderSummary />

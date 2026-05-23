@@ -1,29 +1,36 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { signupUser } from "../api/auth";
 
 const SignUpForm = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    console.log("Hello");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [hall, setHall] = useState("");
+  const [room, setRoom] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await signupUser({
+        name,
+        email,
+        hall,
+        room,
+        password,
+        confirmPassword,
+      });
+
+      navigate("/signin");
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   axios
-  //     .post("http://localhost:3030/register", { name, email, hall, room, password, confirmPassword })
-  //     .then((result) => {
-  //       console.log(result);
-  //       navigate("/signin");
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
 
   return (
     <div className="flex flex-col items-center p-5 justify-center gap-5">
@@ -37,10 +44,7 @@ const SignUpForm = () => {
 
         <div className="flex flex-col gap-7 my-5 items-center">
           <div className="flex flex-col">
-            <label
-              htmlFor="name"
-              className="font-bold py-2.5 pl-2 text-left"
-            >
+            <label htmlFor="name" className="font-bold py-2.5 pl-2 text-left">
               Name:
             </label>
 
@@ -87,7 +91,7 @@ const SignUpForm = () => {
               placeholder="Enter hall of residence"
               required
               onChange={(e) => {
-                setName(e.target.value);
+                setHall(e.target.value);
               }}
               className="border border-gray-400 rounded-full w-100 px-4 py-2 h-12"
             />
@@ -105,7 +109,7 @@ const SignUpForm = () => {
               placeholder="Enter room number"
               required
               onChange={(e) => {
-                setName(e.target.value);
+                setRoom(e.target.value);
               }}
               className="border border-gray-400 rounded-full w-100 px-4 py-2 h-12"
             />

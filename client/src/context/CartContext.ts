@@ -1,27 +1,41 @@
 import { createContext, useContext } from "react";
 
 export type CartItem = {
-  productId: number;
-  name: string;
-  price: number;
-  image: string;
+  id: number;
+  productId: string;
   quantity: number;
-  color?: string | null;
-  size?: string | null;
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+  };
 };
 
 export type CartContextType = {
   cart: CartItem[];
-  addToCart: (item: CartItem) => void;
+  loading: boolean;
+
+  addToCart: (data: {
+    productId: string;
+    quantity?: number;
+    selectedColor?: string | null;
+    selectedSize?: string | null;
+  }) => Promise<void>;
+
+  removeFromCart: (id: number) => Promise<void>;
+  refreshCart: () => Promise<void>;
 };
 
-export const CartContext = createContext<CartContextType | null>(null);
+export const CartContext = createContext<CartContextType | undefined>(
+  undefined,
+);
 
-export const useCart = (): CartContextType => {
+export const useCart = () => {
   const context = useContext(CartContext);
 
   if (!context) {
-    throw new Error("useCart must be used inside CartProvider");
+    throw new Error("useCart must be used within CartProvider");
   }
 
   return context;

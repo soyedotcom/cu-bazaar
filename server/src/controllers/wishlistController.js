@@ -4,19 +4,15 @@ const getWishlist = async (req, res) => {
   try {
     const userId = req.user.id;
     const wishlistItems = await prisma.wishlistItem.findMany({
-      where: { userId: userId, status: "WISLISTED" },
+      where: { userId: userId, status: "WISHLISTED" },
       include: {
         product: true,
       },
-
+      
       orderBy: {
         createdAt: "desc",
       },
     });
-
-    if (wishlistItems.length === 0) {
-      throw new Error("Wishlist is empty");
-    }
 
     return res.status(200).json({
       status: "success",

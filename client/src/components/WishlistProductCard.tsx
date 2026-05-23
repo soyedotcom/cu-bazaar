@@ -3,7 +3,7 @@ import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import InfoIcon from "@mui/icons-material/InfoOutlineRounded";
 
 import { Link } from "react-router-dom";
-import type { WishlistItem } from "../data/wishlist";
+import type { WishlistItem } from "../context/WishlistContext";
 import { useWishlist } from "../context/WishlistContext";
 
 interface Props {
@@ -36,7 +36,7 @@ const WishlistProductCard = ({ wishlistItem }: Props) => {
 
             <button
               className="cursor-pointer"
-              onClick={() => removeFromWishlist(product.id)}
+              onClick={() => removeFromWishlist(wishlistItem.id)}
             >
               <WishlistIcon />
             </button>

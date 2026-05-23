@@ -1,27 +1,27 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../context/useAuth";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { signin } = useAuth();
 
-   // const handleSubmit = (e) => {
-  //   e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  //   axios
-  //     .post("http://localhost:3030/login", { email, password })
-  //     .then((result) => {
-  //       console.log(result);
-  //       if (result.data === "Success") {
-  //         navigate("/home");
-  //       } else {
-  //         alert(`Error: ${result.data}`);
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
+    try {
+      await signin(email, password);
+
+      navigate("/profile", { replace: true });
+    } catch (error) {
+      console.log(error);
+
+      alert("Invalid credentials");
+    }
+  };
 
   return (
     <div className="flex flex-col items-center p-5 justify-center gap-5">

@@ -1,25 +1,50 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { api } from "../api/axios";
+import { useAuth } from "../context/AuthContext";
 import { WishlistContext, type WishlistItem } from "./WishlistContext";
-import type { Product } from "../data/products";
 
 export const WishlistProvider = ({ children }: { children: ReactNode }) => {
-  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
+  const { user } = useAuth();
 
-  const addToWishlist = (product: Product) => {
-    setWishlist((prev) => {
-      const exists = prev.find((p) => p.product.id === product.id);
-      if (exists) return prev;
-      return [...prev, { product }];
-    });
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const refreshWishlist = async () => {
+    if (!user) return;
+
+    setLoading(true);
+
+    try {
+      const res = await api.get("/wishlist");
+      setWishlist(res.data.data.wishlistItems);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const removeFromWishlist = (productId: number) => {
-    setWishlist((prev) => prev.filter((item) => item.product.id !== productId));
+  useEffect(() => {
+    refreshWishlist();
+  }, [user]);
+
+  const addToWishlist = async (productId: string) => {
+    await api.post("/wishlist", { productId });
+    await refreshWishlist();
+  };
+
+  const removeFromWishlist = async (id: string) => {
+    await api.delete(`/wishlist/${id}`);
+    await refreshWishlist();
   };
 
   return (
     <WishlistContext.Provider
-      value={{ wishlist, addToWishlist, removeFromWishlist }}
+      value={{
+        wishlist,
+        loading,
+        addToWishlist,
+        removeFromWishlist,
+        refreshWishlist,
+      }}
     >
       {children}
     </WishlistContext.Provider>

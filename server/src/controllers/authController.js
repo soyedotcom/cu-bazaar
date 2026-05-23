@@ -87,4 +87,16 @@ const signout = (req, res) => {
     .json({ status: "success", message: "Logged out successfully" });
 };
 
-export { signup, signin, signout };
+const getMe = async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: { id: req.user.id },
+    select: { id: true, email: true, role: true },
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: { user },
+  });
+};
+
+export { signup, signin, signout, getMe };

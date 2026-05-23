@@ -7,7 +7,7 @@ import SubNav from "../components/SubNav";
 import LoadMoreItemsBtn from "../components/LoadMoreItemsBtn";
 
 type Product = {
-  id: number;
+  id: string;
   name: string;
   image: string;
   description: string;
@@ -49,6 +49,7 @@ const Shop = () => {
   const filterKey = `${query}-${category}-${subcategory}-${section}`;
 
   useEffect(() => {
+    const controller = new AbortController(); //remove later
     const filtersChanged = prevFilterKey.current !== filterKey;
     const currentPage = filtersChanged ? 1 : page;
 
@@ -71,13 +72,14 @@ const Shop = () => {
           section,
           page: currentPage,
           limit: 20,
+          signal: controller.signal //remove later
         });
 
+        if (controller.signal.aborted) return; //remove later
         const incoming = data.data.products || [];
 
         if (filtersChanged) {
           setProducts(incoming);
-          setPage(1); //remove later?
         } else {
           setProducts((prev) => [...prev, ...incoming]);
         }
@@ -92,7 +94,8 @@ const Shop = () => {
     };
 
     load();
-  }, [filterKey, page, query, category, subcategory, section]);
+    return () => controller.abort(); //remove later
+  }, [filterKey, page]);
 
   return (
     <main className="flex flex-col mx-25 my-10">

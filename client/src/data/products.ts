@@ -1,5 +1,5 @@
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   image: string;
   description: string;
@@ -25,7 +25,7 @@ export interface Product {
 
 export const products: Product[] = [
   {
-    id: 1,
+    id: "a",
     name: "White Socks",
     image: "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82",
     description: "This product is for sale",
@@ -40,7 +40,7 @@ export const products: Product[] = [
   },
 
   {
-    id: 2,
+    id: "ab",
     name: "Adidas Sneakers",
     image: "https://images.unsplash.com/photo-1718220130188-428c7dc27fd2",
     description: "This product is for sale",
@@ -55,7 +55,7 @@ export const products: Product[] = [
   },
 
   {
-    id: 3,
+    id: "abc",
     name: "Graphic Hoodie",
     image: "https://images.unsplash.com/photo-1680292783974-a9a336c10366",
     description: "This product is for sale",

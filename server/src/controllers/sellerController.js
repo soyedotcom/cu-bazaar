@@ -163,10 +163,6 @@ const getProducts = async (req, res) => {
       },
     });
 
-    if (products.length === 0) {
-      throw new Error("Cart is empty");
-    }
-
     return res.status(200).json({
       status: "success",
       data: { products: products, amount: products.length },

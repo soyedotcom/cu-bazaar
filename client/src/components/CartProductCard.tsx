@@ -4,13 +4,15 @@ import CloseIcon from "@mui/icons-material/CloseRounded";
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { CartItem } from "../data/cart";
+import type { CartItem } from "../context/CartContext";
+import { useCart } from "../context/CartContext";
 
 interface Props {
   cartItem: CartItem;
 }
 
 const CartProductCard = ({ cartItem }: Props) => {
+  const { removeFromCart } = useCart();
   const { product, quantity } = cartItem;
   const [productQuantity, setProductQuantity] = useState(quantity);
 
@@ -40,11 +42,14 @@ const CartProductCard = ({ cartItem }: Props) => {
             </Link>
 
             <WishlistIcon className="hover:cursor-pointer" />
-            <CloseIcon className="hover:cursor-pointer" />
+            <CloseIcon
+              className="hover:cursor-pointer"
+              onClick={() => removeFromCart(cartItem.id)}
+            />
           </div>
         </div>
         <div>
-          <p className="font-bold">₦{product.price.toLocaleString()}</p>
+          <p className="font-bold">₦{Number(product.price).toLocaleString()}</p>
         </div>
         <div className="mt-auto text-right flex flex-row gap-2 p-2">
           <p>Quantity:</p>

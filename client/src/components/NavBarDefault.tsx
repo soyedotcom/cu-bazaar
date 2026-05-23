@@ -4,8 +4,10 @@ import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import CartIcon from "@mui/icons-material/ShoppingBagOutlined";
 
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
 
 const NavBarDefault = () => {
+  const { user } = useAuth();
   return (
     <nav
       role="navigation"
@@ -43,7 +45,7 @@ const NavBarDefault = () => {
             <DeliveryIcon />
           </div>
         </Link>
-        <Link to="/profile">
+        <Link to={user ? "/profile" : "/signin"}>
           <div>
             <ProfileIcon />
           </div>

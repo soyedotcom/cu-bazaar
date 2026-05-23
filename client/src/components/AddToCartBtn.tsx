@@ -3,7 +3,7 @@ import CartIcon from "@mui/icons-material/ShoppingBagOutlined";
 
 type Props = {
   product: {
-    id: number;
+    id: string;
     name: string;
     price: number;
     image: string;
@@ -27,12 +27,9 @@ const AddToCartBtn = ({
       onClick={() =>
         addToCart({
           productId: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
           quantity: quantity,
-          color: selectedColor,
-          size: selectedSize,
+          selectedColor: selectedColor,
+          selectedSize: selectedSize,
         })
       }
     >
