@@ -4,7 +4,7 @@ const getCartItems = async (req, res) => {
   try {
     const userId = req.user.id;
     const cartItems = await prisma.cartItem.findMany({
-      where: { userId: userId },
+      where: { userId: userId, status: "IN_CART" },
       include: {
         product: true,
       },
@@ -73,6 +73,7 @@ const addToCart = async (req, res) => {
       userId: req.user.id,
       productId,
       quantity,
+      status:"IN_CART",
       selectedSize,
       selectedColor,
     },

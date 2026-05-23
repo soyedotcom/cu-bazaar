@@ -4,7 +4,7 @@ const getWishlist = async (req, res) => {
   try {
     const userId = req.user.id;
     const wishlistItems = await prisma.wishlistItem.findMany({
-      where: { userId },
+      where: { userId: userId, status: "WISLISTED" },
       include: {
         product: true,
       },
@@ -54,6 +54,7 @@ const addToWishlist = async (req, res) => {
       data: {
         userId: req.user.id,
         productId,
+        status: "WISLISTED",
       },
       include: { product: true },
     });
