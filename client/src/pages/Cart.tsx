@@ -15,6 +15,8 @@ const Cart = () => {
             Cart ({cart.length})
           </h1>
 
+          {cart.length === 0 && <p>Your cart is empty.</p>}
+
           {cart.map((cartItem) => (
             <CartProductCard key={cartItem.id} cartItem={cartItem} />
           ))}
