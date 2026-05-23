@@ -3,8 +3,7 @@ import bcrypt from "bcryptjs";
 import { createToken } from "../utils/createToken.js";
 
 const signup = async (req, res) => {
-  const body = req.body;
-  const { name, email, password, confirmPassword, hall, room } = body;
+  const { name, email, password, confirmPassword, hall, room } = req.body;
 
   if (!name || !email || !password) {
     return res

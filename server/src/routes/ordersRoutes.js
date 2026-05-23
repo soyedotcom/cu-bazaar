@@ -4,7 +4,7 @@ import {
   createOrder,
   cancelOrderItem,
 } from "../controllers/orderController.js";
-import { authMiddleware } from "../middleware/orderMiddleware.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 router.use(authMiddleware);
