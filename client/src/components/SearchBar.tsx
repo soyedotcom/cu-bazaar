@@ -1,17 +1,24 @@
 import SearchIcon from "@mui/icons-material/SearchOutlined";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 const SearchBar = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (query.trim()) {
+        navigate(`/shop?q=${encodeURIComponent(query)}`);
+      }
+    }, 500);
 
-    if (!query.trim()) return;
-    navigate(`/shop?q=${encodeURIComponent(query)}`);
+    return () => clearTimeout(timer);
+  }, [query, navigate]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault(); // still works on Enter
   };
 
   return (
