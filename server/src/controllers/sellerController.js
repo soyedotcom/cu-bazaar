@@ -95,17 +95,11 @@ const updateSellerProfile = async (req, res) => {
       return res.status(404).json({ error: "Seller profile not found" });
     }
 
-    if (seller.userId !== userId) {
-      return res
-        .status(403)
-        .json({ error: "Not authorized to update profile" });
-    }
-
     const shopExists = await prisma.sellerProfile.findUnique({
       where: { shopName: shopName },
     });
 
-    if (shopExists) {
+    if (shopExists && shopExists.userId !== userId) {
       return res.status(400).json({ error: "Shop already exists" });
     }
 
@@ -137,12 +131,6 @@ const deleteSeller = async (req, res) => {
       return res.status(404).json({ error: "Seller profile not found" });
     }
 
-    if (seller.userId !== userId) {
-      return res
-        .status(403)
-        .json({ error: "Not authorized to delete profile" });
-    }
-
     await prisma.sellerProfile.delete({ where: { userId: userId } });
 
     await prisma.user.update({
@@ -162,15 +150,261 @@ const deleteSeller = async (req, res) => {
   }
 };
 
-const getProducts = async (req, res) => {};
+//SELLER PRODUCT PATHS
+const getProducts = async (req, res) => {
+  try {
+    const sellerId = req.user.id;
+    const products = await prisma.product.findMany({
+      where: {
+        sellerId: sellerId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-const createProduct = async (req, res) => {};
+    if (products.length === 0) {
+      return res.status(400).json({
+        error: "You have no products",
+      });
+    }
 
-const updateProduct = async (req, res) => {};
+    return res.status(200).json({
+      status: "success",
+      data: { products: products, amount: products.length },
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to load seller products" });
+  }
+};
 
-const deleteProduct = async (req, res) => {};
+const createProduct = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const sellerId = await prisma.sellerProfile.findUnique({
+      where: { userId },
+      select: { userId: true },
+    });
 
-const getSellerOrders = async (req, res) => {};
+    const {
+      name,
+      image,
+      description,
+      price,
+      features,
+      measurements,
+      materialsAndCare,
+      category,
+      subcategory,
+      section,
+      tags,
+      variants,
+    } = req.body;
+
+    if (
+      !name ||
+      !image ||
+      !description ||
+      price == null ||
+      !category ||
+      !subcategory ||
+      !section
+    ) {
+      return res.status(400).json({
+        error:
+          "Name, image, description, price, category, subcategory and section are required",
+      });
+    }
+
+    if (sellerId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to create this product" });
+    }
+
+    const newProduct = await prisma.product.create({
+      data: {
+        name,
+        image,
+        description,
+        price: new Prisma.Decimal(price),
+
+        measurements,
+        materialsAndCare,
+
+        category,
+        subcategory,
+        section,
+
+        features: features || [],
+        tags: tags || [],
+        variants,
+
+        sellerId: sellerId,
+      },
+    });
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        product: {
+          id: newProduct.id,
+          name: newProduct.name,
+          price: newProduct.price,
+        },
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to create product" });
+  }
+};
+
+const updateProduct = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const productId = req.params.id;
+
+    const {
+      name,
+      image,
+      description,
+      price,
+      features,
+      measurements,
+      materialsAndCare,
+      category,
+      subcategory,
+      section,
+      tags,
+      variants,
+    } = req.body;
+
+    if (
+      !name ||
+      !description ||
+      price == null ||
+      !category ||
+      !subcategory ||
+      !section
+    ) {
+      return res.status(400).json({
+        error:
+          "Name, description, price, category, subcategory and section are required",
+      });
+    }
+
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        error: "Product not found",
+      });
+    }
+
+    if (product.sellerId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to update this product" });
+    }
+
+    const updatedProduct = await prisma.product.update({
+      where: { id: productId },
+      data: {
+        name,
+        image,
+        description,
+        price: new Prisma.Decimal(price),
+
+        measurements,
+        materialsAndCare,
+
+        category,
+        subcategory,
+        section,
+
+        features: features || [],
+        tags: tags || [],
+        variants,
+
+        sellerId: userId,
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: { product: updatedProduct },
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to update product" });
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const productId = req.params.id;
+
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    if (product.sellerId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to delete this product" });
+    }
+
+    await prisma.product.delete({
+      where: { id: productId },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      message: "Product deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to delete product" });
+  }
+};
+
+const getSellerOrders = async (req, res) => {
+  try {
+    const sellerId = req.user.id;
+
+    const orders = await prisma.orderItem.findMany({
+      where: {
+        sellerId: sellerId,
+      },
+
+      include: {
+        product: true,
+        order: {
+          include: {
+            user: {
+              select: { name: true, email: true, hall: true, room: true },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: { orders, amount: orders.length },
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to load orders" });
+  }
+};
 
 const getSellerTransactions = async (req, res) => {};
 

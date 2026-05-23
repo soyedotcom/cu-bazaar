@@ -1,4 +1,4 @@
-import { prisma } from "../prismaClient.js";
+import { prisma } from "../config/database.js";
 
 const getOrders = async (req, res) => {
   try {
@@ -18,7 +18,7 @@ const getOrders = async (req, res) => {
 
     return res.status(200).json({
       status: "success",
-      data: { orderItems, length: orderItems.length },
+      data: { orderItems, amount: orderItems.length },
     });
   } catch (error) {
     return res.status(500).json({ error: "Failed to load orders" });
@@ -66,7 +66,7 @@ const createOrder = async (req, res) => {
 
     await prisma.cartItem.deleteMany({
       where: {
-        userId,
+        userId: userId,
       },
     });
 
