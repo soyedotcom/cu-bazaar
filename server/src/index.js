@@ -4,6 +4,7 @@ import { config } from "dotenv";
 import { connectToDB, disconnectFromDB } from "./config/database.js";
 
 import authRoutes from "./routes/authRoutes.js";
+import shopRoutes from "./routes/shopRoutes.js"
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/ordersRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -26,6 +27,7 @@ app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
 app.use("/profile", userRoutes);
 app.use("/seller", sellerRoutes);
+app.use("/shop", shopRoutes);
 
 app.get("/", (req, res) => {
   res.json("cu-bazaar api is running");
