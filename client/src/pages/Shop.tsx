@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchProducts } from "../api/product.ts";
-import LoadMoreItemsBtn from "../components/LoadMoreItemsBtn.tsx";
 
 import ProductDisplay from "../components/ProductDisplay";
 import SubNav from "../components/SubNav";
+import LoadMoreItemsBtn from "../components/LoadMoreItemsBtn";
 
 type Product = {
   id: number;
@@ -32,8 +32,13 @@ type Product = {
 };
 
 const Shop = () => {
-  const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [page, setPage] = useState(1);
+
+  const prevFilterKey = useRef(""); 
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q")?.toLocaleLowerCase() || "";
@@ -41,26 +46,53 @@ const Shop = () => {
   const subcategory = searchParams.get("subcategory");
   const section = searchParams.get("section");
 
+   const filterKey = `${query}-${category}-${subcategory}-${section}`;
+
   useEffect(() => {
-    const loadProducts = async () => {
+    const filtersChanged = prevFilterKey.current !== filterKey;
+    const currentPage = filtersChanged ? 1 : page;
+
+    if (filtersChanged) {
+      prevFilterKey.current = filterKey;
+    }
+
+    if (filtersChanged) {
       setLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
+
+    const load = async () => {
       try {
         const data = await fetchProducts({
           q: query || undefined,
           category,
           subcategory,
           section,
+          page: currentPage,
+          limit: 20,
         });
-        setProducts(data.data.products || []);
-      } catch (error) {
-        console.error("Failed to load products", error);
+
+        const incoming = data.data.products || [];
+
+        if (filtersChanged) {
+          setProducts(incoming);
+          setPage(1);
+        } else {
+          setProducts((prev) => [...prev, ...incoming]);
+        }
+
+        setHasMore(data.data.pagination.hasMore);
+      } catch (err) {
+        console.error("Failed to load products", err);
       } finally {
         setLoading(false);
+        setLoadingMore(false);
       }
     };
 
-    loadProducts();
-  }, [query, category, subcategory, section]);
+    load();
+  }, [filterKey, page, query, category, subcategory, section]);
 
   return (
     <main className="flex flex-col mx-25 my-10">
@@ -69,10 +101,20 @@ const Shop = () => {
       {loading ? (
         <p>Loading products...</p>
       ) : (
-        <ProductDisplay products={products} />
-      )}
+        <>
+          <ProductDisplay products={products} />
 
-      <LoadMoreItemsBtn />
+          {hasMore && (
+            <div className="flex justify-center mt-8">
+              {loadingMore ? (
+                <p>Loading more...</p>
+              ) : (
+                <LoadMoreItemsBtn onClick={() => setPage((p) => p + 1)} />
+              )}
+            </div>
+          )}
+        </>
+      )}
     </main>
   );
 };
