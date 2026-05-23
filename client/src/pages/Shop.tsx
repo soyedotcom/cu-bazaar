@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchProducts } from "../api/product.ts";
+import LoadMoreItemsBtn from "../components/LoadMoreItemsBtn.tsx";
 
 import ProductDisplay from "../components/ProductDisplay";
 import SubNav from "../components/SubNav";
@@ -35,7 +36,6 @@ const Shop = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   const [searchParams] = useSearchParams();
-
   const query = searchParams.get("q")?.toLocaleLowerCase() || "";
   const category = searchParams.get("category");
   const subcategory = searchParams.get("subcategory");
@@ -71,6 +71,8 @@ const Shop = () => {
       ) : (
         <ProductDisplay products={products} />
       )}
+
+      <LoadMoreItemsBtn />
     </main>
   );
 };
