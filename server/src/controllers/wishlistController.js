@@ -1,5 +1,28 @@
 import { prisma } from "../config/database.js";
 
+const getWishlist = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const wishlistItems = await prisma.wishlistItem.findMany({
+      where: { userId },
+      include: {
+        product: true,
+      },
+
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: { wishlistItems, length: wishlistItems.length },
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to load wishlist items" });
+  }
+};
+
 const addToWishlist = async (req, res) => {
   try {
     const { productId } = req.body;
@@ -65,29 +88,6 @@ const deleteWishlistItem = async (req, res) => {
   return res
     .status(200)
     .json({ status: "success", message: "Wishlist item deleted successfully" });
-};
-
-const getWishlist = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const wishlistItems = await prisma.wishlistItem.findMany({
-      where: { userId },
-      include: {
-        product: true,
-      },
-
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-
-    return res.status(200).json({
-      status: "success",
-      data: { wishlistItems, length: wishlistItems.length },
-    });
-  } catch (error) {
-    return res.status(500).json({ error: "Failed to load wishlist items" });
-  }
 };
 
 export { addToWishlist, deleteWishlistItem, getWishlist };

@@ -43,7 +43,7 @@ const NavBarDefault = () => {
             <DeliveryIcon />
           </div>
         </Link>
-        <Link to="/userprofile">
+        <Link to="/profile">
           <div>
             <ProfileIcon />
           </div>

@@ -115,4 +115,5 @@ const deleteUser = async (req, res) => {
     return res.status(500).json({ error: "Couldn't delete user" });
   }
 };
+
 export { getUserProfile, updateUserProfile, deleteUser };

@@ -36,7 +36,7 @@ const signup = async (req, res) => {
     },
   });
 
-  const token = createToken(newUser.id, res);
+  const token = createToken(newUser.id, newUser.role, res);
   res.status(201).json({
     status: "success",
     data: {
@@ -64,7 +64,7 @@ const signin = async (req, res) => {
     return res.status(401).json({ error: "Invalid password" });
   }
 
-  const token = createToken(user.id, res);
+  const token = createToken(user.id, user.role, res);
 
   res.status(201).json({
     status: "success",

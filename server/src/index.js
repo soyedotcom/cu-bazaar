@@ -2,7 +2,6 @@ import express from "express";
 import { config } from "dotenv";
 import { connectToDB, disconnectFromDB } from "./config/database.js";
 
-import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -15,7 +14,6 @@ const PORT = process.env.PORT || 5001;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/products", productRoutes);
 app.use("/auth", authRoutes);
 app.use("/cart", cartRoutes);
 app.use("/profile", userRoutes);

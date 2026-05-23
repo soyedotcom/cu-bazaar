@@ -11,8 +11,8 @@ router.use(authMiddleware);
 
 router.get("/", getUserProfile);
 
-router.put("/", updateUserProfile);
+router.put("/:id", updateUserProfile);
 
-router.delete("/", deleteUser);
+router.delete("/:id", deleteUser);
 
 export default router;
