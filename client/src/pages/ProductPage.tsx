@@ -1,36 +1,61 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { api } from "../api/axios";
 
-import { products } from "../data/products";
-import type { Product } from "../data/products";
 import VariantSelector from "../components/VariantSelector";
-
 import AddToCartBtn from "../components/AddToCartBtn";
 import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import BackIcon from "@mui/icons-material/ArrowBackRounded";
 import DropDownActive from "@mui/icons-material/KeyboardArrowDownRounded";
 import DropDownInactive from "@mui/icons-material/KeyboardArrowRightRounded";
 
+type Product = {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  price: number;
+  features: string[];
+  measurements?: string;
+  materialsAndCare?: string;
+  seller: { shopName: string };
+  variants?: {
+    colors?: string[];
+    sizes?: string[];
+  };
+};
+
 const ProductPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(false);
   const [isMaterialsOpen, setIsMaterialsOpen] = useState(false);
-
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
-  const { id } = useParams<{ id: string }>();
-  const product: Product | undefined = products.find(
-    (p) => p.id === Number(id),
-  );
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await api.get(`/shop/${id}`);
+        setProduct(res.data.data.product);
+      } catch {
+        setError("Product not found");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [id]);
 
-  if (!product) {
-    throw new Error("Product Not Found");
-  }
-
-  const navigate = useNavigate();
+  if (loading) return <p className="mx-25 my-10">Loading...</p>;
+  if (error || !product) return <p className="mx-25 my-10">{error}</p>;
 
   return (
     <main className="flex flex-col mx-25 my-10 text-left">
@@ -93,7 +118,7 @@ const ProductPage = () => {
             <p>
               Sold by{" "}
               <span className="font-semibold hover:text-purple-500 hover:underline">
-                <Link to="/">{product.seller}</Link>
+                <Link to="/">{product.seller.shopName}</Link>
               </span>
             </p>
 
@@ -202,7 +227,7 @@ const ProductPage = () => {
 
               {isMaterialsOpen && (
                 <div>
-                  <p>{product.materialsandcare}</p>
+                  <p>{product.materialsAndCare}</p>
                 </div>
               )}
             </section>

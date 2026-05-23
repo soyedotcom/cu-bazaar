@@ -45,7 +45,7 @@ const ProductCard = ({ product }: Props) => {
 
             <button
               className="cursor-pointer"
-              onClick={() => addToWishlist(product)}
+              onClick={() => addToWishlist(product.id)}
             >
               <WishlistIcon />
             </button>

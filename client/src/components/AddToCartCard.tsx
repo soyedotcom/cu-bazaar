@@ -7,7 +7,7 @@ import LinkIcon from "@mui/icons-material/ArrowForward";
 import AddToCartBtn from "./AddToCartBtn";
 
 type Product = {
-  id: number;
+  id: string;
   name: string;
   image: string;
   description: string;
@@ -65,7 +65,7 @@ const AddToCartCard = ({ product, onClose }: Props) => {
               Sold by{" "}
               <Link
                 className="font-bold cursor-pointer hover:underline hover: hover:text-purple-500"
-                to="/"
+                to="/shop/:shopName"
               >
                 {product.seller.shopName}
               </Link>

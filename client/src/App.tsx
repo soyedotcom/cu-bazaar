@@ -5,6 +5,7 @@ import PublicRoute from "./routes/PublicRoute";
 
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
+import ShopPage from "./pages/ShopPage";
 import Product from "./pages/ProductPage";
 import Services from "./pages/Services";
 import DealsandDiscounts from "./pages/DealsandDiscounts";
@@ -30,6 +31,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/shop/:shopName" element={<ShopPage />} />
         <Route path="/services" element={<Services />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/dealsanddiscounts" element={<DealsandDiscounts />} />
