@@ -90,7 +90,18 @@ const signout = (req, res) => {
 const getMe = async (req, res) => {
   const user = await prisma.user.findUnique({
     where: { id: req.user.id },
-    select: { id: true, email: true, role: true },
+    select: {
+      id: true,
+      email: true,
+      role: true,
+      name: true,
+      hall: true,
+      room: true,
+      createdAt: true,
+
+      isSeller: true,
+      sellerProfile: { select: { shopName: true } },
+    },
   });
 
   res.status(200).json({

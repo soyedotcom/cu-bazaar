@@ -13,6 +13,13 @@ export type User = {
   id: string;
   email: string;
   role: "USER" | "SELLER" | "ADMIN";
+  name: string;
+  hall: string;
+  room: string;
+  createdAt: string;
+
+  isSeller: boolean;
+  sellerProfile?: { shopName: string } | null;
 };
 
 export type AuthContextType = {
@@ -22,6 +29,7 @@ export type AuthContextType = {
   signin: (email: string, password: string) => Promise<void>;
   signup: (data: SignupData) => Promise<void>;
   signout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(

@@ -6,7 +6,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔥 PERSIST LOGIN ON REFRESH
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -37,8 +36,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    try {
+      const res = await api.get("/auth/me");
+      setUser(res.data.data.user);
+    } catch {
+      setUser(null);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, signin, signup, signout }}>
+    <AuthContext.Provider
+      value={{ user, loading, signin, signup, signout, refreshUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

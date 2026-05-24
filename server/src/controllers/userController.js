@@ -40,8 +40,14 @@ const getUserProfile = async (req, res) => {
 
 const updateUserProfile = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.params.id;
     const { name, email, password, hall, room } = req.body;
+
+    if (user.id !== req.user.id) {
+      return res
+        .status(403)
+        .json({ error: "Not authorized to update profile" });
+    }
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -57,12 +63,6 @@ const updateUserProfile = async (req, res) => {
       hashedPassword = await bcrypt.hash(password, 10);
     }
 
-    if (user.id !== req.user.id) {
-      return res
-        .status(403)
-        .json({ error: "Not authorized to update profile" });
-    }
-
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: { name, email, password: hashedPassword, hall, room },
@@ -74,6 +74,7 @@ const updateUserProfile = async (req, res) => {
         room: true,
         role: true,
         isSeller: true,
+        createdAt: true,
       },
     });
 
