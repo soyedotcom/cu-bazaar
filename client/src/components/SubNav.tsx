@@ -1,22 +1,15 @@
 import DropDownIcon from "@mui/icons-material/KeyboardArrowDownRounded";
-
 import { subNavData } from "../data/subNavData";
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SubNav = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-
-  const initialCategory = searchParams.get("category") || "";
-  const initialSubCategory = searchParams.get("subcategory") || "";
-  const [activeMenu, setActiveMenu] = useState<string>("");
-  const [activeSubCategory, setActiveSubCategory] = useState<string>("");
+  const [activeMenu, setActiveMenu] = useState("");
+  const [activeSubCategory, setActiveSubCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState<any>(null);
 
-  const currentCategory = subNavData.find(
-    (category) => category.name === activeMenu,
-  );
+  const currentCategory = subNavData.find((c) => c.name === activeMenu);
 
   return (
     <nav className="flex flex-col gap-15">
@@ -26,14 +19,10 @@ const SubNav = () => {
             <section
               key={category.name}
               onMouseEnter={() => setActiveMenu(category.name)}
-              className={`flex gap-2 cursor-pointer pb-2 ${activeMenu === category.name ? "border-b-3 border-black " : "text-gray-500"}`}
+              className={`flex gap-2 cursor-pointer pb-2 ${activeMenu === category.name ? "border-b-3 border-black" : "text-gray-500"}`}
             >
-              <div className="flex align-middle">
-                <span>{category.name}</span>
-                <div>
-                  <DropDownIcon />
-                </div>
-              </div>
+              <span>{category.name}</span>
+              <DropDownIcon />
             </section>
           ))}
         </div>
@@ -52,8 +41,8 @@ const SubNav = () => {
               className={`cursor-pointer font-bold ${activeSubCategory === subcat.name ? "text-black" : "text-gray-500"}`}
             >
               <div className="flex gap-2">
-                <div>{subcat.icon}</div>
-                <div>{subcat.name}</div>
+                {subcat.icon}
+                <span>{subcat.name}</span>
               </div>
             </button>
           ))}
@@ -65,20 +54,18 @@ const SubNav = () => {
           {selectedSubCategory?.icon}
           {selectedSubCategory?.name}
         </div>
-        <div className="flex align-middle gap-5 text-sm">
+        <div className="flex gap-5 text-sm">
           {selectedSubCategory?.sections?.map((section) => (
             <button
               key={section.name}
               className="cursor-pointer hover:text-black text-gray-600"
-              onClick={() => {
+              onClick={() =>
                 navigate(
                   `/shop?category=${activeMenu}&subcategory=${activeSubCategory}&section=${section.name}`,
-                );
-              }}
+                )
+              }
             >
-              <div>
-                {section.icon} {section.name}
-              </div>
+              {section.icon} {section.name}
             </button>
           ))}
         </div>
