@@ -15,6 +15,7 @@ const loadProducts = async (req, res) => {
 
     const products = await prisma.product.findMany({
       where: {
+        published: true,
         AND: [
           q
             ? {
@@ -23,6 +24,7 @@ const loadProducts = async (req, res) => {
                   { category: { contains: q, mode: "insensitive" } },
                   { subcategory: { contains: q, mode: "insensitive" } },
                   { section: { contains: q, mode: "insensitive" } },
+                  { tags: { has: q.toLowerCase() } },
                 ],
               }
             : {},
