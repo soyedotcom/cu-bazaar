@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../api/axios";
 
+import QuantityAdjuster from "../components/QuantityAdjuster";
+import WishlistBtn from "../components/WishlistBtn";
+
 import VariantSelector from "../components/VariantSelector";
 import AddToCartBtn from "../components/AddToCartBtn";
-import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import BackIcon from "@mui/icons-material/ArrowBackRounded";
 import DropDownActive from "@mui/icons-material/KeyboardArrowDownRounded";
 import DropDownInactive from "@mui/icons-material/KeyboardArrowRightRounded";
@@ -33,6 +35,7 @@ const ProductPage = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState(1);
 
   const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(false);
@@ -147,16 +150,17 @@ const ProductPage = () => {
             </div>
           </div>
 
-          <div className="flex gap-5 align-middle mt-auto">
+          <div className="flex flex-row gap-5 align-middle mt-auto">
+            <QuantityAdjuster quantity={quantity} onChange={setQuantity} />
+
             <AddToCartBtn
               product={product}
               selectedColor={selectedColor}
               selectedSize={selectedSize}
+              quantity={quantity}
             />
 
-            <button className="cursor-pointer">
-              <WishlistIcon />
-            </button>
+            <WishlistBtn productId={product.id} />
           </div>
         </section>
 

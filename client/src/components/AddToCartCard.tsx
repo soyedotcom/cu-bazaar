@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import VariantSelector from "./VariantSelector";
 
-import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import LinkIcon from "@mui/icons-material/ArrowForward";
 import AddToCartBtn from "./AddToCartBtn";
+import QuantityAdjuster from "./QuantityAdjuster";
+import WishlistBtn from "./WishlistBtn";
 
 type Product = {
   id: string;
@@ -39,7 +40,7 @@ type Props = {
 const AddToCartCard = ({ product, onClose }: Props) => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <main
@@ -99,6 +100,10 @@ const AddToCartCard = ({ product, onClose }: Props) => {
                 />
               )}
             </div>
+
+            <div className="mb-3">
+              <QuantityAdjuster quantity={quantity} onChange={setQuantity} />
+            </div>
           </div>
 
           <section>
@@ -109,9 +114,8 @@ const AddToCartCard = ({ product, onClose }: Props) => {
                 selectedSize={selectedSize}
                 quantity={quantity}
               />
-              <div>
-                <WishlistIcon />
-              </div>
+
+              <WishlistBtn productId={product.id} />
             </div>
 
             <Link to={`/product/${product.id}`}>

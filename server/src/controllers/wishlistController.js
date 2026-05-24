@@ -8,7 +8,7 @@ const getWishlist = async (req, res) => {
       include: {
         product: true,
       },
-      
+
       orderBy: {
         createdAt: "desc",
       },
@@ -19,6 +19,7 @@ const getWishlist = async (req, res) => {
       data: { wishlistItems, length: wishlistItems.length },
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Failed to load wishlist items" });
   }
 };
@@ -54,7 +55,7 @@ const addToWishlist = async (req, res) => {
       data: {
         userId: req.user.id,
         productId,
-        status: "WISLISTED",
+        status: "WISHLISTED",
       },
       include: { product: true },
     });
@@ -63,32 +64,39 @@ const addToWishlist = async (req, res) => {
       .status(201)
       .json({ status: "success", data: { newWishlistItem } });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Failed to add product to wishlist" });
   }
 };
 
 const deleteWishlistItem = async (req, res) => {
-  const wishlistItem = await prisma.wishlistItem.findUnique({
-    where: { id: req.params.id },
-  });
+  try {
+    const wishlistItem = await prisma.wishlistItem.findUnique({
+      where: { id: req.params.id },
+    });
 
-  if (!wishlistItem) {
-    return res.status(404).json({ error: "Wishlist item not found" });
+    if (!wishlistItem) {
+      return res.status(404).json({ error: "Wishlist item not found" });
+    }
+
+    if (wishlistItem.userId !== req.user.id) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to delete this wishlist item" });
+    }
+
+    await prisma.wishlistItem.deleteMany({
+      where: { id: req.params.id },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      message: "Wishlist item deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Failed to add product to wishlist" });
   }
-
-  if (wishlistItem.userId !== req.user.id) {
-    return res
-      .status(403)
-      .json({ error: "You are not authorized to delete this wishlist item" });
-  }
-
-  await prisma.wishlistItem.deleteMany({
-    where: { id: req.params.id },
-  });
-
-  return res
-    .status(200)
-    .json({ status: "success", message: "Wishlist item deleted successfully" });
 };
 
 export { addToWishlist, deleteWishlistItem, getWishlist };

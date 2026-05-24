@@ -1,8 +1,8 @@
-import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import InfoIcon from "@mui/icons-material/InfoOutlineRounded";
 import CloseIcon from "@mui/icons-material/CloseRounded";
 
-import { useState } from "react";
+import QuantityAdjuster from "./QuantityAdjuster";
+
 import { Link } from "react-router-dom";
 import type { CartItem } from "../context/CartContext";
 import { useCart } from "../context/CartContext";
@@ -12,14 +12,8 @@ interface Props {
 }
 
 const CartProductCard = ({ cartItem }: Props) => {
-  const { removeFromCart } = useCart();
-  const { product, quantity } = cartItem;
-  const [productQuantity, setProductQuantity] = useState(quantity);
-
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    setProductQuantity(value);
-  };
+  const { removeFromCart, updateCartItem } = useCart();
+  const { product } = cartItem;
 
   return (
     <section className="flex flex-row h-39 w-130">
@@ -41,7 +35,6 @@ const CartProductCard = ({ cartItem }: Props) => {
               <InfoIcon />
             </Link>
 
-            <WishlistIcon className="hover:cursor-pointer" />
             <CloseIcon
               className="hover:cursor-pointer"
               onClick={() => removeFromCart(cartItem.id)}
@@ -52,14 +45,9 @@ const CartProductCard = ({ cartItem }: Props) => {
           <p className="font-bold">₦{Number(product.price).toLocaleString()}</p>
         </div>
         <div className="mt-auto text-right flex flex-row gap-2 p-2">
-          <p>Quantity:</p>
-          <input
-            type="number"
-            min="1"
-            max="20"
-            value={productQuantity}
-            onChange={handleQuantityChange}
-            className="outline-none appearance-none"
+          <QuantityAdjuster
+            quantity={cartItem.quantity}
+            onChange={(qty) => updateCartItem(cartItem.id, qty)}
           />
         </div>
       </div>

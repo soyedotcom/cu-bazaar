@@ -4,6 +4,8 @@ export type CartItem = {
   id: number;
   productId: string;
   quantity: number;
+  selectedColor?: string | null;
+  selectedSize?: string | null;
   product: {
     id: string;
     name: string;
@@ -23,6 +25,7 @@ export type CartContextType = {
     selectedSize?: string | null;
   }) => Promise<void>;
 
+  updateCartItem: (id: number, quantity: number) => Promise<void>;
   removeFromCart: (id: number) => Promise<void>;
   refreshCart: () => Promise<void>;
 };

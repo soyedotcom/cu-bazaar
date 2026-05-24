@@ -1,10 +1,12 @@
 import AddToCartBtn from "./AddToCartBtn";
-import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
 import InfoIcon from "@mui/icons-material/InfoOutlineRounded";
 
+import WishlistBtn from "./WishlistBtn";
+import QuantityAdjuster from "./QuantityAdjuster";
+
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import type { WishlistItem } from "../context/WishlistContext";
-import { useWishlist } from "../context/WishlistContext";
 
 interface Props {
   wishlistItem: WishlistItem;
@@ -12,7 +14,8 @@ interface Props {
 
 const WishlistProductCard = ({ wishlistItem }: Props) => {
   const { product } = wishlistItem;
-  const { removeFromWishlist } = useWishlist();
+
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <section className="flex flex-row h-39 w-120">
@@ -34,19 +37,17 @@ const WishlistProductCard = ({ wishlistItem }: Props) => {
               <InfoIcon />
             </Link>
 
-            <button
-              className="cursor-pointer"
-              onClick={() => removeFromWishlist(wishlistItem.id)}
-            >
-              <WishlistIcon />
-            </button>
+            <WishlistBtn productId={product.id} />
           </div>
         </div>
         <div>
           <p className="font-bold">₦{Number(product.price).toLocaleString()}</p>
         </div>
         <div className="mt-auto text-right">
-          <AddToCartBtn product={product} />
+          <div className="flex flex-row gap-5">
+            <QuantityAdjuster quantity={quantity} onChange={setQuantity} />
+            <AddToCartBtn product={product} quantity={quantity} />
+          </div>
         </div>
       </div>
     </section>

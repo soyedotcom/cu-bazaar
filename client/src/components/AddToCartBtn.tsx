@@ -15,25 +15,55 @@ type Props = {
 
 const AddToCartBtn = ({
   product,
-  quantity,
+  quantity = 1,
   selectedColor,
   selectedSize,
 }: Props) => {
-  const { addToCart } = useCart();
+  const { cart, addToCart, removeFromCart } = useCart();
+
+  const cartItem = cart.find(
+    (item) =>
+      item.productId === product.id &&
+      (item.selectedColor ?? null) === (selectedColor ?? null) &&
+      (item.selectedSize ?? null) === (selectedSize ?? null),
+  );
+
+  const inCart = !!cartItem;
+
+  const handleClick = async () => {
+    if (inCart) {
+      await removeFromCart(cartItem.id);
+    } else {
+      await addToCart({
+        productId: product.id,
+        quantity,
+        selectedColor,
+        selectedSize,
+      });
+    }
+  };
 
   return (
     <button
-      className="bg-purple-400 border-none rounded-full h-10.5 w-52 font-bold hover:cursor-pointer"
-      onClick={() =>
-        addToCart({
-          productId: product.id,
-          quantity: quantity,
-          selectedColor: selectedColor,
-          selectedSize: selectedSize,
-        })
-      }
+      onClick={handleClick}
+      className={`
+        h-10.5
+        w-52
+        rounded-full
+        border-2
+        border-purple-500
+        font-bold
+        cursor-pointer
+        flex
+        items-center
+        justify-center
+        gap-1.5
+        transition-all
+        duration-200
+        ${inCart ? "bg-purple-500 text-white" : "bg-transparent text-purple-500"}
+  `}
     >
-      <CartIcon /> Add to Cart
+      <CartIcon /> {inCart ? "Added to Cart" : "Add to Cart"}
     </button>
   );
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, useCallback, type ReactNode } from "react";
 import { api } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { CartContext, type CartItem } from "./CartContext";
@@ -9,9 +9,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const refreshCart = async () => {
+  const refreshCart = useCallback(async () => {
     if (!user) return;
-
     setLoading(true);
     try {
       const res = await api.get("/cart");
@@ -19,12 +18,22 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
-    if (user) refreshCart();
+    if (!user) return;
+
+    const loadCart = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get("/cart");
+        setCart(res.data.data.cartItems);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadCart();
   }, [user]);
-  
 
   const addToCart = async (data: {
     productId: string;
@@ -41,6 +50,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     await refreshCart();
   };
 
+  const updateCartItem = async (id: number, quantity: number) => {
+    await api.put(`/cart/${id}`, { quantity });
+    await refreshCart();
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -49,6 +63,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         addToCart,
         removeFromCart,
         refreshCart,
+        updateCartItem,
       }}
     >
       {children}
