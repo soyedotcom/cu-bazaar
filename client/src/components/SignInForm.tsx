@@ -15,10 +15,9 @@ const SignInForm = () => {
     try {
       await signin(email, password);
 
-      navigate("/profile", { replace: true });
+      navigate("/shop", { replace: true });
     } catch (error) {
       console.log(error);
-
       alert("Invalid credentials");
     }
   };

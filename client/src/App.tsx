@@ -17,6 +17,8 @@ import Deliveries from "./pages/Deliveries";
 import UserProfile from "./pages/UserProfile";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
+import SellerSignUp from "./pages/SellerSignUp";
+import SellerProfile from "./pages/SellerProfile";
 
 function App() {
   const page = useLocation();
@@ -31,7 +33,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
-        <Route path="/shop/:shopName" element={<ShopPage />} />
+        <Route path="/shop/store/:shopName" element={<ShopPage />} />
         <Route path="/services" element={<Services />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/dealsanddiscounts" element={<DealsandDiscounts />} />
@@ -86,6 +88,22 @@ function App() {
           element={
             <ProtectedRoute>
               <Cart />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/become-a-seller"
+          element={
+            <ProtectedRoute>
+              <SellerSignUp />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/become-a-seller"
+          element={
+            <ProtectedRoute>
+              <SellerProfile />
             </ProtectedRoute>
           }
         />

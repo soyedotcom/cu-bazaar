@@ -1,35 +1,11 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { fetchProducts } from "../api/product.ts";
+import type { Product } from "../types/product.ts";
 
 import ProductDisplay from "../components/ProductDisplay";
 import SubNav from "../components/SubNav";
 import LoadMoreItemsBtn from "../components/LoadMoreItemsBtn";
-
-type Product = {
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-  features?: string[];
-  measurements?: string;
-  materialsandcare?: string;
-
-  price: number;
-  seller: {
-    shopName: string;
-  };
-
-  variants?: {
-    colors?: string[];
-    sizes?: string[];
-  };
-
-  category: string;
-  subcategory: string;
-  section: string;
-  tags?: string[];
-};
 
 const Shop = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -72,7 +48,7 @@ const Shop = () => {
           section,
           page: currentPage,
           limit: 20,
-          signal: controller.signal //remove later
+          signal: controller.signal, //remove later
         });
 
         if (controller.signal.aborted) return; //remove later
