@@ -14,9 +14,8 @@ const VariantSelector = ({ label, options, value, onChange }: Props) => {
         <button
           key={option}
           onClick={() => onChange(option)}
-          className={`px-3 py-0.5 border rounded-full cursor-pointer ${
-            value === option ? "bg-black text-white" : ""
-          }`}
+          className={`px-3 py-0.5 border rounded-full cursor-pointer transition-all
+        duration-200 ${value === option ? "bg-black text-white" : ""}`}
         >
           {option}
         </button>

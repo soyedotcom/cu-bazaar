@@ -1,12 +1,9 @@
-import NavBarSearch from "../components/NavBarSearch";
-import OrderSummary from "../components/OrderSummary";
-
+import ShopPage from "./ShopPage";
 // component showcase
 const Showcase = () => {
   return (
     <main className="flex flex-col gap-4">
-      <NavBarSearch />
-      <OrderSummary/>
+      <ShopPage />
     </main>
   );
 };

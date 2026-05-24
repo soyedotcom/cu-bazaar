@@ -48,10 +48,10 @@ const AddToCartCard = ({ product, onClose }: Props) => {
       onClick={onClose}
     >
       <section
-        className="bg-white relative z-20 flex flex-row w-185 h-100 rounded-xl p-6"
+        className="bg-white relative z-20 flex flex-row w-240 h-120 rounded-xl p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <section className="bg-blue-300 flex-1 rounded-xl">
+        <section className="flex-1 rounded-xl">
           <img
             className="rounded-xl h-full w-full object-cover object-center"
             src={product.image}
@@ -81,7 +81,7 @@ const AddToCartCard = ({ product, onClose }: Props) => {
           </section>
 
           <div className="grow mt-4">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               {product.variants?.sizes && (
                 <VariantSelector
                   label="Size"
@@ -99,10 +99,17 @@ const AddToCartCard = ({ product, onClose }: Props) => {
                   onChange={setSelectedColor}
                 />
               )}
-            </div>
 
-            <div className="mb-3">
-              <QuantityAdjuster quantity={quantity} onChange={setQuantity} />
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="font-bold">Quantity:</p>
+
+                  <QuantityAdjuster
+                    quantity={quantity}
+                    onChange={setQuantity}
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
