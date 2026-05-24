@@ -42,7 +42,7 @@ const ShopPage = () => {
         {shop.description && (
           <p className="text-gray-500 max-w-xl">{shop.description}</p>
         )}
-        <div className="flex flex-col gap-1 text-sm text-gray-400">
+        <div className="flex flex-col gap-1   text-gray-400">
           <p>Managed by {shop.user.name}</p>
           <p>
             Shop opened:{" "}

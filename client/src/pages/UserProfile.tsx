@@ -43,7 +43,7 @@ const UserProfile = () => {
 
             <p>{user.email}</p>
 
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500  ">
               Member since:{" "}
               {new Date(createdAt).toLocaleDateString("en-GB", {
                 year: "numeric",

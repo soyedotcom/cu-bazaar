@@ -230,7 +230,7 @@ const AddProductCard = ({ onClose, onSuccess }: Props) => {
             </label>
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-red-500  ">{error}</p>}
 
           <button
             type="submit"

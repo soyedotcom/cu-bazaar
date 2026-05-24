@@ -73,7 +73,7 @@ const SellerProfile = () => {
             {seller.description && (
               <p className="text-gray-500">{seller.description}</p>
             )}
-            <p className="text-sm text-gray-400">
+            <p className="  text-gray-400">
               Shop opened:{" "}
               {new Date(seller.createdAt).toLocaleDateString("en-GB", {
                 year: "numeric",
@@ -89,10 +89,10 @@ const SellerProfile = () => {
           <div className="flex gap-5">
             {(
               [
+                "products",
                 "pending",
                 "orders",
                 "transactions",
-                "products",
               ] as ActiveSection[]
             ).map((s) => (
               <button
@@ -142,54 +142,44 @@ const SellerProfile = () => {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b-2 border-gray-200">
-                      <th className="py-3 pr-6 font-bold text-sm text-gray-500 w-80">
-                        Product
-                      </th>
-                      <th className="py-3 pr-6 font-bold text-sm text-gray-500">
-                        Price
-                      </th>
-                      <th className="py-3 pr-6 font-bold text-sm text-gray-500">
-                        Stock
-                      </th>
-                      <th className="py-3 pr-6 font-bold text-sm text-gray-500">
-                        Status
-                      </th>
-                      <th className="py-3 font-bold text-sm text-gray-500">
-                        Actions
-                      </th>
+                      <th className="py-3 pr-6 font-bold w-80">Product</th>
+                      <th className="py-3 pr-6 font-bold">Price</th>
+                      <th className="py-3 pr-6 font-bold">Stock</th>
+                      <th className="py-3 pr-6 font-bold">Status</th>
+                      <th className="py-3 font-bold">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {seller.products.map((p) => (
                       <tr
                         key={p.id}
-                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                        className="border-b border-gray-100 hover:bg-gray-50 transition-all"
                       >
                         <td className="py-4 pr-6">
                           <div className="flex items-center gap-3">
                             <img
                               src={p.image}
                               alt={p.name}
-                              className="h-14 w-14 object-cover object-center rounded-lg shrink-0"
+                              className="h-20 w-20 object-cover object-center rounded shrink-0"
                             />
                             <div className="flex flex-col gap-0.5">
-                              <p className="font-bold text-sm">{p.name}</p>
-                              <p className="text-gray-400 text-xs">
-                                {p.id.slice(0, 8)}...
+                              <p className="font-bold  ">{p.name}</p>
+                              <p className="text-gray-400">
+                                ID: {p.id.slice(0, 8)}...
                               </p>
                             </div>
                           </div>
                         </td>
 
-                        <td className="py-4 pr-6 text-sm">
+                        <td className="py-4 pr-6  ">
                           ₦{Number(p.price).toLocaleString()}
                         </td>
 
-                        <td className="py-4 pr-6 text-sm">{p.stock ?? "—"}</td>
+                        <td className="py-4 pr-6  ">{p.stock ?? "—"}</td>
 
                         <td className="py-4 pr-6">
                           <span
-                            className={`text-xs font-bold px-3 py-1 rounded-full ${p.published ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}
+                            className={`font-bold px-3.5 py-1.5 rounded-full ${p.published ? "bg-green-200 text-green-700" : "bg-gray-200 text-gray-500"}`}
                           >
                             {p.published ? "Published" : "Draft"}
                           </span>
@@ -199,13 +189,13 @@ const SellerProfile = () => {
                           <div className="flex gap-3">
                             <button
                               onClick={() => setEditingProduct(p)}
-                              className="border-2 rounded-full h-8 px-4 cursor-pointer text-sm"
+                              className="border-2 rounded-full h-8 px-4 cursor-pointer  "
                             >
                               Edit
                             </button>
                             <button
                               onClick={() => setDeletingProduct(p)}
-                              className="border-2 border-red-400 text-red-500 rounded-full h-8 px-4 cursor-pointer text-sm"
+                              className="border-2 border-red-500 text-red-500 rounded-full h-8 px-4 cursor-pointer"
                             >
                               Delete
                             </button>

@@ -50,13 +50,11 @@ const DeleteConfirmCard = ({ product, onClose, onSuccess }: Props) => {
           />
           <div className="text-left">
             <p className="font-bold">{product.name}</p>
-            <p className="text-gray-500 text-sm">
-              This action cannot be undone.
-            </p>
+            <p className="text-gray-500  ">This action cannot be undone.</p>
           </div>
         </div>
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {error && <p className="text-red-500  ">{error}</p>}
 
         <div className="flex gap-4">
           <button

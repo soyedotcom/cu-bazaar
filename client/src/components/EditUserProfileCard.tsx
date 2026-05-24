@@ -44,7 +44,7 @@ const EditUserProfileCard = ({ onClose }: Props) => {
 
   const input =
     "border border-gray-400 rounded-full w-full px-4 py-2 h-12 outline-none";
-  const labelClass = "font-bold py-2 pl-2 text-left text-sm";
+  const labelClass = "font-bold py-2 pl-2 text-left  ";
 
   return (
     <div
@@ -120,8 +120,8 @@ const EditUserProfileCard = ({ onClose }: Props) => {
             />
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          {success && <p className="text-green-500 text-sm">{success}</p>}
+          {error && <p className="text-red-500  ">{error}</p>}
+          {success && <p className="text-green-500  ">{success}</p>}
 
           <button
             type="submit"
