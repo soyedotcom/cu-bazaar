@@ -34,7 +34,9 @@ const ProductCard = ({ product }: Props) => {
         </div>
 
         <section className="flex flex-col gap-3 mt-auto">
-          <div className="font-bold ">₦{product.price.toLocaleString()}</div>
+          <div className="font-bold ">
+            ₦{Number(product.price).toLocaleString()}
+          </div>
 
           <div className="flex gap-2 align-middle mt-auto">
             <Link to={`/product/${product.id}`} className="cursor-pointer">

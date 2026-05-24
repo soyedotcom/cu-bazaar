@@ -75,7 +75,7 @@ const AddToCartCard = ({ product, onClose }: Props) => {
 
           <section className="flex flex-col gap-4">
             <p className="font-bold text-[32px]">
-              ₦{product.price.toLocaleString()}
+              ₦{Number(product.price).toLocaleString()}
             </p>
             <img src="/" alt="Product Rating" />
           </section>
