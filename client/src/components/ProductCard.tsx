@@ -4,7 +4,7 @@ import { useWishlist } from "../context/WishlistContext";
 import type { Product } from "../data/products";
 
 import AddToCartCard from "./AddToCartCard";
-import WishlistIcon from "@mui/icons-material/FavoriteBorderRounded";
+import WishlistBtn from "./WishlistBtn";
 import CartIcon from "@mui/icons-material/ShoppingBagOutlined";
 import InfoIcon from "@mui/icons-material/InfoOutlineRounded";
 
@@ -43,12 +43,7 @@ const ProductCard = ({ product }: Props) => {
               <InfoIcon />
             </Link>
 
-            <button
-              className="cursor-pointer"
-              onClick={() => addToWishlist(product.id)}
-            >
-              <WishlistIcon />
-            </button>
+            <WishlistBtn productId={product.id} />
 
             <button
               className="cursor-pointer"
