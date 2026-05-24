@@ -1,38 +1,56 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../api/axios";
+import type { Product } from "../types/product";
+import EditProductCard from "../components/EditProductCard";
+import AddProductCard from "../components/AddProductCard";
+import DeleteProductCard from "../components/DeleteProductCard";
+import EditShopCard from "../components/EditShopCard";
 
-type SellerData = {
+type Seller = {
   shopName: string;
   description?: string;
   logo?: string;
-  user: { name: string; createdAt: string };
-  products: { id: string; name: string; image: string; price: number }[];
+  userId: string;
+  products: Product[];
+  orders: {
+    id: number;
+    productId: string;
+    quantity: number;
+    status: string;
+    createdAt: string;
+  }[];
+  createdAt: string;
 };
 
+type ActiveSection = "pending" | "orders" | "transactions" | "products" | null;
+
 const SellerProfile = () => {
-  const { shopName } = useParams<{ shopName: string }>();
   const { user } = useAuth();
-  const [seller, setSeller] = useState<SellerData | null>(null);
+  const [seller, setSeller] = useState<Seller | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activeSection, setActiveSection] = useState<ActiveSection>("products");
 
-  const isOwner = user?.sellerProfile?.shopName === shopName;
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [deletingProduct, setDeletingProduct] = useState<Product | null>(null);
+  const [showAddCard, setShowAddCard] = useState(false);
+  const [showEditShop, setShowEditShop] = useState(false);
+
+  const fetchSeller = async () => {
+    try {
+      const res = await api.get("/seller/dashboard");
+      setSeller(res.data.data.Seller);
+    } catch {
+      setError("Failed to load Seller Profile");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetch = async () => {
-      try {
-        const res = await api.get(`/seller`);
-        setSeller(res.data.data.seller);
-      } catch {
-        setError("Shop not found");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetch();
-  }, [shopName]);
+    fetchSeller();
+  }, []);
 
   if (loading) return <p className="mx-25 my-10">Loading...</p>;
   if (error || !seller) return <p className="mx-25 my-10">{error}</p>;
@@ -40,50 +58,211 @@ const SellerProfile = () => {
   return (
     <main className="flex flex-col mx-25 my-10">
       <div className="flex flex-col gap-10">
-        <section className="flex justify-between items-center">
-          <div className="flex flex-col gap-2 text-left">
+        <section className="flex flex-col gap-8">
+          <div className="flex justify-between items-center">
             <h1 className="font-bold text-[45px]">{seller.shopName}</h1>
+            <button
+              onClick={() => setShowEditShop(true)}
+              className="border-2 rounded-full h-10 px-6 cursor-pointer"
+            >
+              Edit Shop
+            </button>
+          </div>
+
+          <div className="text-left flex flex-col gap-1">
             {seller.description && (
               <p className="text-gray-500">{seller.description}</p>
             )}
             <p className="text-sm text-gray-400">
               Shop opened:{" "}
-              {new Date(seller.user.createdAt).toLocaleDateString("en-GB", {
+              {new Date(seller.createdAt).toLocaleDateString("en-GB", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               })}
             </p>
+            <p className="text-gray-400">Welcome back, {user?.name}</p>
           </div>
-
-          {isOwner && (
-            <button className="border-2 rounded-full h-10 px-6 cursor-pointer">
-              Edit Shop
-            </button>
-          )}
         </section>
 
-        <section className="flex flex-col gap-4 text-left">
-          <h2 className="font-bold text-[24px]">Products</h2>
-          {seller.products.length === 0 ? (
-            <p className="text-gray-500">No products listed yet.</p>
-          ) : (
-            <div className="grid grid-cols-6 gap-5">
-              {seller.products.map((p) => (
-                <div key={p.id} className="flex flex-col gap-2">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="h-40 w-full object-cover rounded-lg"
-                  />
-                  <p className="font-bold text-sm">{p.name}</p>
-                  <p className="text-sm">₦{Number(p.price).toLocaleString()}</p>
-                </div>
-              ))}
+        <section className="flex flex-col gap-6">
+          <div className="flex gap-5">
+            {(
+              [
+                "pending",
+                "orders",
+                "transactions",
+                "products",
+              ] as ActiveSection[]
+            ).map((s) => (
+              <button
+                key={s}
+                onClick={() => setActiveSection(activeSection === s ? null : s)}
+                className={`border-2 rounded-full h-10 px-5 cursor-pointer transition-all ${activeSection === s ? "bg-black text-white" : ""}`}
+              >
+                {s === "orders"
+                  ? "Order History"
+                  : s === "transactions"
+                    ? "Transaction History"
+                    : s === "products"
+                      ? `Products (${seller.products.length})`
+                      : "Active Orders"}
+              </button>
+            ))}
+          </div>
+
+          {activeSection === "pending" && (
+            <p className="text-gray-500 text-center mt-2">No pending orders.</p>
+          )}
+          {activeSection === "orders" && (
+            <p className="text-gray-500 text-center mt-2">No past orders.</p>
+          )}
+          {activeSection === "transactions" && (
+            <p className="text-gray-500 text-center mt-2">
+              No transactions yet.
+            </p>
+          )}
+
+          {activeSection === "products" && (
+            <div className="flex flex-col gap-4">
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShowAddCard(true)}
+                  className="bg-purple-500 text-white rounded-full h-10 px-6 cursor-pointer font-bold"
+                >
+                  + Add Product
+                </button>
+              </div>
+
+              {seller.products.length === 0 ? (
+                <p className="text-gray-500 text-center">
+                  No products listed yet.
+                </p>
+              ) : (
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b-2 border-gray-200">
+                      <th className="py-3 pr-6 font-bold text-sm text-gray-500 w-80">
+                        Product
+                      </th>
+                      <th className="py-3 pr-6 font-bold text-sm text-gray-500">
+                        Price
+                      </th>
+                      <th className="py-3 pr-6 font-bold text-sm text-gray-500">
+                        Stock
+                      </th>
+                      <th className="py-3 pr-6 font-bold text-sm text-gray-500">
+                        Status
+                      </th>
+                      <th className="py-3 font-bold text-sm text-gray-500">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {seller.products.map((p) => (
+                      <tr
+                        key={p.id}
+                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                      >
+                        <td className="py-4 pr-6">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={p.image}
+                              alt={p.name}
+                              className="h-14 w-14 object-cover object-center rounded-lg shrink-0"
+                            />
+                            <div className="flex flex-col gap-0.5">
+                              <p className="font-bold text-sm">{p.name}</p>
+                              <p className="text-gray-400 text-xs">
+                                {p.id.slice(0, 8)}...
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td className="py-4 pr-6 text-sm">
+                          ₦{Number(p.price).toLocaleString()}
+                        </td>
+
+                        <td className="py-4 pr-6 text-sm">{p.stock ?? "—"}</td>
+
+                        <td className="py-4 pr-6">
+                          <span
+                            className={`text-xs font-bold px-3 py-1 rounded-full ${p.published ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}
+                          >
+                            {p.published ? "Published" : "Draft"}
+                          </span>
+                        </td>
+
+                        <td className="py-4">
+                          <div className="flex gap-3">
+                            <button
+                              onClick={() => setEditingProduct(p)}
+                              className="border-2 rounded-full h-8 px-4 cursor-pointer text-sm"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => setDeletingProduct(p)}
+                              className="border-2 border-red-400 text-red-500 rounded-full h-8 px-4 cursor-pointer text-sm"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           )}
         </section>
       </div>
+
+      {showEditShop && (
+        <EditShopCard
+          seller={seller}
+          onClose={() => setShowEditShop(false)}
+          onSuccess={() => {
+            setShowEditShop(false);
+            fetchSeller();
+          }}
+        />
+      )}
+
+      {showAddCard && (
+        <AddProductCard
+          onClose={() => setShowAddCard(false)}
+          onSuccess={() => {
+            setShowAddCard(false);
+            fetchSeller();
+          }}
+        />
+      )}
+
+      {editingProduct && (
+        <EditProductCard
+          product={editingProduct}
+          onClose={() => setEditingProduct(null)}
+          onSuccess={() => {
+            setEditingProduct(null);
+            fetchSeller();
+          }}
+        />
+      )}
+
+      {deletingProduct && (
+        <DeleteProductCard
+          product={deletingProduct}
+          onClose={() => setDeletingProduct(null)}
+          onSuccess={() => {
+            setDeletingProduct(null);
+            fetchSeller();
+          }}
+        />
+      )}
     </main>
   );
 };

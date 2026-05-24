@@ -22,7 +22,10 @@ import SellerProfile from "./pages/SellerProfile";
 
 function App() {
   const page = useLocation();
-  const isAuth = page.pathname === "/signin" || page.pathname === "/signup";
+  const isAuth =
+    page.pathname === "/signin" ||
+    page.pathname === "/signup" ||
+    page.pathname === "/become-a-seller";
 
   return (
     <main className="flex flex-col">
@@ -100,7 +103,7 @@ function App() {
           }
         />
         <Route
-          path="/become-a-seller"
+          path="/seller/dashboard"
           element={
             <ProtectedRoute>
               <SellerProfile />

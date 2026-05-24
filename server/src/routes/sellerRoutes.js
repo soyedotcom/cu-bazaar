@@ -17,22 +17,22 @@ import { roleMiddleware } from "../middleware/roleMiddleware.js";
 const router = express.Router();
 router.use(authMiddleware);
 
-router.post("/start-selling", createSellerProfile);
+router.post("/become-a-seller", createSellerProfile);
 
 //Seller only paths
 router.use(roleMiddleware("SELLER"));
 
-router.get("/", getSellerProfile);
+router.get("/dashboard", getSellerProfile);
 
-router.put("/", updateSellerProfile);
+router.patch("/dashboard", updateSellerProfile);
 
-router.delete("/", deleteSeller);
+router.delete("/dashboard", deleteSeller);
 
 router.get("/products", getProducts);
 
 router.post("/products", createProduct);
 
-router.put("/products/:id", updateProduct);
+router.patch("/products/:id", updateProduct);
 
 router.delete("/products/:id", deleteProduct);
 

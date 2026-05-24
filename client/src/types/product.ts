@@ -3,6 +3,8 @@ export type Product = {
   name: string;
   image: string;
   description: string;
+  stock: number;
+  published: boolean;
   features?: string[];
   measurements?: string;
   materialsAndCare?: string;

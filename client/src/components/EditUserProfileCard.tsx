@@ -27,7 +27,7 @@ const EditUserProfileCard = ({ onClose }: Props) => {
     }
 
     try {
-      await api.put(`/profile/${user.id}`, {
+      await api.patch(`/profile/${user.id}`, {
         name,
         hall,
         room,

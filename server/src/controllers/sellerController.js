@@ -18,10 +18,8 @@ const createSellerProfile = async (req, res) => {
       return res.status(400).json({ error: "User is already a seller" });
     }
 
-    if (!shopName || !description) {
-      return res
-        .status(400)
-        .json({ error: "Shop name and description required" });
+    if (!shopName) {
+      return res.status(400).json({ error: "Shop name required" });
     }
 
     const shopExists = await prisma.sellerProfile.findUnique({
@@ -51,9 +49,13 @@ const createSellerProfile = async (req, res) => {
 
     return res.status(201).json({
       status: "success",
-      data: { SellerProfile: newSellerProfile },
+      data: {
+        SellerProfile: newSellerProfile,
+        message: "Seller profile successfully made",
+      },
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Failed to create seller profile" });
   }
 };
@@ -61,7 +63,6 @@ const createSellerProfile = async (req, res) => {
 const getSellerProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-
     const seller = await prisma.sellerProfile.findUnique({
       where: { userId: userId },
       include: {
@@ -74,10 +75,12 @@ const getSellerProfile = async (req, res) => {
       return res.status(404).json({ error: "Seller profile not found" });
     }
 
-    return res
-      .status(200)
-      .json({ status: "success", data: { Seller: seller } });
+    return res.status(200).json({
+      data: { Seller: seller },
+      message: "Seller profile successfully loaded",
+    });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Failed to load seller profile" });
   }
 };
@@ -86,7 +89,6 @@ const updateSellerProfile = async (req, res) => {
   try {
     const userId = req.user.id;
     const { shopName, description, logo } = req.body;
-
     const seller = await prisma.sellerProfile.findUnique({
       where: { userId: userId },
     });
@@ -112,10 +114,12 @@ const updateSellerProfile = async (req, res) => {
       },
     });
 
-    return res
-      .status(200)
-      .json({ status: "success", data: { seller: updatedSeller } });
+    return res.status(200).json({
+      data: { seller: updatedSeller },
+      message: "Seller profile successfully updated",
+    });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Failed to update seller profile" });
   }
 };
@@ -146,6 +150,7 @@ const deleteSeller = async (req, res) => {
       message: "Seller profile deleted successfully",
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Unable to delete seller profile" });
   }
 };
@@ -164,10 +169,10 @@ const getProducts = async (req, res) => {
     });
 
     return res.status(200).json({
-      status: "success",
-      data: { products: products, amount: products.length },
+      data: { products: products },
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Failed to load seller products" });
   }
 };
@@ -176,17 +181,13 @@ const createProduct = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    if (!req.user.isSeller) {
-      return res
-        .status(403)
-        .json({ error: "Not authorized to create a product" });
-    }
-
     const {
       name,
       image,
       description,
       price,
+      stock,
+      published,
       features,
       measurements,
       materialsAndCare,
@@ -218,7 +219,8 @@ const createProduct = async (req, res) => {
         image,
         description,
         price: parseFloat(price),
-
+        stock,
+        published,
         measurements,
         materialsAndCare,
 
@@ -235,16 +237,18 @@ const createProduct = async (req, res) => {
     });
 
     res.status(201).json({
-      status: "success",
       data: {
         product: {
           id: newProduct.id,
           name: newProduct.name,
           price: newProduct.price,
+          published: newProduct.published,
         },
+        message: "Product successfully created",
       },
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Failed to create product" });
   }
 };
@@ -259,6 +263,8 @@ const updateProduct = async (req, res) => {
       image,
       description,
       price,
+      stock,
+      published,
       features,
       measurements,
       materialsAndCare,
@@ -305,7 +311,9 @@ const updateProduct = async (req, res) => {
         name,
         image,
         description,
-        price: new Prisma.Decimal(price),
+        stock,
+        price: parseFloat(price),
+        published,
 
         measurements,
         materialsAndCare,

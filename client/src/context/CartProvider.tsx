@@ -51,7 +51,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateCartItem = async (id: number, quantity: number) => {
-    await api.put(`/cart/${id}`, { quantity });
+    await api.patch(`/cart/${id}`, { quantity });
     await refreshCart();
   };
 

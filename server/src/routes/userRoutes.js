@@ -11,7 +11,7 @@ router.use(authMiddleware);
 
 router.get("/", getUserProfile);
 
-router.put("/:id", updateUserProfile);
+router.patch("/:id", updateUserProfile);
 
 router.delete("/:id", deleteUser);
 
