@@ -1,10 +1,35 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { fetchProducts } from "../api/product.ts";
-import type { Product } from "../types/product.ts";
+
 import ProductDisplay from "../components/ProductDisplay";
 import SubNav from "../components/SubNav";
 import LoadMoreItemsBtn from "../components/LoadMoreItemsBtn";
+
+type Product = {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  features?: string[];
+  measurements?: string;
+  materialsandcare?: string;
+
+  price: number;
+  seller: {
+    shopName: string;
+  };
+
+  variants?: {
+    colors?: string[];
+    sizes?: string[];
+  };
+
+  category: string;
+  subcategory: string;
+  section: string;
+  tags?: string[];
+};
 
 const Shop = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -24,36 +49,44 @@ const Shop = () => {
   const filterKey = `${query}-${category}-${subcategory}-${section}`;
 
   useEffect(() => {
-    setPage(1);
-    setProducts([]);
-  }, [filterKey]);
+    const controller = new AbortController(); //remove later
+    const filtersChanged = prevFilterKey.current !== filterKey;
+    const currentPage = filtersChanged ? 1 : page;
 
-  useEffect(() => {
-    const controller = new AbortController();
+    if (filtersChanged) {
+      prevFilterKey.current = filterKey;
+    }
+
+    if (filtersChanged) {
+      setLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
 
     const load = async () => {
-      page === 1 ? setLoading(true) : setLoadingMore(true);
-
       try {
         const data = await fetchProducts({
           q: query || undefined,
           category,
           subcategory,
           section,
-          page,
+          page: currentPage,
           limit: 20,
-          signal: controller.signal,
+          signal: controller.signal //remove later
         });
 
-        if (controller.signal.aborted) return;
-
+        if (controller.signal.aborted) return; //remove later
         const incoming = data.data.products || [];
-        setProducts((prev) => (page === 1 ? incoming : [...prev, ...incoming]));
+
+        if (filtersChanged) {
+          setProducts(incoming);
+        } else {
+          setProducts((prev) => [...prev, ...incoming]);
+        }
+
         setHasMore(data.data.pagination.hasMore);
       } catch (err) {
-        if ((err as any)?.code !== "ERR_CANCELED") {
-          console.error("Failed to load products", err);
-        }
+        console.error("Failed to load products", err);
       } finally {
         setLoading(false);
         setLoadingMore(false);
@@ -61,7 +94,7 @@ const Shop = () => {
     };
 
     load();
-    return () => controller.abort();
+    return () => controller.abort(); //remove later
   }, [filterKey, page]);
 
   return (

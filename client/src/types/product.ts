@@ -5,7 +5,7 @@ export type Product = {
   description: string;
   features?: string[];
   measurements?: string;
-  materialsandcare?: string;
+  materialsAndCare?: string;
 
   price: number;
   seller: {
