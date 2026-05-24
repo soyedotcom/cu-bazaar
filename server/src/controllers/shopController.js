@@ -97,4 +97,31 @@ const getProduct = async (req, res) => {
   }
 };
 
-export { loadProducts, getProduct };
+const getShop = async (req, res) => {
+  try {
+    const { shopName } = req.params;
+
+    const seller = await prisma.sellerProfile.findUnique({
+      where: { shopName },
+      include: {
+        products: {
+          include: {
+            seller: { select: { shopName: true } },
+          },
+          orderBy: { createdAt: "desc" },
+        },
+        user: {
+          select: { name: true, createdAt: true },
+        },
+      },
+    });
+
+    if (!seller) return res.status(404).json({ error: "Shop not found" });
+
+    return res.status(200).json({ status: "success", data: { seller } });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to load shop" });
+  }
+};
+
+export { loadProducts, getProduct, getShop };

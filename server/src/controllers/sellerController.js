@@ -175,10 +175,12 @@ const getProducts = async (req, res) => {
 const createProduct = async (req, res) => {
   try {
     const userId = req.user.id;
-    const sellerId = await prisma.sellerProfile.findUnique({
-      where: { userId },
-      select: { userId: true },
-    });
+
+    if (!req.user.isSeller) {
+      return res
+        .status(403)
+        .json({ error: "Not authorized to create a product" });
+    }
 
     const {
       name,
@@ -210,18 +212,12 @@ const createProduct = async (req, res) => {
       });
     }
 
-    if (sellerId !== userId) {
-      return res
-        .status(403)
-        .json({ error: "You are not authorized to create this product" });
-    }
-
     const newProduct = await prisma.product.create({
       data: {
         name,
         image,
         description,
-        price: new Prisma.Decimal(price),
+        price: parseFloat(price),
 
         measurements,
         materialsAndCare,
@@ -234,7 +230,7 @@ const createProduct = async (req, res) => {
         tags: tags || [],
         variants,
 
-        sellerId: sellerId,
+        sellerId: userId,
       },
     });
 
@@ -400,7 +396,19 @@ const getSellerOrders = async (req, res) => {
   }
 };
 
-const getSellerTransactions = async (req, res) => {};
+const getSellerTransactions = async (req, res) => {
+  try {
+    const sellerId = req.user.id;
+    const transactions = await prisma.orderItem.findMany({
+      where: { sellerId, paymentStatus: "PAID" },
+      include: { product: true, order: true },
+      orderBy: { createdAt: "desc" },
+    });
+    return res.status(200).json({ status: "success", data: { transactions } });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to load transactions" });
+  }
+};
 
 export {
   createSellerProfile,
