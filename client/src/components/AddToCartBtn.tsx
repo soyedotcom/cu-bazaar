@@ -60,7 +60,7 @@ const AddToCartBtn = ({
         gap-1.5
         transition-all
         duration-200
-        ${inCart ? "bg-purple-500 text-white" : "bg-transparent text-purple-500"}
+        ${!inCart ? "bg-purple-500 text-white" : "bg-transparent text-purple-500"}
   `}
     >
       <CartIcon /> {inCart ? "Added to Cart" : "Add to Cart"}

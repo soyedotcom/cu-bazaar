@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useWishlist } from "../context/WishlistContext";
 import type { Product } from "../data/products";
 
 import AddToCartCard from "./AddToCartCard";
@@ -13,7 +12,6 @@ interface Props {
 }
 
 const ProductCard = ({ product }: Props) => {
-  const { addToWishlist } = useWishlist();
   const [showCard, setShowCard] = useState(false);
 
   return (

@@ -26,7 +26,7 @@ const getCartItems = async (req, res) => {
 
 const addToCart = async (req, res) => {
   try {
-    const { productId, quantity = 1, selectedSize, selectedColor } = req.body;
+    const { productId, quantity, selectedSize, selectedColor } = req.body;
 
     if (!productId) {
       return res.status(400).json({ error: "Product ID is required" });
@@ -73,6 +73,10 @@ const addToCart = async (req, res) => {
       },
     });
 
+    await prisma.wishlistItem.deleteMany({
+      where: { userId: req.user.id, productId },
+    });
+
     return res
       .status(201)
       .json({ status: "success", data: { cartItem: newCartItem } });
@@ -84,10 +88,11 @@ const addToCart = async (req, res) => {
 
 const updateCartItem = async (req, res) => {
   try {
+    const id = parseInt(req.params.id);
     const { quantity, selectedSize, selectedColor } = req.body;
 
     const cartItem = await prisma.cartItem.findUnique({
-      where: { id: req.params.id },
+      where: { id },
     });
 
     if (!cartItem) {
@@ -101,7 +106,7 @@ const updateCartItem = async (req, res) => {
     }
 
     const updatedCartItem = await prisma.cartItem.update({
-      where: { id: req.params.id },
+      where: { id },
       data: {
         quantity,
         selectedSize,
@@ -121,8 +126,10 @@ const updateCartItem = async (req, res) => {
 
 const deleteCartItem = async (req, res) => {
   try {
+    const id = parseInt(req.params.id);
+
     const cartItem = await prisma.cartItem.findUnique({
-      where: { id: req.params.id },
+      where: { id },
     });
 
     if (!cartItem) {
@@ -136,7 +143,7 @@ const deleteCartItem = async (req, res) => {
     }
 
     await prisma.cartItem.delete({
-      where: { id: req.params.id, userId: req.user.id },
+      where: { id },
     });
 
     return res
