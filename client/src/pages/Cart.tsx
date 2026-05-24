@@ -4,6 +4,7 @@ import { useCart } from "../context/CartContext";
 
 const Cart = () => {
   const { cart, loading } = useCart();
+  const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   if (loading) return <p>Loading...</p>;
 
@@ -12,7 +13,7 @@ const Cart = () => {
       <div className="flex flex-row">
         <section className="flex-1 flex flex-col gap-10">
           <h1 className="text-left text-[24px] font-bold">
-            Cart ({cart.length})
+            Cart ({itemCount})
           </h1>
 
           {cart.length === 0 && <p>Your cart is empty.</p>}

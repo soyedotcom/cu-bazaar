@@ -7,13 +7,20 @@ const OrderSummary = () => {
   if (loading) return <p>Loading...</p>;
 
   const cartPrice = cart.reduce((total, item) => {
-    return total + item.product.price * item.quantity;
+    return total + Number(item.product.price) * item.quantity;
   }, 0);
+
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   return (
     <section className="flex flex-col text-left">
       <h1 className="font-bold text-[24px]">Order Summary</h1>
-      <div className="my-2.5">
-        <p>{cart.length} items</p>
+      <div className="flex flex-col my-5 gap-2.5">
+        <p>
+          {cart.length} product{cart.length !== 1 ? "s" : ""}
+        </p>
+        <p>
+          {totalItems} item{totalItems !== 1 ? "s" : ""}
+        </p>
       </div>
       <div className="my-3">
         <p>Total Price: </p>
