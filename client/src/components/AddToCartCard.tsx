@@ -1,36 +1,12 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import type { Product } from "../types/product";
 import VariantSelector from "./VariantSelector";
 
 import LinkIcon from "@mui/icons-material/ArrowForward";
 import AddToCartBtn from "./AddToCartBtn";
 import QuantityAdjuster from "./QuantityAdjuster";
 import WishlistBtn from "./WishlistBtn";
-
-type Product = {
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-  features?: string[];
-  measurements?: string;
-  materialsandcare?: string;
-
-  price: number;
-  seller: {
-    shopName: string;
-  };
-
-  variants?: {
-    colors?: string[];
-    sizes?: string[];
-  };
-
-  category: string;
-  subcategory: string;
-  section: string;
-  tags?: string[];
-};
 
 type Props = {
   product: Product;

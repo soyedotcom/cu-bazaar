@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../api/axios";
-
+import type { Product } from "../types/product";
 import QuantityAdjuster from "../components/QuantityAdjuster";
 import WishlistBtn from "../components/WishlistBtn";
 
@@ -11,22 +11,6 @@ import AddToCartBtn from "../components/AddToCartBtn";
 import BackIcon from "@mui/icons-material/ArrowBackRounded";
 import DropDownActive from "@mui/icons-material/KeyboardArrowDownRounded";
 import DropDownInactive from "@mui/icons-material/KeyboardArrowRightRounded";
-
-type Product = {
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-  price: number;
-  features: string[];
-  measurements?: string;
-  materialsAndCare?: string;
-  seller: { shopName: string };
-  variants?: {
-    colors?: string[];
-    sizes?: string[];
-  };
-};
 
 const ProductPage = () => {
   const { id } = useParams<{ id: string }>();

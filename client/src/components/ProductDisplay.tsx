@@ -1,5 +1,5 @@
 import ProductCard from "./ProductCard";
-import type { Product } from "../data/products";
+import type { Product } from "../types/product";
 
 interface Props {
   products: Product[];
@@ -8,9 +8,11 @@ interface Props {
 const ProductDisplay = ({ products }: Props) => {
   if (products.length === 0) {
     return (
-      <p>
-        Unable to find what you're looking for. Try using different key words
-      </p>
+      <section className="m-10">
+        <p>
+          Unable to find what you're looking for. Try using different key words
+        </p>
+      </section>
     );
   }
   return (

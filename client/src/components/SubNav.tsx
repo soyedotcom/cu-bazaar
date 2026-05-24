@@ -12,7 +12,7 @@ const SubNav = () => {
   const currentCategory = subNavData.find((c) => c.name === activeMenu);
 
   return (
-    <nav className="flex flex-col gap-15">
+    <nav className="flex flex-col gap-13">
       <section className="flex flex-col gap-8 h-22">
         <div className="flex gap-10 font-bold">
           {subNavData.map((category) => (
@@ -49,7 +49,7 @@ const SubNav = () => {
         </div>
       </section>
 
-      <section className="flex flex-col text-left gap-8">
+      <section className="flex flex-col text-left gap-7">
         <div className="text-[32px] font-bold flex gap-2">
           {selectedSubCategory?.icon}
           {selectedSubCategory?.name}
