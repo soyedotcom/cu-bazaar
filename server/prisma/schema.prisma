@@ -71,6 +71,11 @@ model Product {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([published])
+  @@index([category])
+  @@index([subcategory])
+  @@index([section])
 }
 
 model Order {
