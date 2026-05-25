@@ -34,7 +34,7 @@ const ProductPage = () => {
         const res = await api.get(`/shop/${id}`);
         const data = res.data.data.product;
         setProduct(data);
-        setSelectedImage(data.images?.[0] ?? data.image);
+        setSelectedImage(data.image ?? data.image);
       } catch {
         setError("Product not found");
       } finally {
@@ -67,17 +67,14 @@ const ProductPage = () => {
                 />
               </div>
 
-              <div className="w-full flex gap-3 flex-wrap">
-                {(product.images?.length
-                  ? product.images
-                  : [product.image]
-                ).map((img, i) => (
+              <div className="w-full flex gap-3 flex-wrap justify-center">
+                {[product.image, ...(product.images ?? [])].map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImage(img)}
                     className={`w-15 h-15 cursor-pointer rounded-md overflow-hidden border-2 transition-all ${
                       selectedImage === img
-                        ? "border-purple-500"
+                        ? "border-purple-400 border-3"
                         : "border-transparent"
                     }`}
                   >

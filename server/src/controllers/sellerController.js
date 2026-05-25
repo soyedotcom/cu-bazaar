@@ -185,6 +185,7 @@ const createProduct = async (req, res) => {
     const {
       name,
       image,
+      images,
       description,
       price,
       stock,
@@ -218,6 +219,7 @@ const createProduct = async (req, res) => {
       data: {
         name,
         image,
+        images: images || [],
         description,
         price: parseFloat(price),
         stock,
@@ -262,6 +264,7 @@ const updateProduct = async (req, res) => {
     const {
       name,
       image,
+      images,
       description,
       price,
       stock,
@@ -278,6 +281,7 @@ const updateProduct = async (req, res) => {
 
     if (
       !name ||
+      !image ||
       !description ||
       price == null ||
       !category ||
@@ -286,7 +290,7 @@ const updateProduct = async (req, res) => {
     ) {
       return res.status(400).json({
         error:
-          "Name, description, price, category, subcategory and section are required",
+          "Name,image, description, price, category, subcategory and section are required",
       });
     }
 
@@ -311,6 +315,7 @@ const updateProduct = async (req, res) => {
       data: {
         name,
         image,
+        images: images || [], // add images
         description,
         stock,
         price: parseFloat(price),
@@ -322,7 +327,6 @@ const updateProduct = async (req, res) => {
         category,
         subcategory,
         section,
-
         features: features || [],
         tags: tags || [],
         variants,
