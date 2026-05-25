@@ -15,7 +15,7 @@ type Props = {
 
 const AddToCartBtn = ({
   product,
-  quantity = 1,
+  quantity,
   selectedColor,
   selectedSize,
 }: Props) => {

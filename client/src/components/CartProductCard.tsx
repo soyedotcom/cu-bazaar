@@ -44,7 +44,27 @@ const CartProductCard = ({ cartItem }: Props) => {
         <div>
           <p className="font-bold">₦{Number(product.price).toLocaleString()}</p>
         </div>
-        <div className="mt-auto text-right flex flex-row gap-2 p-2">
+
+        <div>
+          {(cartItem.selectedColor || cartItem.selectedSize) && (
+            <div className="text-sm mt-2 text-gray-700 flex flex-col gap-2">
+              {cartItem.selectedColor && (
+                <p>
+                  Color:{" "}
+                  <span className="font-medium">{cartItem.selectedColor}</span>
+                </p>
+              )}
+
+              {cartItem.selectedSize && (
+                <p>
+                  Size:{" "}
+                  <span className="font-medium">{cartItem.selectedSize}</span>
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="mt-auto text-right flex flex-row gap-2">
           <QuantityAdjuster
             quantity={cartItem.quantity}
             onChange={(qty) => updateCartItem(cartItem.id, qty)}
