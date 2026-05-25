@@ -22,13 +22,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signin = async (email: string, password: string) => {
-    const res = await api.post("/auth/signin", { email, password });
-    setUser(res.data.data.user);
+    await api.post("/auth/signin", { email, password });
+    await refreshUser();
   };
 
   const signup = async (data: SignupData) => {
-    const res = await api.post("/auth/signup", data);
-    setUser(res.data.data.user);
+    await api.post("/auth/signup", data);
+    await refreshUser();
   };
 
   const signout = async () => {

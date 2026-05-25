@@ -43,7 +43,7 @@ const updateUserProfile = async (req, res) => {
     const userId = req.params.id;
     const { name, email, password, hall, room } = req.body;
 
-    if (user.id !== req.user.id) {
+    if (userId !== req.user.id) {
       return res
         .status(403)
         .json({ error: "Not authorized to update profile" });
