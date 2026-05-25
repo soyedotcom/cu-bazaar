@@ -3,18 +3,23 @@ import { useAuth } from "../context/AuthContext";
 import { api } from "../api/axios";
 import CloseIcon from "@mui/icons-material/CloseRounded";
 
+import ImageUploader from "./ImageUploader";
+
 type Props = { onClose: () => void };
 
 const EditUserProfileCard = ({ onClose }: Props) => {
   const { user, refreshUser } = useAuth();
 
-  const [name, setName] = useState(user.name);
-  const [hall, setHall] = useState(user.hall);
-  const [room, setRoom] = useState(user.room);
+  const [name, setName] = useState(user?.name);
+  const [hall, setHall] = useState(user?.hall);
+  const [room, setRoom] = useState(user?.room);
+  const [avatar, setAvatar] = useState(user?.avatar ?? "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  if (!user) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +34,7 @@ const EditUserProfileCard = ({ onClose }: Props) => {
     try {
       await api.patch(`/profile/${user.id}`, {
         name,
+        avatar,
         hall,
         room,
         ...(password ? { password } : {}),
@@ -71,6 +77,15 @@ const EditUserProfileCard = ({ onClose }: Props) => {
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter name"
               className={input}
+            />
+          </div>
+
+          <div className="flex flex-col w-full">
+            <label className={labelClass}>Profile Picture</label>
+            <ImageUploader
+              onUpload={setAvatar}
+              preview={avatar}
+              label="Upload Photo"
             />
           </div>
 

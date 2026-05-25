@@ -4,6 +4,9 @@ import { subNavData } from "../data/subNavData";
 import CloseIcon from "@mui/icons-material/CloseRounded";
 import type { Product } from "../types/product";
 
+import ImageUploader from "./ImageUploader";
+import MultiImageUploader from "./MultiImageUploader";
+
 type Props = {
   product: Product;
   onClose: () => void;
@@ -13,6 +16,7 @@ type Props = {
 const EditProductCard = ({ product, onClose, onSuccess }: Props) => {
   const [name, setName] = useState(product.name);
   const [image, setImage] = useState(product.image);
+  const [images, setImages] = useState<string[]>(product?.images ?? []);
   const [description, setDescription] = useState(product.description);
   const [price, setPrice] = useState(String(product.price));
   const [stock, setStock] = useState(String(product.stock ?? ""));
@@ -47,6 +51,7 @@ const EditProductCard = ({ product, onClose, onSuccess }: Props) => {
       await api.patch(`/seller/products/${product.id}`, {
         name,
         image,
+        images,
         description,
         price: parseFloat(price),
         stock: parseInt(stock),
@@ -105,15 +110,17 @@ const EditProductCard = ({ product, onClose, onSuccess }: Props) => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label className={labelClass}>Image URL</label>
-            <input
-              type="text"
-              placeholder="Enter image URL"
-              required
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className={inputClass}
+            <label className={labelClass}>Main Image</label>
+            <ImageUploader
+              onUpload={setImage}
+              preview={image}
+              label="Upload Main Image"
             />
+          </div>
+
+          <div className="flex flex-col w-full">
+            <label className={labelClass}>Additional Images</label>
+            <MultiImageUploader images={images} onChange={setImages} />
           </div>
 
           <div className="flex flex-col w-full">

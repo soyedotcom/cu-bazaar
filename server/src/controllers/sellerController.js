@@ -88,7 +88,7 @@ const getSellerProfile = async (req, res) => {
 const updateSellerProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { shopName, description, logo } = req.body;
+    const { shopName, description, logo, banner } = req.body;
     const seller = await prisma.sellerProfile.findUnique({
       where: { userId: userId },
     });
@@ -111,6 +111,7 @@ const updateSellerProfile = async (req, res) => {
         shopName: shopName,
         description: description,
         logo: logo,
+        banner: banner,
       },
     });
 

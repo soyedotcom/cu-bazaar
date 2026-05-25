@@ -11,7 +11,6 @@ import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/ordersRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import sellerRoutes from "./routes/sellerRoutes.js";
-
 import uploadRoutes from "./routes/uploadRoutes.js";
 
 config();

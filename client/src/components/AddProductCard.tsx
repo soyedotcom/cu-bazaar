@@ -3,6 +3,9 @@ import { api } from "../api/axios";
 import { subNavData } from "../data/subNavData";
 import CloseIcon from "@mui/icons-material/CloseRounded";
 
+import ImageUploader from "./ImageUploader";
+import MultiImageUploader from "./MultiImageUploader";
+
 type Props = {
   onClose: () => void;
   onSuccess: () => void;
@@ -11,6 +14,7 @@ type Props = {
 const AddProductCard = ({ onClose, onSuccess }: Props) => {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
@@ -41,6 +45,7 @@ const AddProductCard = ({ onClose, onSuccess }: Props) => {
       await api.post("/seller/products", {
         name,
         image,
+        images,
         description,
         price: parseFloat(price),
         stock: parseInt(stock),
@@ -99,15 +104,17 @@ const AddProductCard = ({ onClose, onSuccess }: Props) => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label className={labelClass}>Image URL</label>
-            <input
-              type="text"
-              placeholder="Enter image URL"
-              required
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className={inputClass}
+            <label className={labelClass}>Main Image</label>
+            <ImageUploader
+              onUpload={setImage}
+              preview={image}
+              label="Upload Main Image"
             />
+          </div>
+
+          <div className="flex flex-col w-full">
+            <label className={labelClass}>Additional Images</label>
+            <MultiImageUploader images={images} onChange={setImages} />
           </div>
 
           <div className="flex flex-col w-full">

@@ -14,6 +14,7 @@ export type User = {
   email: string;
   role: "USER" | "SELLER" | "ADMIN";
   name: string;
+  avatar?: string;
   hall: string;
   room: string;
   createdAt: string;

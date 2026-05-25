@@ -2,8 +2,15 @@ import { useState } from "react";
 import { api } from "../api/axios";
 import CloseIcon from "@mui/icons-material/CloseRounded";
 
+import ImageUploader from "./ImageUploader";
+
 type Props = {
-  seller: { shopName: string; description?: string; logo?: string };
+  seller: {
+    shopName: string;
+    description?: string;
+    logo?: string;
+    banner?: string;
+  };
   onClose: () => void;
   onSuccess: () => void;
 };
@@ -12,6 +19,7 @@ const EditShopCard = ({ seller, onClose, onSuccess }: Props) => {
   const [shopName, setShopName] = useState(seller.shopName);
   const [description, setDescription] = useState(seller.description ?? "");
   const [logo, setLogo] = useState(seller.logo ?? "");
+  const [banner, setBanner] = useState(seller.banner ?? "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -21,7 +29,12 @@ const EditShopCard = ({ seller, onClose, onSuccess }: Props) => {
     setLoading(true);
 
     try {
-      await api.patch("/seller/dashboard", { shopName, description, logo });
+      await api.patch("/seller/dashboard", {
+        shopName,
+        description,
+        logo,
+        banner,
+      });
       onSuccess();
     } catch (err) {
       console.log(err);
@@ -79,13 +92,20 @@ const EditShopCard = ({ seller, onClose, onSuccess }: Props) => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label className={labelClass}>Logo URL</label>
-            <input
-              type="text"
-              placeholder="Enter logo image URL"
-              value={logo}
-              onChange={(e) => setLogo(e.target.value)}
-              className={inputClass}
+            <label className={labelClass}>Logo</label>
+            <ImageUploader
+              onUpload={setLogo}
+              preview={logo}
+              label="Upload Logo"
+            />
+          </div>
+
+          <div className="flex flex-col w-full">
+            <label className={labelClass}>Banner</label>
+            <ImageUploader
+              onUpload={setBanner}
+              preview={banner}
+              label="Upload Banner"
             />
           </div>
 

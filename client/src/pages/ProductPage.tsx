@@ -17,6 +17,7 @@ const ProductPage = () => {
   const navigate = useNavigate();
 
   const [product, setProduct] = useState<Product | null>(null);
+  const [selectedImage, setSelectedImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -31,7 +32,9 @@ const ProductPage = () => {
     const fetchProduct = async () => {
       try {
         const res = await api.get(`/shop/${id}`);
-        setProduct(res.data.data.product);
+        const data = res.data.data.product;
+        setProduct(data);
+        setSelectedImage(data.images?.[0] ?? data.image);
       } catch {
         setError("Product not found");
       } finally {
@@ -54,46 +57,40 @@ const ProductPage = () => {
 
       <section className="flex flex-row w-full my-5">
         <section>
-          <div className="flex flex-col gap-5 w-80">
-            <div className="h-80 w-80">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="h-full w-full rounded-md object-cover object-center"
-              />
-            </div>
+          <section>
+            <div className="flex flex-col gap-5 w-80">
+              <div className="h-80 w-80">
+                <img
+                  src={selectedImage}
+                  alt={product.name}
+                  className="h-full w-full rounded-md object-cover object-center"
+                />
+              </div>
 
-            <div className="w-full flex justify-between align-middle h-15">
-              <button className="w-15 cursor-pointer">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-full rounded-md object-cover object-center"
-                />
-              </button>
-              <button className="w-15 cursor-pointer">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-full rounded-md object-cover object-center"
-                />
-              </button>
-              <button className="w-15 cursor-pointer">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-full rounded-md object-cover object-center"
-                />
-              </button>
-              <button className="w-15 cursor-pointer">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-full rounded-md object-cover object-center"
-                />
-              </button>
+              <div className="w-full flex gap-3 flex-wrap">
+                {(product.images?.length
+                  ? product.images
+                  : [product.image]
+                ).map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedImage(img)}
+                    className={`w-15 h-15 cursor-pointer rounded-md overflow-hidden border-2 transition-all ${
+                      selectedImage === img
+                        ? "border-purple-500"
+                        : "border-transparent"
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt={`view-${i}`}
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          </section>
         </section>
 
         <section className="flex flex-col pl-10 flex-1 max-w-170">
