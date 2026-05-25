@@ -16,7 +16,7 @@ const ProductDisplay = ({ products }: Props) => {
     );
   }
   return (
-    <section className="grid grid-cols-6 justify-between py-10 gap-y-5">
+    <section className="grid grid-cols-6 justify-between py-10 gap-y-10">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

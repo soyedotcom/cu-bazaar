@@ -77,23 +77,25 @@ const Shop = () => {
     <main className="flex flex-col mx-25 my-10">
       <SubNav />
 
-      {loading ? (
-        <p>Loading products...</p>
-      ) : (
-        <>
-          <ProductDisplay products={products} />
+      <section className="flex flex-col">
+        {loading ? (
+          <p>Loading products...</p>
+        ) : (
+          <>
+            <ProductDisplay products={products} />
 
-          {hasMore && (
-            <div className="flex justify-center mt-8">
-              {loadingMore ? (
-                <p>Loading more...</p>
-              ) : (
-                <LoadMoreItemsBtn onClick={() => setPage((p) => p + 1)} />
-              )}
-            </div>
-          )}
-        </>
-      )}
+            {hasMore && (
+              <div className="flex justify-center mt-8">
+                {loadingMore ? (
+                  <p>Loading more...</p>
+                ) : (
+                  <LoadMoreItemsBtn onClick={() => setPage((p) => p + 1)} />
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </section>
     </main>
   );
 };

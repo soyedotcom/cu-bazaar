@@ -110,7 +110,7 @@ const ProductPage = () => {
             </p>
 
             <p className="font-bold text-[32px] py-3">
-              ₦{product.price.toLocaleString()}
+              ₦{Number(product.price).toLocaleString()}
             </p>
 
             <div className="flex flex-col gap-5">
