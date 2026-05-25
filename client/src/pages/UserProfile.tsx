@@ -61,7 +61,7 @@ const UserProfile = () => {
                 to={`/seller/dashboard`}
                 className="font-bold hover:text-purple-500 hover:underline"
               >
-                Go To Shop Profile →
+                Go To Shop Profile
               </Link>
             ) : (
               <>
