@@ -12,6 +12,8 @@ import orderRoutes from "./routes/ordersRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import sellerRoutes from "./routes/sellerRoutes.js";
 
+import uploadRoutes from "./routes/uploadRoutes.js";
+
 config();
 
 const app = express();
@@ -32,6 +34,7 @@ app.use("/orders", orderRoutes);
 app.use("/profile", userRoutes);
 app.use("/seller", sellerRoutes);
 app.use("/shop", shopRoutes);
+app.use("/upload", uploadRoutes);
 
 app.get("/", (req, res) => {
   res.json("cu-bazaar api is running");
