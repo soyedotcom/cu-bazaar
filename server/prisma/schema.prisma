@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
-  email    String @unique
+  email    String  @unique
   hall     String
   room     String
   password String
+  avatar   String?
 
   cartItems     CartItem[]
   wishlistItems WishlistItem[]
@@ -34,6 +35,7 @@ model SellerProfile {
   shopName    String  @unique
   description String?
   logo        String?
+  banner      String?
 
   products Product[]
   orders   OrderItem[]
@@ -42,14 +44,15 @@ model SellerProfile {
 }
 
 model Product {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
   image       String
+  images      String[] @default([])
   description String
-  price       Decimal @db.Decimal(10, 2)
+  price       Decimal  @db.Decimal(10, 2)
   rating      Int?
-  stock       Int     @default(0)
-  published   Boolean @default(false)
+  stock       Int      @default(0)
+  published   Boolean  @default(false)
 
   sellerId String
   seller   SellerProfile @relation(fields: [sellerId], references: [userId], onDelete: Cascade)
