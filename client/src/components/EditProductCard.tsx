@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { api } from "../api/axios";
+import { subNavData } from "../data/subNavData";
 import CloseIcon from "@mui/icons-material/CloseRounded";
 import type { Product } from "../types/product";
 
@@ -29,6 +30,13 @@ const EditProductCard = ({ product, onClose, onSuccess }: Props) => {
   const [published, setPublished] = useState(product.published ?? false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const selectedCategory = subNavData.find((cat) => cat.name === category);
+  const availableSubcategories = selectedCategory?.subcategories || [];
+  const selectedSubcategory = availableSubcategories.find(
+    (sub) => sub.name === subcategory,
+  );
+  const availableSections = selectedSubcategory?.sections || [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,41 +151,59 @@ const EditProductCard = ({ product, onClose, onSuccess }: Props) => {
             />
           </div>
 
-          <div className="flex flex-col w-full">
-            <label className={labelClass}>Category</label>
-            <input
-              type="text"
-              placeholder="e.g. Products"
-              required
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className={inputClass}
-            />
-          </div>
+          <select
+            required
+            value={category}
+            onChange={(e) => {
+              setCategory(e.target.value);
+              setSubcategory("");
+              setSection("");
+            }}
+            className={inputClass}
+          >
+            <option value="">Select category</option>
 
-          <div className="flex flex-col w-full">
-            <label className={labelClass}>Subcategory</label>
-            <input
-              type="text"
-              placeholder="e.g. Fashion"
-              required
-              value={subcategory}
-              onChange={(e) => setSubcategory(e.target.value)}
-              className={inputClass}
-            />
-          </div>
+            {subNavData.map((cat) => (
+              <option key={cat.name} value={cat.name}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
 
-          <div className="flex flex-col w-full">
-            <label className={labelClass}>Section</label>
-            <input
-              type="text"
-              placeholder="e.g. Tops"
-              required
-              value={section}
-              onChange={(e) => setSection(e.target.value)}
-              className={inputClass}
-            />
-          </div>
+          <select
+            required
+            value={subcategory}
+            onChange={(e) => {
+              setSubcategory(e.target.value);
+              setSection("");
+            }}
+            className={inputClass}
+            disabled={!category}
+          >
+            <option value="">Select subcategory</option>
+
+            {availableSubcategories.map((sub) => (
+              <option key={sub.name} value={sub.name}>
+                {sub.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            value={section}
+            onChange={(e) => setSection(e.target.value)}
+            className={inputClass}
+            disabled={!subcategory}
+          >
+            <option value="">Select section</option>
+
+            {availableSections.map((sec) => (
+              <option key={sec.name} value={sec.name}>
+                {sec.name}
+              </option>
+            ))}
+          </select>
 
           <div className="flex flex-col w-full">
             <label className={labelClass}>Measurements</label>
