@@ -71,7 +71,7 @@ const Shop = () => {
 
     load();
     return () => controller.abort(); //remove later
-  }, [filterKey, page]);
+  }, [filterKey, page, category, subcategory, section, query]);
 
   return (
     <main className="flex flex-col mx-25 my-10">
