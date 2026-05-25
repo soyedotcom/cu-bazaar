@@ -40,7 +40,16 @@ model SellerProfile {
   products Product[]
   orders   OrderItem[]
 
-  createdAt DateTime @default(now())
+  availableBalance Decimal @default(0) @db.Decimal(10, 2)
+  pendingBalance   Decimal @default(0) @db.Decimal(10, 2)
+
+  bank          String?
+  accountNumber String?
+  accountName   String?
+
+  createdAt          DateTime            @default(now())
+  walletTransactions WalletTransaction[]
+  withdrawals        Withdrawal[]
 }
 
 model Product {
@@ -87,11 +96,24 @@ model Order {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  status OrderStatus @default(PENDING)
+  status DeliveryStatus @default(PENDING)
 
   items OrderItem[]
 
+  totalAmount Decimal @db.Decimal(10, 2)
+
+  paymentReference String? @unique
+
+  paymentStatus PaymentStatus @default(PENDING)
+
+  paidAt DateTime?
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([paymentReference])
+  @@index([paymentStatus])
+  @@index([status])
 }
 
 model OrderItem {
@@ -104,17 +126,29 @@ model OrderItem {
   quantity Int
   price    Decimal @db.Decimal(10, 2)
 
+  sellerAmount Decimal @db.Decimal(10, 2)
+
+  platformFee Decimal @db.Decimal(10, 2)
+
   selectedSize  String?
   selectedColor String?
 
-  paymentStatus PaymentStatus @default(PENDING)
-  status        OrderStatus   @default(PENDING)
+  buyerConfirmed  Boolean @default(false)
+  sellerConfirmed Boolean @default(false)
+
+  paymentStatus PaymentStatus  @default(PENDING)
+  status        DeliveryStatus @default(PENDING)
 
   order   Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
   seller  SellerProfile @relation(fields: [sellerId], references: [userId], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
+  deliveredAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([sellerId])
+  @@index([status])
 }
 
 model CartItem {
@@ -148,16 +182,58 @@ model WishlistItem {
   createdAt DateTime @default(now())
 }
 
+model Withdrawal {
+  id String @id @default(uuid())
+
+  sellerId String
+
+  seller SellerProfile @relation(fields: [sellerId], references: [userId], onDelete: Cascade)
+
+  amount Decimal @db.Decimal(10, 2)
+
+  status WithdrawalStatus @default(PENDING)
+
+  reference String?
+
+  bankName      String
+  accountNumber String
+  accountName   String
+
+  createdAt   DateTime  @default(now())
+  processedAt DateTime?
+
+  @@index([reference])
+}
+
+model WalletTransaction {
+  id String @id @default(uuid())
+
+  sellerId String
+
+  seller SellerProfile @relation(fields: [sellerId], references: [userId], onDelete: Cascade)
+
+  amount Decimal @db.Decimal(10, 2)
+
+  type WalletTransactionType
+
+  description String
+
+  reference String?
+
+  createdAt DateTime @default(now())
+
+  @@index([sellerId])
+}
+
 enum UserRole {
   USER
   SELLER
   ADMIN
 }
 
-enum OrderStatus {
+enum DeliveryStatus {
   PENDING
-  PAID
-  SHIPPED
+  ACKNOWLEDGED_BY_SELLER
   DELIVERED
   CANCELLED
 }
@@ -170,7 +246,22 @@ enum ProductStatus {
 
 enum PaymentStatus {
   PENDING
+  PROCESSING
   PAID
   FAILED
   REFUNDED
+}
+
+enum WalletTransactionType {
+  CREDIT_PENDING
+  RELEASE_FUNDS
+  WITHDRAWAL
+  REFUND
+}
+
+enum WithdrawalStatus {
+  PENDING
+  PROCESSING
+  SUCCESS
+  FAILED
 }

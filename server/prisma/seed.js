@@ -1,250 +1,331 @@
-import { PrismaClient } from "@prisma/client";
-import { Prisma } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import Decimal from "decimal.js";
 
 const prisma = new PrismaClient();
 
+/**
+ * -----------------------------
+ * USERS (4 SELLERS + 2 BUYERS)
+ * -----------------------------
+ */
+
 const users = [
-  // SELLERS
   {
-    name: "test Daniel Okon",
-    email: "testdaniel@cubazzar.com",
+    name: "Daniel Okon",
+    email: "daniel@cubazzar.com",
     hall: "Daniel",
     room: "A405",
-
     role: "SELLER",
     isSeller: true,
-
-    sellerProfile: {
-      shopName: "Urban Threads",
-      description: "Affordable campus fashion.",
-      logo: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
-    },
+    shopName: "Urban Threads",
   },
-
   {
-    name: "test Sarah Johnson",
-    email: "testsarah@cubazzar.com",
+    name: "Sarah Johnson",
+    email: "sarah@cubazzar.com",
     hall: "Mary",
     room: "B302",
-
     role: "SELLER",
     isSeller: true,
-
-    sellerProfile: {
-      shopName: "Snack Haven",
-      description: "Snacks and drinks.",
-      logo: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085",
-    },
+    shopName: "Snack Haven",
   },
-
   {
-    name: "test Michael Peters",
-    email: "testmichael@cubazzar.com",
+    name: "Michael Peters",
+    email: "michael@cubazzar.com",
     hall: "Joshua",
     room: "C215",
-
     role: "SELLER",
     isSeller: true,
-
-    sellerProfile: {
-      shopName: "Tech Spot",
-      description: "Gadgets and accessories.",
-      logo: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
-    },
+    shopName: "Tech Spot",
   },
-
   {
-    name: "test Grace Etim",
-    email: "testgrace@cubazzar.com",
+    name: "Grace Etim",
+    email: "grace@cubazzar.com",
     hall: "Esther",
     room: "D120",
-
     role: "SELLER",
     isSeller: true,
-
-    sellerProfile: {
-      shopName: "Clean Wave Laundry",
-      description: "Laundry services.",
-      logo: "https://images.unsplash.com/photo-1582735689369-4fe89db7114c",
-    },
+    shopName: "Campus Services Hub",
   },
 
   {
-    name: "test Chris Adams",
-    email: "testchris@cubazzar.com",
-    hall: "Peter",
-    room: "E240",
-
-    role: "SELLER",
-    isSeller: true,
-
-    sellerProfile: {
-      shopName: "Glow Hair Studio",
-      description: "Hair styling services.",
-      logo: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e",
-    },
-  },
-
-  {
-    name: "test Esther Bassey",
-    email: "testesther@cubazzar.com",
-    hall: "Paul",
-    room: "F180",
-
-    role: "SELLER",
-    isSeller: true,
-
-    sellerProfile: {
-      shopName: "Fix Hub",
-      description: "Laptop and phone repairs.",
-      logo: "https://images.unsplash.com/photo-1518770660439-4636190af475",
-    },
-  },
-
-  // REGULAR USERS
-  {
-    name: "test James Wilson",
-    email: "testjames@example.com",
+    name: "James Wilson",
+    email: "james@cubazzar.com",
     hall: "Dorcas",
     room: "G250",
-
     role: "USER",
     isSeller: false,
   },
-
   {
-    name: "test Sophia Brown",
-    email: "testsophia@example.com",
+    name: "Sophia Brown",
+    email: "sophia@cubazzar.com",
     hall: "Lydia",
     room: "H110",
-
-    role: "USER",
-    isSeller: false,
-  },
-
-  {
-    name: "test David King",
-    email: "testdavid@example.com",
-    hall: "John",
-    room: "A320",
-
-    role: "USER",
-    isSeller: false,
-  },
-
-  {
-    name: "test Olivia Green",
-    email: "testolivia@example.com",
-    hall: "Deborah",
-    room: "C140",
-
     role: "USER",
     isSeller: false,
   },
 ];
 
-const products = [
+/**
+ * -----------------------------
+ * REALISTIC PRODUCT DATA
+ * -----------------------------
+ */
+
+const productCatalog = [
+  // ---------------- FASHION ----------------
   {
-    sellerEmail: "testdaniel@cubazzar.com",
-
-    name: "Oversized Black Hoodie",
-    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
-
-    description: "Comfortable oversized hoodie.",
-    price: 15000,
-    rating: 5,
-
-    category: "Products",
-    subcategory: "Fashion",
-    section: "Tops",
-
-    measurements: "Medium fit",
-    materialsAndCare: "100% cotton",
-
-    features: ["Cotton", "Unisex", "Soft"],
-    tags: ["hoodie", "fashion"],
-
-    variants: {
-      sizes: ["S", "M", "L"],
-      colors: ["Black", "Grey"],
-    },
+    sellerEmail: "daniel@cubazzar.com",
+    products: [
+      {
+        name: "Oversized Streetwear Hoodie",
+        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
+        description: "Premium oversized hoodie for everyday campus drip.",
+        price: 15000,
+        category: "Products",
+        subcategory: "Fashion",
+        section: "Tops",
+        tags: ["hoodie", "streetwear"],
+        features: ["Cotton", "Unisex"],
+        variants: { sizes: ["S", "M", "L"], colors: ["Black", "Grey"] },
+      },
+      {
+        name: "Cargo Pants",
+        image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1",
+        description: "Relaxed fit cargo pants with deep pockets.",
+        price: 12000,
+        category: "Products",
+        subcategory: "Fashion",
+        section: "Bottoms",
+        tags: ["cargo", "pants"],
+      },
+      {
+        name: "White Sneakers",
+        image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519",
+        description: "Clean white sneakers for everyday wear.",
+        price: 18000,
+        category: "Products",
+        subcategory: "Fashion",
+        section: "Shoes",
+      },
+      {
+        name: "Minimal Chain Necklace",
+        image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e",
+        description: "Simple gold chain accessory.",
+        price: 5000,
+        category: "Products",
+        subcategory: "Fashion",
+        section: "Jewelry and Accessories",
+      },
+      {
+        name: "Graphic T-Shirt",
+        image: "https://images.unsplash.com/photo-1521335629791-ce4aec67dd47",
+        description: "Cotton graphic tee for casual styling.",
+        price: 7000,
+        category: "Products",
+        subcategory: "Fashion",
+        section: "Tops",
+      },
+    ],
   },
 
+  // ---------------- FOOD ----------------
   {
-    sellerEmail: "testsarah@cubazzar.com",
-
-    name: "Chocolate Cookies",
-    image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e",
-
-    description: "Crunchy homemade cookies.",
-    price: 2500,
-    rating: 4,
-
-    category: "Products",
-    subcategory: "Food and Provisions",
-    section: "Snacks",
-
-    features: ["Fresh", "Chocolate"],
-    tags: ["cookies", "snacks"],
-
-    variants: null,
+    sellerEmail: "sarah@cubazzar.com",
+    products: [
+      {
+        name: "Chocolate Chip Cookies",
+        image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e",
+        description: "Fresh homemade cookies.",
+        price: 2500,
+        category: "Products",
+        subcategory: "Food and Provisions",
+        section: "Snacks",
+      },
+      {
+        name: "Spicy Puff Puff Pack",
+        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950",
+        description: "Soft Nigerian puff puff snack.",
+        price: 1500,
+        category: "Products",
+        subcategory: "Food and Provisions",
+        section: "Snacks",
+      },
+      {
+        name: "Fresh Fruit Juice",
+        image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba",
+        description: "Cold blended fruit juice.",
+        price: 2000,
+        category: "Products",
+        subcategory: "Food and Provisions",
+        section: "Drinks",
+      },
+      {
+        name: "Energy Drink Can",
+        image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e",
+        description: "Boost energy during study sessions.",
+        price: 1200,
+        category: "Products",
+        subcategory: "Food and Provisions",
+        section: "Drinks",
+      },
+      {
+        name: "Cupcake Box (6pcs)",
+        image: "https://images.unsplash.com/photo-1486427944299-d1955d23e34d",
+        description: "Soft vanilla cupcakes.",
+        price: 3000,
+        category: "Products",
+        subcategory: "Food and Provisions",
+        section: "Snacks",
+      },
+    ],
   },
 
+  // ---------------- TECH ----------------
   {
-    sellerEmail: "testmichael@cubazzar.com",
+    sellerEmail: "michael@cubazzar.com",
+    products: [
+      {
+        name: "HP Pavilion Laptop",
+        image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+        description: "Reliable student laptop.",
+        price: 350000,
+        category: "Products",
+        subcategory: "Gadjets and Accessories",
+        section: "Laptops",
+      },
+      {
+        name: "Wireless Gaming Mouse",
+        image: "https://images.unsplash.com/photo-1527814050087-3793815479db",
+        description: "Smooth wireless control.",
+        price: 15000,
+        category: "Products",
+        subcategory: "Gadjets and Accessories",
+        section: "Peripherals",
+      },
+      {
+        name: "Mechanical Keyboard",
+        image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+        description: "RGB mechanical keyboard.",
+        price: 25000,
+        category: "Products",
+        subcategory: "Gadjets and Accessories",
+        section: "Peripherals",
+      },
+      {
+        name: "External SSD 1TB",
+        image: "https://images.unsplash.com/photo-1612810806695-30f7a8258391",
+        description: "Fast portable storage.",
+        price: 45000,
+        category: "Products",
+        subcategory: "Gadjets and Accessories",
+        section: "Storage Devices",
+      },
+      {
+        name: "USB-C Hub",
+        image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3",
+        description: "Multi-port USB-C expansion.",
+        price: 8000,
+        category: "Products",
+        subcategory: "Gadjets and Accessories",
+        section: "Peripherals",
+      },
+    ],
+  },
 
-    name: "HP Pavilion Laptop",
-    image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
-
-    description: "Reliable laptop for school.",
-    price: 350000,
-    rating: 5,
-
-    category: "Products",
-    subcategory: "Gadjets and Accessories",
-    section: "Laptops",
-
-    features: ["16GB RAM", "512GB SSD"],
-    tags: ["laptop", "tech"],
-
-    variants: null,
+  // ---------------- SERVICES ----------------
+  {
+    sellerEmail: "grace@cubazzar.com",
+    products: [
+      {
+        name: "Laundry Wash & Fold",
+        image: "https://images.unsplash.com/photo-1582735689369-4fe89db7114c",
+        description: "Full laundry service for students.",
+        price: 2000,
+        category: "Services",
+        subcategory: "Laundry",
+        section: "Laundry Service",
+      },
+      {
+        name: "Express Haircut",
+        image: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1",
+        description: "Clean fade and styling.",
+        price: 1500,
+        category: "Services",
+        subcategory: "Hair Styling",
+        section: "Haircuts",
+      },
+      {
+        name: "Braiding Service",
+        image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e",
+        description: "Professional hair braiding.",
+        price: 5000,
+        category: "Services",
+        subcategory: "Hair Styling",
+        section: "Braiding",
+      },
+      {
+        name: "Phone Repair Service",
+        image: "https://images.unsplash.com/photo-1580910051074-3eb694886505",
+        description: "Quick phone repairs.",
+        price: 7000,
+        category: "Services",
+        subcategory: "Repair and Maintenance",
+        section: "Phone Repair",
+      },
+      {
+        name: "Laptop Repair Service",
+        image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+        description: "Hardware and software fixes.",
+        price: 12000,
+        category: "Services",
+        subcategory: "Repair and Maintenance",
+        section: "Laptop Repair",
+      },
+    ],
   },
 ];
 
-const main = async () => {
-  console.log("Seeding in progress...");
+/**
+ * -----------------------------
+ * MAIN SEED FUNCTION
+ * -----------------------------
+ */
+
+async function main() {
+  console.log("🌱 Seeding CU Bazzar...");
 
   const hashedPassword = await bcrypt.hash("password", 10);
 
-  await prisma.cartItem.deleteMany();
-  await prisma.wishlistItem.deleteMany();
+  // CLEAN DB
+  await prisma.walletTransaction.deleteMany();
+  await prisma.withdrawal.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
   await prisma.product.deleteMany();
   await prisma.sellerProfile.deleteMany();
+  await prisma.cartItem.deleteMany();
+  await prisma.wishlistItem.deleteMany();
   await prisma.user.deleteMany();
 
   // CREATE USERS
-  for (const userData of users) {
+  for (const u of users) {
     await prisma.user.create({
       data: {
-        name: userData.name,
-        email: userData.email,
-        hall: userData.hall,
-        room: userData.room,
+        name: u.name,
+        email: u.email,
+        hall: u.hall,
+        room: u.room,
         password: hashedPassword,
+        role: u.role,
+        isSeller: u.isSeller,
 
-        role: userData.role,
-        isSeller: userData.isSeller,
-
-        sellerProfile: userData.isSeller
+        sellerProfile: u.isSeller
           ? {
               create: {
-                shopName: userData.sellerProfile.shopName,
-                description: userData.sellerProfile.description,
-                logo: userData.sellerProfile.logo,
+                shopName: u.shopName,
+                description: `${u.shopName} on CU Bazzar`,
+                availableBalance: new Prisma.Decimal(0),
+                pendingBalance: new Prisma.Decimal(0),
               },
             }
           : undefined,
@@ -252,56 +333,54 @@ const main = async () => {
     });
   }
 
-  // CREATE PRODUCTS
-  for (const productData of products) {
-    const seller = await prisma.user.findUnique({
-      where: {
-        email: productData.sellerEmail,
-      },
+  console.log("👤 Users created");
 
-      include: {
-        sellerProfile: true,
-      },
+  // CREATE PRODUCTS
+  for (const sellerBlock of productCatalog) {
+    const seller = await prisma.user.findUnique({
+      where: { email: sellerBlock.sellerEmail },
+      include: { sellerProfile: true },
     });
 
     if (!seller?.sellerProfile) continue;
 
-    await prisma.product.create({
-      data: {
-        name: productData.name,
-        image: productData.image,
-        description: productData.description,
+    for (const p of sellerBlock.products) {
+      await prisma.product.create({
+        data: {
+          name: p.name,
+          image: p.image,
+          images: [],
+          description: p.description,
+          price: new Prisma.Decimal(p.price),
+          stock: 20,
+          published: true,
 
-        price: new Prisma.Decimal(productData.price),
-        rating: productData.rating ?? null,
+          category: p.category,
+          subcategory: p.subcategory,
+          section: p.section,
 
-        measurements: productData.measurements,
-        materialsAndCare: productData.materialsAndCare,
+          features: p.features ?? [],
+          tags: p.tags ?? [],
 
-        category: productData.category,
-        subcategory: productData.subcategory,
-        section: productData.section,
+          variants: p.variants ?? null,
 
-        features: productData.features,
-        tags: productData.tags,
-
-        variants: productData.variants,
-
-        seller: {
-          connect: {
-            userId: seller.sellerProfile.userId,
+          seller: {
+            connect: {
+              userId: seller.sellerProfile.userId,
+            },
           },
         },
-      },
-    });
+      });
+    }
   }
 
-  console.log("Seeding complete");
-};
+  console.log("📦 Products created");
+  console.log("🎉 Seeding complete!");
+}
 
 main()
-  .catch((err) => {
-    console.error(err);
+  .catch((e) => {
+    console.error(e);
     process.exit(1);
   })
   .finally(async () => {
