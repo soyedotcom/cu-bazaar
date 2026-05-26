@@ -111,6 +111,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/payment/callback"
+          element={
+            <ProtectedRoute>
+              <PaymentCallback />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </main>
   );
