@@ -19,6 +19,7 @@ import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
 import SellerSignUp from "./pages/SellerSignUp";
 import SellerProfile from "./pages/SellerProfile";
+import PaymentCallback from "./pages/PaymentCallback";
 
 function App() {
   const page = useLocation();
