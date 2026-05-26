@@ -12,6 +12,8 @@ import orderRoutes from "./routes/ordersRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import sellerRoutes from "./routes/sellerRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import withdrawalRoutes from "./routes/withdrawalRoutes.js";
 
 config();
 
@@ -22,6 +24,7 @@ const startServer = async () => {
 };
 
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use("/orders/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -34,6 +37,8 @@ app.use("/profile", userRoutes);
 app.use("/seller", sellerRoutes);
 app.use("/shop", shopRoutes);
 app.use("/upload", uploadRoutes);
+app.use("/orders", orderRoutes);
+app.use("/seller/withdrawals", withdrawalRoutes);
 
 app.get("/", (req, res) => {
   res.json("cu-bazaar api is running");
