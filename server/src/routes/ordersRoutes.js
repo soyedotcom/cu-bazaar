@@ -16,6 +16,7 @@ router.post(
   handleWebhook,
 );
 
+router.use(authMiddleware);
 router.get("/", getOrders);
 router.post("/", createOrder);
 router.delete("/:id", cancelOrderItem);

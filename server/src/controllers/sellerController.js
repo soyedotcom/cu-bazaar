@@ -67,10 +67,21 @@ const getSellerProfile = async (req, res) => {
       where: { userId: userId },
       include: {
         products: true,
-        orders: true,
+        orders: {
+          include: {
+            product: { select: { name: true, image: true } },
+            order: {
+              include: {
+                user: { select: { name: true, hall: true, room: true } },
+              },
+            },
+          },
+          orderBy: { createdAt: "desc" },
+        },
+        walletTransactions: { orderBy: { createdAt: "desc" } },
+        withdrawals: { orderBy: { createdAt: "desc" } },
       },
     });
-
     if (!seller) {
       return res.status(404).json({ error: "Seller profile not found" });
     }

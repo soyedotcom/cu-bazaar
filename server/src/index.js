@@ -36,7 +36,6 @@ app.use("/profile", userRoutes);
 app.use("/seller", sellerRoutes);
 app.use("/shop", shopRoutes);
 app.use("/upload", uploadRoutes);
-app.use("/orders", orderRoutes);
 app.use("/seller/withdrawals", withdrawalRoutes);
 
 app.get("/", (req, res) => {
