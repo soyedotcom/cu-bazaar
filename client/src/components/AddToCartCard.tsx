@@ -50,7 +50,7 @@ const AddToCartCard = ({ product, onClose }: Props) => {
               Sold by{" "}
               <Link
                 className="font-bold cursor-pointer hover:underline hover: hover:text-purple-500"
-                to="/shop/:shopName"
+                to={`/shop/store/${product.seller.shopName}`}
               >
                 {product.seller.shopName}
               </Link>

@@ -108,7 +108,9 @@ const ProductPage = () => {
             <p>
               Sold by{" "}
               <span className="font-semibold hover:text-purple-500 hover:underline">
-                <Link to="/">{product.seller.shopName}</Link>
+                <Link to={`/shop/store/${product.seller.shopName}`}>
+                  {product.seller.shopName}
+                </Link>
               </span>
             </p>
 
