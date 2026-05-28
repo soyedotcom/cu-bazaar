@@ -54,7 +54,7 @@ const EditShopCard = ({ seller, onClose, onSuccess }: Props) => {
       onClick={onClose}
     >
       <section
-        className="bg-white relative z-20 rounded-xl p-8 w-140 flex flex-col gap-5"
+        className="bg-white relative z-20 rounded-xl p-8 h-170 w-140 flex flex-col gap-5 overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center">
