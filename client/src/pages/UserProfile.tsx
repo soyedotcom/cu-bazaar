@@ -55,10 +55,14 @@ const UserProfile = () => {
   }, []);
 
   const activeOrders = orders.filter(
-    (o) => o.paymentStatus === "PAID" && o.status !== "DELIVERED" && o.status !== "CANCELLED"
+    (o) =>
+      o.paymentStatus === "PAID" &&
+      o.status !== "DELIVERED" &&
+      o.status !== "CANCELLED",
   );
+
   const pastOrders = orders.filter(
-    (o) => o.status === "DELIVERED" || o.status === "CANCELLED"
+    (o) => o.status === "DELIVERED" || o.status === "CANCELLED",
   );
 
   const confirmDelivery = async (orderItemId: number) => {
@@ -79,19 +83,27 @@ const UserProfile = () => {
 
   const renderOrders = (list: Order[]) => {
     if (ordersLoading) return <p className="text-gray-500">Loading...</p>;
-    if (list.length === 0) return <p className="text-gray-500">Nothing here yet.</p>;
+    if (list.length === 0)
+      return <p className="text-gray-500">Nothing here yet.</p>;
 
     return (
       <div className="flex flex-col gap-6">
         {list.map((order) => (
-          <div key={order.id} className="border rounded-xl p-4 flex flex-col gap-4">
+          <div
+            key={order.id}
+            className="border rounded-xl p-4 flex flex-col gap-4"
+          >
             <div className="flex justify-between items-center text-sm text-gray-400">
               <p>Order ID: {order.id.slice(0, 8)}...</p>
               <p>{new Date(order.createdAt).toLocaleDateString("en-GB")}</p>
-              <span className={`text-xs font-bold px-3 py-1 rounded-full ${statusColor(order.status)}`}>
+              <span
+                className={`text-xs font-bold px-3 py-1 rounded-full ${statusColor(order.status)}`}
+              >
                 {order.status}
               </span>
-              <p className="font-bold text-black">₦{Number(order.totalAmount).toLocaleString()}</p>
+              <p className="font-bold text-black">
+                ₦{Number(order.totalAmount).toLocaleString()}
+              </p>
             </div>
 
             {order.items.map((item) => (
@@ -108,10 +120,14 @@ const UserProfile = () => {
                     {item.selectedSize && ` · Size: ${item.selectedSize}`}
                     {item.selectedColor && ` · Color: ${item.selectedColor}`}
                   </p>
-                  <p className="text-sm font-bold">₦{Number(item.price).toLocaleString()}</p>
+                  <p className="text-sm font-bold">
+                    ₦{Number(item.price).toLocaleString()}
+                  </p>
                 </div>
 
-                <span className={`text-xs font-bold px-3 py-1 rounded-full ${statusColor(item.status)}`}>
+                <span
+                  className={`text-xs font-bold px-3 py-1 rounded-full ${statusColor(item.status)}`}
+                >
                   {item.status}
                 </span>
 
@@ -128,7 +144,9 @@ const UserProfile = () => {
                   )}
 
                 {item.buyerConfirmed && item.status !== "DELIVERED" && (
-                  <span className="text-xs text-green-500 font-bold">Awaiting seller</span>
+                  <span className="text-xs text-green-500 font-bold">
+                    Awaiting seller
+                  </span>
                 )}
               </div>
             ))}
@@ -143,7 +161,15 @@ const UserProfile = () => {
       <div className="flex flex-col gap-10">
         <section className="flex flex-col gap-8">
           <div className="flex justify-between items-center">
-            <h1 className="font-bold text-[45px]">Hello, {user.name}</h1>
+            <div className="flex gap-5 items-center">
+              <img
+                src={user.avatar}
+                alt={user.name}
+                className="rounded-full h-20 w-20 object-cover object-center"
+              />
+              <h1 className="font-bold text-[45px]">Hello, {user.name}</h1>
+            </div>
+
             <div className="flex gap-5">
               <button
                 className="border-2 rounded-full h-10 w-30 cursor-pointer"
@@ -151,6 +177,7 @@ const UserProfile = () => {
               >
                 Edit Profile
               </button>
+
               <button
                 className="bg-red-500 text-white rounded-full h-10 w-30 cursor-pointer"
                 onClick={signout}
@@ -161,12 +188,16 @@ const UserProfile = () => {
           </div>
 
           <div className="text-left flex flex-col gap-2">
-            <p className="font-bold">{user.hall} {user.room}</p>
+            <p className="font-bold">
+              {user.hall} {user.room}
+            </p>
             <p>{user.email}</p>
             <p className="text-gray-500">
               Member since:{" "}
               {new Date(user.createdAt).toLocaleDateString("en-GB", {
-                year: "numeric", month: "long", day: "numeric",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
               })}
             </p>
           </div>
@@ -175,13 +206,19 @@ const UserProfile = () => {
         <section className="flex flex-col gap-6">
           <p className="text-left">
             {user.isSeller ? (
-              <Link to="/seller/dashboard" className="font-bold hover:text-purple-500 hover:underline">
+              <Link
+                to="/seller/dashboard"
+                className="font-bold hover:text-purple-500 hover:underline"
+              >
                 Go To Shop Profile
               </Link>
             ) : (
               <>
                 Own a business?{" "}
-                <Link to="/become-a-seller" className="font-bold hover:text-purple-500 hover:underline">
+                <Link
+                  to="/become-a-seller"
+                  className="font-bold hover:text-purple-500 hover:underline"
+                >
                   Start selling
                 </Link>
               </>
@@ -189,15 +226,23 @@ const UserProfile = () => {
           </p>
 
           <div className="flex gap-5">
-            {(["active", "orders", "transactions"] as ActiveSection[]).map((s) => (
-              <button
-                key={s}
-                onClick={() => setActiveSection(activeSection === s ? null : s)}
-                className={`border-2 rounded-full h-10 px-5 cursor-pointer transition-all ${activeSection === s ? "bg-black text-white" : ""}`}
-              >
-                {s === "orders" ? "Order History" : s === "transactions" ? "Transaction History" : `Active Orders${activeOrders.length > 0 ? ` (${activeOrders.length})` : ""}`}
-              </button>
-            ))}
+            {(["active", "orders", "transactions"] as ActiveSection[]).map(
+              (s) => (
+                <button
+                  key={s}
+                  onClick={() =>
+                    setActiveSection(activeSection === s ? null : s)
+                  }
+                  className={`border-2 rounded-full h-10 px-5 cursor-pointer transition-all ${activeSection === s ? "bg-black text-white" : ""}`}
+                >
+                  {s === "orders"
+                    ? "Order History"
+                    : s === "transactions"
+                      ? "Transaction History"
+                      : `Active Orders${activeOrders.length > 0 ? ` (${activeOrders.length})` : ""}`}
+                </button>
+              ),
+            )}
           </div>
 
           <div className="mt-4">

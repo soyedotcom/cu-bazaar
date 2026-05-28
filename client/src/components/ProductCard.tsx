@@ -14,6 +14,8 @@ interface Props {
 const ProductCard = ({ product }: Props) => {
   const [showCard, setShowCard] = useState(false);
 
+  const outOfStock = product.stock === 0;
+
   return (
     <div className="h-78 max-h-78 w-41 max-w-41 flex flex-col">
       <section className="w-full h-37">
@@ -35,7 +37,13 @@ const ProductCard = ({ product }: Props) => {
 
         <section className="flex flex-col gap-3 mt-auto">
           <div className="font-bold ">
-            ₦{Number(product.price).toLocaleString()}
+            <p>₦{Number(product.price).toLocaleString()}</p>
+
+            {outOfStock && (
+              <span className="text-xs font-bold text-red-500">
+                Out of Stock
+              </span>
+            )}
           </div>
 
           <div className="flex gap-2 align-middle mt-auto">
@@ -46,9 +54,10 @@ const ProductCard = ({ product }: Props) => {
             <WishlistBtn productId={product.id} />
 
             <button
-              className="cursor-pointer"
+              className={`cursor-pointer ${outOfStock ? "opacity-40 cursor-not-allowed" : ""}`}
+              disabled={outOfStock}
               onClick={() => {
-                setShowCard(true);
+                if (!outOfStock) setShowCard(true);
               }}
             >
               <CartIcon />

@@ -21,7 +21,6 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-
   const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
   const [isMeasurementsOpen, setIsMeasurementsOpen] = useState(false);
   const [isMaterialsOpen, setIsMaterialsOpen] = useState(false);
@@ -46,6 +45,16 @@ const ProductPage = () => {
 
   if (loading) return <p className="mx-25 my-10">Loading...</p>;
   if (error || !product) return <p className="mx-25 my-10">{error}</p>;
+
+  const outOfStock = product.stock === 0;
+
+  const hasVariants = !!(
+    product.variants?.sizes?.length || product.variants?.colors?.length
+  );
+
+  const variantsSelected =
+    (!product.variants?.sizes?.length || selectedSize !== null) &&
+    (!product.variants?.colors?.length || selectedColor !== null);
 
   return (
     <main className="flex flex-col mx-25 my-10 text-left">
@@ -128,14 +137,26 @@ const ProductPage = () => {
             </div>
           </div>
 
+          <div>
+            {outOfStock && (
+              <p className="text-red-500 font-bold">Out of Stock</p>
+            )}
+          </div>
+
           <div className="flex flex-row gap-5 align-middle mt-auto">
-            <QuantityAdjuster quantity={quantity} onChange={setQuantity} />
+            <QuantityAdjuster
+              quantity={quantity}
+              onChange={setQuantity}
+              max={product.stock}
+              min={1}
+            />
 
             <AddToCartBtn
               product={product}
               selectedColor={selectedColor}
               selectedSize={selectedSize}
               quantity={quantity}
+              disabled={(hasVariants && !variantsSelected) || outOfStock}
             />
 
             <WishlistBtn productId={product.id} />

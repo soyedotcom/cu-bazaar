@@ -9,6 +9,7 @@ import AddProductCard from "../components/AddProductCard";
 import DeleteProductCard from "../components/DeleteProductCard";
 import EditShopCard from "../components/EditShopCard";
 import WithdrawalCard from "../components/WithdrawalCard";
+import Shop from "./Shop";
 
 type WalletTransaction = {
   id: string;
@@ -130,14 +131,30 @@ const SellerProfile = () => {
     <main className="flex flex-col mx-25 my-10">
       <div className="flex flex-col gap-10">
         <section className="flex flex-col gap-8">
-          <div className="flex justify-between items-center">
-            <h1 className="font-bold text-[45px]">{seller.shopName}</h1>
-            <button
-              onClick={() => setShowEditShop(true)}
-              className="border-2 rounded-full h-10 px-6 cursor-pointer"
-            >
-              Edit Shop
-            </button>
+          <div className="flex flex-col gap-5">
+            <img
+              src={seller.banner}
+              alt={seller.shopName}
+              className="w-full h-50 object-cover object-center rounded-xl"
+            />
+            <div className="flex justify-between items-center">
+              <div className="flex gap-5 items-center">
+                <img
+                  src={seller.logo}
+                  alt={seller.shopName}
+                  className="rounded-full h-20 w-20 object-cover object-center"
+                />
+
+                <h1 className="font-bold text-[45px]">{seller.shopName}</h1>
+              </div>
+
+              <button
+                onClick={() => setShowEditShop(true)}
+                className="border-2 rounded-full h-10 px-6 cursor-pointer"
+              >
+                Edit Shop
+              </button>
+            </div>
           </div>
 
           <div className="text-left flex flex-col gap-1">
