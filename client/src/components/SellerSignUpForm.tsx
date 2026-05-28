@@ -18,7 +18,7 @@ const SellerSignUpForm = () => {
     setLoading(true);
 
     try {
-      await api.post("/seller/start-selling", { shopName, description });
+      await api.post("/seller/become-a-seller", { shopName, description });
       await refreshUser();
       navigate(`/seller/dashboard`);
     } catch (error) {
