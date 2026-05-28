@@ -18,6 +18,14 @@ const AddToCartCard = ({ product, onClose }: Props) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
 
+  const outOfStock = product.stock === 0;
+  const hasVariants = !!(
+    product.variants?.sizes?.length || product.variants?.colors?.length
+  );
+  const variantsSelected =
+    (!product.variants?.sizes?.length || selectedSize !== null) &&
+    (!product.variants?.colors?.length || selectedColor !== null);
+
   return (
     <main
       className="bg-[#d9d9d9af] fixed w-screen h-screen z-10 top-0 right-0 left-0 bottom-0 flex justify-center items-center"
@@ -83,6 +91,8 @@ const AddToCartCard = ({ product, onClose }: Props) => {
                   <QuantityAdjuster
                     quantity={quantity}
                     onChange={setQuantity}
+                    max={product.stock}
+                    min={1}
                   />
                 </div>
               </div>
@@ -90,12 +100,16 @@ const AddToCartCard = ({ product, onClose }: Props) => {
           </div>
 
           <section>
+            {outOfStock && (
+              <p className="text-red-500 text-sm font-bold">Out of Stock</p>
+            )}
             <div className="flex items-center gap-3 mb-3">
               <AddToCartBtn
                 product={product}
                 selectedColor={selectedColor}
                 selectedSize={selectedSize}
                 quantity={quantity}
+                disabled={(hasVariants && !variantsSelected) || outOfStock}
               />
 
               <WishlistBtn productId={product.id} />
