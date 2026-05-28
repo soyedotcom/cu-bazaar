@@ -10,6 +10,7 @@ const getUserProfile = async (req, res) => {
         id: true,
         name: true,
         email: true,
+        avatar: true,
         hall: true,
         room: true,
         role: true,
@@ -41,7 +42,7 @@ const getUserProfile = async (req, res) => {
 const updateUserProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-    const { name, email, password, hall, room } = req.body;
+    const { name, email, avatar, password, hall, room } = req.body;
 
     if (userId !== req.user.id) {
       return res
@@ -65,12 +66,13 @@ const updateUserProfile = async (req, res) => {
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { name, email, password: hashedPassword, hall, room },
+      data: { name, email, avatar, password: hashedPassword, hall, room },
       select: {
         id: true,
         name: true,
         email: true,
         hall: true,
+        avatar: true,
         room: true,
         role: true,
         isSeller: true,

@@ -94,6 +94,7 @@ const getMe = async (req, res) => {
       id: true,
       email: true,
       role: true,
+      avatar: true,
       name: true,
       hall: true,
       room: true,
