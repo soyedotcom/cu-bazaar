@@ -39,7 +39,20 @@ const ShopPage = () => {
   return (
     <main className="flex flex-col mx-25 my-10">
       <section className="flex flex-col gap-3 text-left border-b pb-8 mb-8">
-        <h1 className="font-bold text-[45px]">{shop.shopName}</h1>
+        <img
+          src={shop.banner}
+          alt={shop.shopName}
+          className="w-full h-50 object-cover object-center rounded-xl"
+        />
+        <div className="flex gap-5 items-center">
+          <img
+            src={shop.logo}
+            alt={shop.shopName}
+            className="rounded-full h-20 w-20 object-cover object-center"
+          />
+          <h1 className="font-bold text-[45px]">{shop.shopName}</h1>
+        </div>
+
         {shop.description && (
           <p className="text-gray-500 max-w-xl">{shop.description}</p>
         )}
