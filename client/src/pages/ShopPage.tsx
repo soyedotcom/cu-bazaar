@@ -8,6 +8,7 @@ type ShopData = {
   shopName: string;
   description?: string;
   logo?: string;
+  banner?: string;
   user: { name: string; createdAt: string };
   products: Product[];
 };

@@ -11,6 +11,7 @@ type Props = {
   quantity?: number;
   selectedColor?: string | null;
   selectedSize?: string | null;
+  disabled: boolean;
 };
 
 const AddToCartBtn = ({
@@ -18,6 +19,7 @@ const AddToCartBtn = ({
   quantity,
   selectedColor,
   selectedSize,
+  disabled,
 }: Props) => {
   const { cart, addToCart, removeFromCart } = useCart();
 

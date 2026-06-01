@@ -9,7 +9,6 @@ import AddProductCard from "../components/AddProductCard";
 import DeleteProductCard from "../components/DeleteProductCard";
 import EditShopCard from "../components/EditShopCard";
 import WithdrawalCard from "../components/WithdrawalCard";
-import Shop from "./Shop";
 
 type WalletTransaction = {
   id: string;
