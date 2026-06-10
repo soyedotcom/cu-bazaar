@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signupUser } from "../api/auth";
+import {useAuth} from "../context/AuthContext";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
+  const { signup } = useAuth();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ const SignUpForm = () => {
     e.preventDefault();
 
     try {
-      await signupUser({
+      await signup({
         name,
         email,
         hall,
@@ -26,7 +27,7 @@ const SignUpForm = () => {
         confirmPassword,
       });
 
-      navigate("/signin");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -35,8 +36,6 @@ const SignUpForm = () => {
   return (
     <div className="flex flex-col items-center p-5 justify-center gap-5">
       <form
-        action="/signup"
-        method="POST"
         onSubmit={handleSubmit}
         className="flex flex-col px-5"
       >
