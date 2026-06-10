@@ -55,7 +55,7 @@ const SubNav = () => {
           {selectedSubCategory?.name}
         </div>
         <div className="flex gap-5  ">
-          {selectedSubCategory?.sections?.map((section) => (
+          {selectedSubCategory?.sections?.map((section: { name: string; icon: React.ReactNode }) => (
             <button
               key={section.name}
               className="cursor-pointer hover:text-black text-gray-600"

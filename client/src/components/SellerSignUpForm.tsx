@@ -22,9 +22,9 @@ const SellerSignUpForm = () => {
       await refreshUser();
       navigate(`/seller/dashboard`);
     } catch (error) {
-      setError(
-        error.response?.data?.error || "Failed to create seller profile",
-      );
+      if (error instanceof Error) {
+        setError(error.message || "Failed to create seller profile");
+      }
     } finally {
       setLoading(false);
     }

@@ -48,6 +48,7 @@ const AddToCartBtn = ({
   return (
     <button
       onClick={handleClick}
+      disabled={disabled}
       className={`
         h-10.5
         w-52

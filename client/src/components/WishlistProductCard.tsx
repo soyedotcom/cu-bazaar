@@ -46,7 +46,11 @@ const WishlistProductCard = ({ wishlistItem }: Props) => {
         <div className="mt-auto text-right">
           <div className="flex flex-row gap-5">
             <QuantityAdjuster quantity={quantity} onChange={setQuantity} />
-            <AddToCartBtn product={product} quantity={quantity} />
+            <AddToCartBtn
+              product={product}
+              quantity={quantity}
+              disabled={false}
+            />
           </div>
         </div>
       </div>
