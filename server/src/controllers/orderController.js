@@ -65,6 +65,7 @@ const createOrder = async (req, res) => {
       currency: "NGN",
       customer: { email: user.email, name: user.name },
       notification_url: `${process.env.SERVER_URL}/orders/webhook`,
+      redirect_url: `${process.env.CLIENT_URL}/profile?payment=success&reference=${reference}`,
       merchant_bears_cost: false,
     });
 

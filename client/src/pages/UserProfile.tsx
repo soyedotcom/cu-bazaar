@@ -35,6 +35,8 @@ const UserProfile = () => {
   const [activeSection, setActiveSection] = useState<ActiveSection>("active");
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [paymentMessage, setPaymentMessage] = useState("");
 
   if (!user) return null;
 
@@ -52,6 +54,35 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetchOrders();
+  }, []);
+
+  useEffect(() => {
+    const payment = searchParams.get("payment");
+    const reference = searchParams.get("reference");
+
+    if (payment === "success" && reference) {
+      api
+        .get(`/orders/verify/${reference}`)
+        .then((res) => {
+          if (res.data.data.status === "success") {
+            setPaymentMessage("Payment confirmed! Your order has been placed.");
+            setActiveSection("active");
+            fetchOrders();
+          } else {
+            setPaymentMessage(
+              "Payment is still processing. Check back shortly.",
+            );
+          }
+        })
+        .catch(() => {
+          setPaymentMessage(
+            "Could not verify payment. Please contact support.",
+          );
+        })
+        .finally(() => {
+          setSearchParams({});
+        });
+    }
   }, []);
 
   const activeOrders = orders.filter(
@@ -226,6 +257,11 @@ const UserProfile = () => {
           </p>
 
           <div className="flex gap-5">
+            {paymentMessage && (
+              <div className="bg-green-50 border border-green-300 text-green-700 rounded-xl px-5 py-3 text-sm font-bold">
+                {paymentMessage}
+              </div>
+            )}
             {(["active", "orders", "transactions"] as ActiveSection[]).map(
               (s) => (
                 <button
