@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {useAuth} from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const SignUpForm = () => {
         confirmPassword,
       });
 
-      navigate("/");
+      navigate("/signin");
     } catch (error) {
       console.log(error);
     }
@@ -35,10 +35,7 @@ const SignUpForm = () => {
 
   return (
     <div className="flex flex-col items-center p-5 justify-center gap-5">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col px-5"
-      >
+      <form onSubmit={handleSubmit} className="flex flex-col px-5">
         <h1 className="text-4xl font-bold mb-2">Create Your Bazaar Account!</h1>
 
         <div className="flex flex-col gap-7 my-5 items-center">
