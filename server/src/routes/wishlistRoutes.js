@@ -3,7 +3,7 @@ import {
   addToWishlist,
   deleteWishlistItem,
   getWishlist,
-} from "../controllers/WishlistController.js";
+} from "../controllers/wishlistController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
