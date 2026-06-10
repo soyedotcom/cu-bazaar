@@ -58,7 +58,13 @@ type Seller = {
   createdAt: string;
 };
 
-type ActiveSection = "products" | "pending" | "orders" | "transactions" | null;
+type ActiveSection =
+  | "products"
+  | "pending"
+  | "orders"
+  | "transactions"
+  | "wallet"
+  | null;
 
 const SellerProfile = () => {
   const { user } = useAuth();
