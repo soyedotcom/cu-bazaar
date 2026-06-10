@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../api/axios";
 import EditUserProfileCard from "../components/EditUserProfileCard";
 
@@ -256,29 +256,31 @@ const UserProfile = () => {
             )}
           </p>
 
-          <div className="flex gap-5">
+          <div className="flex flex-col gap-4">
             {paymentMessage && (
               <div className="bg-green-50 border border-green-300 text-green-700 rounded-xl px-5 py-3 text-sm font-bold">
                 {paymentMessage}
               </div>
             )}
-            {(["active", "orders", "transactions"] as ActiveSection[]).map(
-              (s) => (
-                <button
-                  key={s}
-                  onClick={() =>
-                    setActiveSection(activeSection === s ? null : s)
-                  }
-                  className={`border-2 rounded-full h-10 px-5 cursor-pointer transition-all ${activeSection === s ? "bg-black text-white" : ""}`}
-                >
-                  {s === "orders"
-                    ? "Order History"
-                    : s === "transactions"
-                      ? "Transaction History"
-                      : `Active Orders${activeOrders.length > 0 ? ` (${activeOrders.length})` : ""}`}
-                </button>
-              ),
-            )}
+            <div className="flex gap-5">
+              {(["active", "orders", "transactions"] as ActiveSection[]).map(
+                (s) => (
+                  <button
+                    key={s}
+                    onClick={() =>
+                      setActiveSection(activeSection === s ? null : s)
+                    }
+                    className={`border-2 rounded-full h-10 px-5 cursor-pointer transition-all ${activeSection === s ? "bg-black text-white" : ""}`}
+                  >
+                    {s === "orders"
+                      ? "Order History"
+                      : s === "transactions"
+                        ? "Transaction History"
+                        : `Active Orders${activeOrders.length > 0 ? ` (${activeOrders.length})` : ""}`}
+                  </button>
+                ),
+              )}
+            </div>
           </div>
 
           <div className="mt-4">
