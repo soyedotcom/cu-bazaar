@@ -86,7 +86,7 @@ const handleWebhook = async (req, res) => {
   try {
     const signature = req.headers["x-korapay-signature"];
     const hash = crypto
-      .createHmac("sha256", process.env.KORAPAY_SECRET_KEY)
+      .createHmac("sha256", process.env.KORA_ENCRYPTION_KEY)
       .update(req.body)
       .digest("hex");
 
