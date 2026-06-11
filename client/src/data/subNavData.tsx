@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import FashionIcon from "@mui/icons-material/CheckroomRounded";
 import FoodIcon from "@mui/icons-material/FastfoodRounded";
-import GadjetIcon from "@mui/icons-material/LaptopChromebookRounded";
+import GadgetIcon from "@mui/icons-material/LaptopChromebookRounded";
 
 export interface Section {
   name: string;
@@ -47,8 +47,8 @@ export const subNavData: Category[] = [
       },
 
       {
-        name: "Gadjets and Accessories",
-        icon: <GadjetIcon />,
+        name: "Gadgets and Accessories",
+        icon: <GadgetIcon />,
         sections: [
           { name: "Laptops", icon: <FashionIcon /> },
           { name: "Tablets", icon: <FashionIcon /> },
