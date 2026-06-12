@@ -1,10 +1,56 @@
 import { prisma } from "../config/database.js";
 import { korapay } from "../config/korapay.js";
 
+const baseUrl = process.env.KORAPAY_BASE_URL;
+
+const getBanks = async (req, res) => {
+  try {
+    const response = await korapay.get("/misc/banks?countryCode=NG");
+    return res.status(200).json({ status: true, data: response.data.data });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to fetch banks" });
+  }
+};
+
+const verifyAccount = async (req, res) => {
+  try {
+    const { bank, account } = req.body;
+    const response = await korapay.get("/misc/banks/resolve", {
+      params: { bank, account, currency: "NGN" },
+    });
+    return res.status(200).json({ status: true, data: response.data.data });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ error: "Account verification failed" });
+  }
+};
+
+const bankAvailability = async (req, res) => {
+  try {
+    const { bankCode } = req.body;
+    const response = await korapay.get("/payouts/availability", {
+      params: { type: "bank_account", currency: "NGN" },
+    });
+
+    const banks = response.data.data;
+    const bankEntry = Array.isArray(banks)
+      ? banks.find((b) => b.code === bankCode)
+      : null;
+
+    const status = bankEntry?.status?.toLowerCase() ?? "unavailable";
+    return res.status(200).json({ status });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Could not check bank availability" });
+  }
+};
+
 const requestWithdrawal = async (req, res) => {
   try {
     const sellerId = req.user.id;
-    const { amount, bankName, accountNumber, accountName } = req.body;
+    const { amount, bankName, bankSlug, bankCode, accountNumber, accountName } =
+      req.body;
 
     const seller = await prisma.sellerProfile.findUnique({
       where: { userId: sellerId },
@@ -15,7 +61,7 @@ const requestWithdrawal = async (req, res) => {
     if (Number(seller.availableBalance) < amount)
       return res.status(400).json({ error: "Insufficient available balance" });
 
-    // deduct immediately to prevent double withdrawal
+    // Deduct immediately to prevent double withdrawal
     await prisma.sellerProfile.update({
       where: { userId: sellerId },
       data: { availableBalance: { decrement: amount } },
@@ -28,6 +74,8 @@ const requestWithdrawal = async (req, res) => {
         sellerId,
         amount,
         bankName,
+        bankSlug,
+        bankCode,
         accountNumber,
         accountName,
         reference,
@@ -35,16 +83,23 @@ const requestWithdrawal = async (req, res) => {
       },
     });
 
-    // initiate payout via KoraPay
+    // Initiate payout via KoraPay
     try {
-      await korapay.post("/transactions/disburse", {
+      await korapay.post("/payouts", {
         reference,
         destination: {
           type: "bank_account",
-          amount,
+          amount: Number(amount).toFixed(2),
           currency: "NGN",
-          bank_account: { bank: bankName, account: accountNumber },
-          customer: { email: req.user.email, name: accountName },
+          narration: `Withdrawal to ${bankName} - ${accountNumber}`,
+          bank_account: {
+            bank: bankCode,
+            account: accountNumber,
+          },
+          customer: {
+            email: req.user.email,
+            name: accountName,
+          },
         },
       });
 
@@ -63,7 +118,7 @@ const requestWithdrawal = async (req, res) => {
         },
       });
     } catch (payoutError) {
-      // refund if payout fails
+      // Refund balance if payout initiation fails
       await prisma.sellerProfile.update({
         where: { userId: sellerId },
         data: { availableBalance: { increment: amount } },
@@ -77,8 +132,45 @@ const requestWithdrawal = async (req, res) => {
 
     return res.status(200).json({ status: "success", data: { withdrawal } });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ error: "Failed to process withdrawal" });
+  }
+};
+
+// POST /withdrawals/webhook  ← register this as your KoraPay webhook URL
+const handleWebhook = async (req, res) => {
+  try {
+    const { event, data } = req.body;
+
+    // Always acknowledge immediately so KoraPay doesn't retry
+    res.status(200).json({ received: true });
+
+    if (!data?.reference) return;
+
+    const withdrawal = await prisma.withdrawal.findUnique({
+      where: { reference: data.reference },
+    });
+
+    if (!withdrawal) return;
+
+    if (event === "charge.success" || event === "transfer.success") {
+      await prisma.withdrawal.update({
+        where: { reference: data.reference },
+        data: { status: "SUCCESS" },
+      });
+    } else if (event === "transfer.failed" || event === "charge.failed") {
+      // Refund seller on confirmed failure
+      await prisma.withdrawal.update({
+        where: { reference: data.reference },
+        data: { status: "FAILED" },
+      });
+      await prisma.sellerProfile.update({
+        where: { userId: withdrawal.sellerId },
+        data: { availableBalance: { increment: withdrawal.amount } },
+      });
+    }
+  } catch (error) {
+    console.error("Webhook error:", error);
   }
 };
 
@@ -95,4 +187,11 @@ const getWithdrawals = async (req, res) => {
   }
 };
 
-export { requestWithdrawal, getWithdrawals };
+export {
+  requestWithdrawal,
+  getWithdrawals,
+  getBanks,
+  verifyAccount,
+  bankAvailability,
+  handleWebhook,
+};
