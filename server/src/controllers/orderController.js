@@ -247,6 +247,13 @@ const confirmDelivery = async (req, res) => {
     if (!isBuyer && !isSeller)
       return res.status(403).json({ error: "Not authorized" });
 
+    if (isBuyer && orderItem.buyerConfirmed)
+      return res.status(400).json({ error: "Already confirmed" });
+    if (isSeller && orderItem.sellerConfirmed)
+      return res.status(400).json({ error: "Already confirmed" });
+
+    const deliveryDate = newDate();
+
     const updateData = isBuyer
       ? { buyerConfirmed: true }
       : { sellerConfirmed: true };
@@ -260,7 +267,7 @@ const confirmDelivery = async (req, res) => {
     if (updated.buyerConfirmed && updated.sellerConfirmed) {
       await prisma.orderItem.update({
         where: { id: parseInt(orderItemId) },
-        data: { status: "DELIVERED", deliveredAt: new Date() },
+        data: { status: "DELIVERED", deliveredAt: deliveryDate },
       });
 
       // move from pending to available
