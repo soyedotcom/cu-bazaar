@@ -55,8 +55,6 @@ const requestWithdrawal = async (req, res) => {
 
     if (!seller) return res.status(404).json({ error: "Seller not found" });
 
-    const reference = `WD-${sellerId}-${Date.now()}`;
-
     if (Number(seller.availableBalance) < Number(amount))
       return res.status(400).json({ error: "Insufficient available balance" });
 
