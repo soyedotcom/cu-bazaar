@@ -84,7 +84,7 @@ const requestWithdrawal = async (req, res) => {
         reference,
         destination: {
           type: "bank_account",
-          amount: Number(amount),
+          amount: parseFloat(Number(amount).toFixed(2)),
           currency: "NGN",
           narration: `Withdrawal to ${bankName} - ${accountNumber}`,
           customer: {
