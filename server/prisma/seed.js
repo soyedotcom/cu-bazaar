@@ -3,12 +3,6 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-/**
- * -----------------------------
- * USERS (4 SELLERS + 2 BUYERS)
- * -----------------------------
- */
-
 const users = [
   {
     name: "Daniel Okon",
@@ -46,33 +40,28 @@ const users = [
     isSeller: true,
     shopName: "Campus Services Hub",
   },
-
+  // Primary test buyer
   {
-    name: "James Wilson",
-    email: "james@cubazzar.com",
-    hall: "Dorcas",
-    room: "G250",
+    name: "Test User",
+    email: "test@cubazzar.com",
+    hall: "Daniel",
+    room: "G009",
     role: "USER",
     isSeller: false,
   },
+  // Secondary test buyer (also a seller)
   {
-    name: "Sophia Brown",
-    email: "sophia@cubazzar.com",
+    name: "Kosi Eze",
+    email: "kosi@cubazzar.com",
     hall: "Lydia",
-    room: "H110",
-    role: "USER",
-    isSeller: false,
+    room: "C301",
+    role: "SELLER",
+    isSeller: true,
+    shopName: "Kosi's Corner",
   },
 ];
 
-/**
- * -----------------------------
- * REALISTIC PRODUCT DATA
- * -----------------------------
- */
-
 const productCatalog = [
-  // ---------------- FASHION ----------------
   {
     sellerEmail: "daniel@cubazzar.com",
     products: [
@@ -127,8 +116,6 @@ const productCatalog = [
       },
     ],
   },
-
-  // ---------------- FOOD ----------------
   {
     sellerEmail: "sarah@cubazzar.com",
     products: [
@@ -179,8 +166,6 @@ const productCatalog = [
       },
     ],
   },
-
-  // ---------------- TECH ----------------
   {
     sellerEmail: "michael@cubazzar.com",
     products: [
@@ -231,8 +216,6 @@ const productCatalog = [
       },
     ],
   },
-
-  // ---------------- SERVICES ----------------
   {
     sellerEmail: "grace@cubazzar.com",
     products: [
@@ -283,13 +266,40 @@ const productCatalog = [
       },
     ],
   },
+  // Kosi's shop
+  {
+    sellerEmail: "kosi@cubazzar.com",
+    products: [
+      {
+        name: "Jollof Rice Plate",
+        image: "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26",
+        description: "Hot party jollof rice, served fresh.",
+        price: 1800,
+        category: "Products",
+        subcategory: "Food and Provisions",
+        section: "Meals",
+      },
+      {
+        name: "Fried Plantain (Dodo)",
+        image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0",
+        description: "Freshly fried sweet plantain.",
+        price: 800,
+        category: "Products",
+        subcategory: "Food and Provisions",
+        section: "Snacks",
+      },
+      {
+        name: "Chin Chin Pack",
+        image: "https://images.unsplash.com/photo-1627485937980-221c88ac04f9",
+        description: "Crunchy homemade chin chin.",
+        price: 1000,
+        category: "Products",
+        subcategory: "Food and Provisions",
+        section: "Snacks",
+      },
+    ],
+  },
 ];
-
-/**
- * -----------------------------
- * MAIN SEED FUNCTION
- * -----------------------------
- */
 
 async function main() {
   console.log("🌱 Seeding CU Bazzar...");
@@ -301,10 +311,10 @@ async function main() {
   await prisma.withdrawal.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
-  await prisma.product.deleteMany();
-  await prisma.sellerProfile.deleteMany();
   await prisma.cartItem.deleteMany();
   await prisma.wishlistItem.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.sellerProfile.deleteMany();
   await prisma.user.deleteMany();
 
   // CREATE USERS
@@ -318,7 +328,6 @@ async function main() {
         password: hashedPassword,
         role: u.role,
         isSeller: u.isSeller,
-
         sellerProfile: u.isSeller
           ? {
               create: {
@@ -341,7 +350,6 @@ async function main() {
       where: { email: sellerBlock.sellerEmail },
       include: { sellerProfile: true },
     });
-
     if (!seller?.sellerProfile) continue;
 
     for (const p of sellerBlock.products) {
@@ -354,28 +362,533 @@ async function main() {
           price: new Prisma.Decimal(p.price),
           stock: 20,
           published: true,
-
           category: p.category,
           subcategory: p.subcategory,
           section: p.section,
-
           features: p.features ?? [],
           tags: p.tags ?? [],
-
           variants: p.variants ?? null,
-
-          seller: {
-            connect: {
-              userId: seller.sellerProfile.userId,
-            },
-          },
+          seller: { connect: { userId: seller.sellerProfile.userId } },
         },
       });
     }
   }
 
   console.log("📦 Products created");
+
+  // -------------------------------------------------------
+  // FETCH references needed for orders
+  // -------------------------------------------------------
+  const testUser = await prisma.user.findUnique({ where: { email: "test@cubazzar.com" } });
+  const kosi = await prisma.user.findUnique({ where: { email: "kosi@cubazzar.com" }, include: { sellerProfile: true } });
+  const daniel = await prisma.user.findUnique({ where: { email: "daniel@cubazzar.com" }, include: { sellerProfile: true } });
+  const sarah = await prisma.user.findUnique({ where: { email: "sarah@cubazzar.com" }, include: { sellerProfile: true } });
+  const michael = await prisma.user.findUnique({ where: { email: "michael@cubazzar.com" }, include: { sellerProfile: true } });
+
+  const hoodie = await prisma.product.findFirst({ where: { name: "Oversized Streetwear Hoodie" } });
+  const cargoPants = await prisma.product.findFirst({ where: { name: "Cargo Pants" } });
+  const cookies = await prisma.product.findFirst({ where: { name: "Chocolate Chip Cookies" } });
+  const juice = await prisma.product.findFirst({ where: { name: "Fresh Fruit Juice" } });
+  const keyboard = await prisma.product.findFirst({ where: { name: "Mechanical Keyboard" } });
+  const ssd = await prisma.product.findFirst({ where: { name: "External SSD 1TB" } });
+  const jollof = await prisma.product.findFirst({ where: { name: "Jollof Rice Plate" } });
+  const chinChin = await prisma.product.findFirst({ where: { name: "Chin Chin Pack" } });
+
+  // -------------------------------------------------------
+  // ORDERS — Test User as buyer
+  // -------------------------------------------------------
+
+  // ORDER 1: Fully DELIVERED — both parties confirmed
+  // Tests: order history, delivered status, released funds
+  const order1 = await prisma.order.create({
+    data: {
+      userId: testUser.id,
+      totalAmount: new Prisma.Decimal(27000),
+      status: "DELIVERED",
+      paymentStatus: "PAID",
+      paymentReference: "CUB-test001-seed",
+      paidAt: new Date("2026-05-01T10:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order1.id,
+      productId: hoodie.id,
+      sellerId: daniel.sellerProfile.userId,
+      quantity: 1,
+      price: new Prisma.Decimal(15000),
+      sellerAmount: new Prisma.Decimal(14250),
+      platformFee: new Prisma.Decimal(750),
+      paymentStatus: "PAID",
+      status: "DELIVERED",
+      buyerConfirmed: true,
+      sellerConfirmed: true,
+      deliveredAt: new Date("2026-05-02T14:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order1.id,
+      productId: cookies.id,
+      sellerId: sarah.sellerProfile.userId,
+      quantity: 2,
+      price: new Prisma.Decimal(2500),
+      sellerAmount: new Prisma.Decimal(4750),
+      platformFee: new Prisma.Decimal(250),
+      paymentStatus: "PAID",
+      status: "DELIVERED",
+      buyerConfirmed: true,
+      sellerConfirmed: true,
+      deliveredAt: new Date("2026-05-02T14:00:00Z"),
+    },
+  });
+
+  // ORDER 2: Seller confirmed, buyer hasn't yet
+  // Tests: "Awaiting buyer" on seller side, "Confirm Received" on buyer side
+  const order2 = await prisma.order.create({
+    data: {
+      userId: testUser.id,
+      totalAmount: new Prisma.Decimal(25000),
+      status: "PENDING",
+      paymentStatus: "PAID",
+      paymentReference: "CUB-test002-seed",
+      paidAt: new Date("2026-06-01T09:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order2.id,
+      productId: keyboard.id,
+      sellerId: michael.sellerProfile.userId,
+      quantity: 1,
+      price: new Prisma.Decimal(25000),
+      sellerAmount: new Prisma.Decimal(23750),
+      platformFee: new Prisma.Decimal(1250),
+      paymentStatus: "PAID",
+      status: "PENDING",
+      buyerConfirmed: false,
+      sellerConfirmed: true, // seller already marked delivered
+    },
+  });
+
+  // ORDER 3: Neither confirmed yet — fresh active order
+  // Tests: "Mark Delivered" on seller side, "Confirm Received" on buyer side
+  const order3 = await prisma.order.create({
+    data: {
+      userId: testUser.id,
+      totalAmount: new Prisma.Decimal(45000),
+      status: "PENDING",
+      paymentStatus: "PAID",
+      paymentReference: "CUB-test003-seed",
+      paidAt: new Date("2026-06-10T08:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order3.id,
+      productId: ssd.id,
+      sellerId: michael.sellerProfile.userId,
+      quantity: 1,
+      price: new Prisma.Decimal(45000),
+      sellerAmount: new Prisma.Decimal(42750),
+      platformFee: new Prisma.Decimal(2250),
+      paymentStatus: "PAID",
+      status: "PENDING",
+      buyerConfirmed: false,
+      sellerConfirmed: false,
+    },
+  });
+
+  // ORDER 4: Multi-item order — one delivered, one still pending
+  // Tests: mixed item states within one order
+  const order4 = await prisma.order.create({
+    data: {
+      userId: testUser.id,
+      totalAmount: new Prisma.Decimal(14000),
+      status: "PENDING",
+      paymentStatus: "PAID",
+      paymentReference: "CUB-test004-seed",
+      paidAt: new Date("2026-06-08T11:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order4.id,
+      productId: juice.id,
+      sellerId: sarah.sellerProfile.userId,
+      quantity: 3,
+      price: new Prisma.Decimal(2000),
+      sellerAmount: new Prisma.Decimal(5700),
+      platformFee: new Prisma.Decimal(300),
+      paymentStatus: "PAID",
+      status: "DELIVERED",
+      buyerConfirmed: true,
+      sellerConfirmed: true,
+      deliveredAt: new Date("2026-06-09T10:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order4.id,
+      productId: cargoPants.id,
+      sellerId: daniel.sellerProfile.userId,
+      quantity: 1,
+      price: new Prisma.Decimal(12000),
+      sellerAmount: new Prisma.Decimal(11400),
+      platformFee: new Prisma.Decimal(600),
+      paymentStatus: "PAID",
+      status: "PENDING",
+      buyerConfirmed: false,
+      sellerConfirmed: false,
+    },
+  });
+
+  // ORDER 5: Cancelled order
+  // Tests: cancelled state rendering
+  const order5 = await prisma.order.create({
+    data: {
+      userId: testUser.id,
+      totalAmount: new Prisma.Decimal(7000),
+      status: "CANCELLED",
+      paymentStatus: "PAID",
+      paymentReference: "CUB-test005-seed",
+      paidAt: new Date("2026-05-15T14:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order5.id,
+      productId: hoodie.id,
+      sellerId: daniel.sellerProfile.userId,
+      quantity: 1,
+      price: new Prisma.Decimal(7000),
+      sellerAmount: new Prisma.Decimal(6650),
+      platformFee: new Prisma.Decimal(350),
+      paymentStatus: "PAID",
+      status: "CANCELLED",
+      buyerConfirmed: false,
+      sellerConfirmed: false,
+    },
+  });
+
+  console.log("🛒 Test User orders created");
+
+  // -------------------------------------------------------
+  // ORDERS — Kosi as buyer (buying from other sellers)
+  // -------------------------------------------------------
+
+  // ORDER 6: Kosi buys from Sarah — active, no confirmation yet
+  const order6 = await prisma.order.create({
+    data: {
+      userId: kosi.id,
+      totalAmount: new Prisma.Decimal(3000),
+      status: "PENDING",
+      paymentStatus: "PAID",
+      paymentReference: "CUB-kosi001-seed",
+      paidAt: new Date("2026-06-11T07:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order6.id,
+      productId: cookies.id,
+      sellerId: sarah.sellerProfile.userId,
+      quantity: 1,
+      price: new Prisma.Decimal(2500),
+      sellerAmount: new Prisma.Decimal(2375),
+      platformFee: new Prisma.Decimal(125),
+      paymentStatus: "PAID",
+      status: "PENDING",
+      buyerConfirmed: false,
+      sellerConfirmed: false,
+    },
+  });
+
+  // ORDER 7: Kosi buys from Daniel — delivered
+  const order7 = await prisma.order.create({
+    data: {
+      userId: kosi.id,
+      totalAmount: new Prisma.Decimal(15000),
+      status: "DELIVERED",
+      paymentStatus: "PAID",
+      paymentReference: "CUB-kosi002-seed",
+      paidAt: new Date("2026-05-20T10:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order7.id,
+      productId: hoodie.id,
+      sellerId: daniel.sellerProfile.userId,
+      quantity: 1,
+      price: new Prisma.Decimal(15000),
+      sellerAmount: new Prisma.Decimal(14250),
+      platformFee: new Prisma.Decimal(750),
+      paymentStatus: "PAID",
+      status: "DELIVERED",
+      buyerConfirmed: true,
+      sellerConfirmed: true,
+      deliveredAt: new Date("2026-05-21T12:00:00Z"),
+    },
+  });
+
+  console.log("🛒 Kosi orders created");
+
+  // -------------------------------------------------------
+  // ORDERS — Kosi's shop receiving orders (as seller)
+  // Tests Kosi's seller dashboard active/history tabs
+  // -------------------------------------------------------
+
+  // ORDER 8: Test User buys from Kosi's Corner — pending, no confirmations
+  const order8 = await prisma.order.create({
+    data: {
+      userId: testUser.id,
+      totalAmount: new Prisma.Decimal(1800),
+      status: "PENDING",
+      paymentStatus: "PAID",
+      paymentReference: "CUB-kosi-shop001-seed",
+      paidAt: new Date("2026-06-12T06:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order8.id,
+      productId: jollof.id,
+      sellerId: kosi.sellerProfile.userId,
+      quantity: 1,
+      price: new Prisma.Decimal(1800),
+      sellerAmount: new Prisma.Decimal(1710),
+      platformFee: new Prisma.Decimal(90),
+      paymentStatus: "PAID",
+      status: "PENDING",
+      buyerConfirmed: false,
+      sellerConfirmed: false,
+    },
+  });
+
+  // ORDER 9: Test User buys from Kosi's Corner — seller confirmed, awaiting buyer
+  const order9 = await prisma.order.create({
+    data: {
+      userId: testUser.id,
+      totalAmount: new Prisma.Decimal(2800),
+      status: "PENDING",
+      paymentStatus: "PAID",
+      paymentReference: "CUB-kosi-shop002-seed",
+      paidAt: new Date("2026-06-11T15:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order9.id,
+      productId: chinChin.id,
+      sellerId: kosi.sellerProfile.userId,
+      quantity: 2,
+      price: new Prisma.Decimal(1000),
+      sellerAmount: new Prisma.Decimal(1900),
+      platformFee: new Prisma.Decimal(100),
+      paymentStatus: "PAID",
+      status: "PENDING",
+      buyerConfirmed: false,
+      sellerConfirmed: true, // Kosi marked it delivered, waiting on Test User
+    },
+  });
+
+  // ORDER 10: Fully delivered order in Kosi's shop history
+  const order10 = await prisma.order.create({
+    data: {
+      userId: testUser.id,
+      totalAmount: new Prisma.Decimal(1000),
+      status: "DELIVERED",
+      paymentStatus: "PAID",
+      paymentReference: "CUB-kosi-shop003-seed",
+      paidAt: new Date("2026-06-05T09:00:00Z"),
+    },
+  });
+  await prisma.orderItem.create({
+    data: {
+      orderId: order10.id,
+      productId: chinChin.id,
+      sellerId: kosi.sellerProfile.userId,
+      quantity: 1,
+      price: new Prisma.Decimal(1000),
+      sellerAmount: new Prisma.Decimal(950),
+      platformFee: new Prisma.Decimal(50),
+      paymentStatus: "PAID",
+      status: "DELIVERED",
+      buyerConfirmed: true,
+      sellerConfirmed: true,
+      deliveredAt: new Date("2026-06-06T11:00:00Z"),
+    },
+  });
+
+  console.log("🏪 Kosi shop orders created");
+
+  // -------------------------------------------------------
+  // WALLET TRANSACTIONS & BALANCES for Kosi
+  // -------------------------------------------------------
+  // Reflects: order10 delivered (950 released), order9 pending (1900 pending)
+
+  await prisma.sellerProfile.update({
+    where: { userId: kosi.sellerProfile.userId },
+    data: {
+      availableBalance: new Prisma.Decimal(950),   // from order10
+      pendingBalance: new Prisma.Decimal(1900),     // from order9 (sellerConfirmed, not yet released)
+    },
+  });
+
+  await prisma.walletTransaction.create({
+    data: {
+      sellerId: kosi.sellerProfile.userId,
+      amount: new Prisma.Decimal(1900),
+      type: "CREDIT_PENDING",
+      description: "Payment received for order CUB-kosi-s",
+      reference: "CUB-kosi-shop002-seed",
+    },
+  });
+  await prisma.walletTransaction.create({
+    data: {
+      sellerId: kosi.sellerProfile.userId,
+      amount: new Prisma.Decimal(1000),
+      type: "CREDIT_PENDING",
+      description: "Payment received for order CUB-kosi-s",
+      reference: "CUB-kosi-shop003-seed",
+    },
+  });
+  await prisma.walletTransaction.create({
+    data: {
+      sellerId: kosi.sellerProfile.userId,
+      amount: new Prisma.Decimal(1000),
+      type: "RELEASE_FUNDS",
+      description: "Funds released for order item (chin chin)",
+      reference: null,
+    },
+  });
+  // A past withdrawal Kosi already made
+  await prisma.walletTransaction.create({
+    data: {
+      sellerId: kosi.sellerProfile.userId,
+      amount: new Prisma.Decimal(500),
+      type: "WITHDRAWAL",
+      description: "Withdrawal to GTBank 0123456789",
+      reference: "WD-kosieze-seed01",
+    },
+  });
+
+  await prisma.withdrawal.create({
+    data: {
+      sellerId: kosi.sellerProfile.userId,
+      amount: new Prisma.Decimal(500),
+      status: "SUCCESS",
+      bankName: "GTBank",
+      accountNumber: "0123456789",
+      accountName: "Kosi Eze",
+      reference: "WD-kosieze-seed01",
+      processedAt: new Date("2026-06-07T10:00:00Z"),
+    },
+  });
+
+  // A pending withdrawal request
+  await prisma.withdrawal.create({
+    data: {
+      sellerId: kosi.sellerProfile.userId,
+      amount: new Prisma.Decimal(450),
+      status: "PENDING",
+      bankName: "Access Bank",
+      accountNumber: "9876543210",
+      accountName: "Kosi Eze",
+      reference: "WD-kosieze-seed02",
+    },
+  });
+
+  // -------------------------------------------------------
+  // WALLET TRANSACTIONS & BALANCES for Daniel
+  // Tests: seller with more history — released funds from
+  // order1 (Test User) and order7 (Kosi)
+  // -------------------------------------------------------
+
+  await prisma.sellerProfile.update({
+    where: { userId: daniel.sellerProfile.userId },
+    data: {
+      availableBalance: new Prisma.Decimal(28500), // 14250 (order1 hoodie) + 14250 (order7 hoodie)
+      pendingBalance: new Prisma.Decimal(0),
+    },
+  });
+
+  await prisma.walletTransaction.create({
+    data: {
+      sellerId: daniel.sellerProfile.userId,
+      amount: new Prisma.Decimal(14250),
+      type: "CREDIT_PENDING",
+      description: "Payment received for order CUB-test00",
+      reference: "CUB-test001-seed",
+    },
+  });
+  await prisma.walletTransaction.create({
+    data: {
+      sellerId: daniel.sellerProfile.userId,
+      amount: new Prisma.Decimal(14250),
+      type: "RELEASE_FUNDS",
+      description: "Funds released for order item (hoodie - Test User)",
+    },
+  });
+  await prisma.walletTransaction.create({
+    data: {
+      sellerId: daniel.sellerProfile.userId,
+      amount: new Prisma.Decimal(14250),
+      type: "CREDIT_PENDING",
+      description: "Payment received for order CUB-kosi00",
+      reference: "CUB-kosi002-seed",
+    },
+  });
+  await prisma.walletTransaction.create({
+    data: {
+      sellerId: daniel.sellerProfile.userId,
+      amount: new Prisma.Decimal(14250),
+      type: "RELEASE_FUNDS",
+      description: "Funds released for order item (hoodie - Kosi)",
+    },
+  });
+
+  // -------------------------------------------------------
+  // WALLET TRANSACTIONS & BALANCES for Michael
+  // order2: keyboard pending (23750), order3: ssd pending (42750)
+  // -------------------------------------------------------
+
+  await prisma.sellerProfile.update({
+    where: { userId: michael.sellerProfile.userId },
+    data: {
+      availableBalance: new Prisma.Decimal(0),
+      pendingBalance: new Prisma.Decimal(66500), // 23750 + 42750
+    },
+  });
+
+  await prisma.walletTransaction.create({
+    data: {
+      sellerId: michael.sellerProfile.userId,
+      amount: new Prisma.Decimal(23750),
+      type: "CREDIT_PENDING",
+      description: "Payment received for order CUB-test00",
+      reference: "CUB-test002-seed",
+    },
+  });
+  await prisma.walletTransaction.create({
+    data: {
+      sellerId: michael.sellerProfile.userId,
+      amount: new Prisma.Decimal(42750),
+      type: "CREDIT_PENDING",
+      description: "Payment received for order CUB-test00",
+      reference: "CUB-test003-seed",
+    },
+  });
+
+  console.log("💰 Wallet transactions and balances set");
   console.log("🎉 Seeding complete!");
+  console.log("");
+  console.log("Test accounts (password: 'password'):");
+  console.log("  Buyer  → test@cubazzar.com");
+  console.log("  Seller/Buyer → kosi@cubazzar.com");
+  console.log("  Seller → daniel@cubazzar.com");
+  console.log("  Seller → michael@cubazzar.com");
 }
 
 main()
