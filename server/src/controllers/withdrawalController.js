@@ -112,8 +112,13 @@ const requestWithdrawal = async (req, res) => {
           reference,
         },
       });
-    } catch (payoutError) {
+    } catch (error) {
       // Refund balance if payout initiation fails
+      //console.error(error);
+      console.error("error:");
+      console.error(error.response?.data);
+      console.error(error.response?.status);
+      console.error(error.message);
       await prisma.sellerProfile.update({
         where: { userId: sellerId },
         data: { availableBalance: { increment: amount } },
