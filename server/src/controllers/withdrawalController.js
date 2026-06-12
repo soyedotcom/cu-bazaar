@@ -5,7 +5,7 @@ const baseUrl = process.env.KORAPAY_BASE_URL;
 
 const getBanks = async (req, res) => {
   try {
-    const response = await korapay.get("/misc/banks?countryCode=NG");
+    const response = await korapay.get(`${baseUrl}/misc/banks?countryCode=NG`);
     return res.status(200).json({ status: true, data: response.data.data });
   } catch (error) {
     console.error(error);
@@ -16,7 +16,7 @@ const getBanks = async (req, res) => {
 const verifyAccount = async (req, res) => {
   try {
     const { bank, account } = req.body;
-    const response = await korapay.get("/misc/banks/resolve", {
+    const response = await korapay.get(`${baseUrl}/misc/banks/resolve`, {
       params: { bank, account, currency: "NGN" },
     });
     return res.status(200).json({ status: true, data: response.data.data });
@@ -29,7 +29,7 @@ const verifyAccount = async (req, res) => {
 const bankAvailability = async (req, res) => {
   try {
     const { bankCode } = req.body;
-    const response = await korapay.get("/payouts/availability", {
+    const response = await korapay.get(`${baseUrl}/payouts/availability`, {
       params: { type: "bank_account", currency: "NGN" },
     });
 
@@ -85,7 +85,7 @@ const requestWithdrawal = async (req, res) => {
 
     // Initiate payout via KoraPay
     try {
-      await korapay.post("/payouts", {
+      await korapay.post(`${baseUrl}/payouts`, {
         reference,
         destination: {
           type: "bank_account",
