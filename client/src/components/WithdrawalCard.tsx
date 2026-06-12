@@ -17,7 +17,6 @@ type Bank = {
 
 const WithdrawCard = ({ availableBalance, onClose, onSuccess }: Props) => {
   const [amount, setAmount] = useState("");
-  const [bankName, setBankName] = useState("");
   const [banks, setBanks] = useState<Bank[]>([]);
   const [selectedBank, setSelectedBank] = useState<Bank | null>(null);
   const [accountNumber, setAccountNumber] = useState("");
