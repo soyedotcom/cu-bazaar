@@ -8,7 +8,11 @@ const getBanks = async (req, res) => {
     const response = await korapay.get(`${baseUrl}/misc/banks?countryCode=NG`);
     return res.status(200).json({ status: true, data: response.data.data });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
+    console.error("Kora error:");
+    console.error(error.response?.data);
+    console.error(error.response?.status);
+    console.error(error.message);
     return res.status(500).json({ error: "Failed to fetch banks" });
   }
 };
