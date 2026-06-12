@@ -23,8 +23,10 @@ const getBanks = async (req, res) => {
 const verifyAccount = async (req, res) => {
   try {
     const { bank, account } = req.body;
-    const response = await korapayPublic.get(`${baseUrl}/misc/banks/resolve`, {
-      params: { bank_code: bank, account_number: account, currency: "NGN" },
+    const response = await korapayPublic.post(`${baseUrl}/misc/banks/resolve`, {
+      bank,
+      account,
+      currency: "NGN",
     });
     return res.status(200).json({ status: true, data: response.data.data });
   } catch (error) {
