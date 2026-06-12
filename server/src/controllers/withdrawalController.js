@@ -1,3 +1,4 @@
+import axios from "axios";
 import { prisma } from "../config/database.js";
 import { korapayPublic } from "../config/korapay.js";
 import { korapaySecret } from "../config/korapay.js";
@@ -44,6 +45,7 @@ const verifyAccount = async (req, res) => {
 const requestWithdrawal = async (req, res) => {
   try {
     const sellerId = req.user.id;
+    const reference = `WD-${sellerId}-${Date.now()}`;
     const { amount, bankName, bankSlug, bankCode, accountNumber, accountName } =
       req.body;
 
@@ -80,7 +82,7 @@ const requestWithdrawal = async (req, res) => {
 
     // Initiate payout via KoraPay
     try {
-      await korapaySecret.post(`${baseUrl}/transactions/disburse`, {
+      const payload = {
         reference,
         destination: {
           type: "bank_account",
@@ -96,7 +98,12 @@ const requestWithdrawal = async (req, res) => {
             account: accountNumber,
           },
         },
-      });
+      };
+
+      await axios.post(
+        `https://nnkbw73pdg.execute-api.us-east-1.amazonaws.com/korapay/disburse`,
+        payload,
+      );
 
       await prisma.withdrawal.update({
         where: { id: withdrawal.id },
@@ -119,6 +126,7 @@ const requestWithdrawal = async (req, res) => {
       console.error(error.response?.data);
       console.error(error.response?.status);
       console.error(error.message);
+
       await prisma.sellerProfile.update({
         where: { userId: sellerId },
         data: { availableBalance: { increment: amount } },
