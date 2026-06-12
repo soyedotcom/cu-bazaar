@@ -80,7 +80,7 @@ const requestWithdrawal = async (req, res) => {
 
     // Initiate payout via KoraPay
     try {
-      await korapaySecret.post(`${baseUrl}/transactions/disburse`, {
+      await korapaySecret.post(`/transactions/disburse`, {
         reference,
         destination: {
           type: "bank_account",
