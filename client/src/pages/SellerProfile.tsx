@@ -216,7 +216,6 @@ const SellerProfile = () => {
                 "pending",
                 "orders",
                 "transactions",
-                "wallet",
               ] as ActiveSection[]
             ).map((s) => (
               <button
@@ -395,9 +394,9 @@ const SellerProfile = () => {
                     />
                     <div className="flex flex-col gap-1 flex-1 text-left">
                       <p className="font-bold">{item.product.name}</p>
-                      <p className="font-bold">
-                        Delivered To: {item.order.user.name} at{" "}
-                        {item.order.user.hall} {item.order.user.room}
+                      <p>
+                        {item.order.user.name} · {item.order.user.hall}{" "}
+                        {item.order.user.room}
                       </p>
                       <p className="text-gray-400">
                         Qty: {item.quantity} · ₦
@@ -419,7 +418,7 @@ const SellerProfile = () => {
           {activeSection === "transactions" && (
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-3">
-                <h3 className="font-bold text-lg text-left">
+                <h3 className="font-bold text-[32px] text-left">
                   Wallet Transactions
                 </h3>
                 {seller.walletTransactions.length === 0 ? (
@@ -433,10 +432,10 @@ const SellerProfile = () => {
                       className="flex justify-between items-center border-b py-3"
                     >
                       <div className="text-left">
-                        <p className="font-bold text-sm">{tx.description}</p>
                         <p className="text-xs text-gray-400">
                           {new Date(tx.createdAt).toLocaleDateString("en-GB")}
                         </p>
+                        <p className="font-bold">{tx.description}</p>
                       </div>
                       <div className="text-right">
                         <p className={`font-bold ${txColor(tx.type)}`}>
@@ -453,7 +452,7 @@ const SellerProfile = () => {
               </div>
 
               <div className="flex flex-col gap-3">
-                <h3 className="font-bold text-lg text-left">
+                <h3 className="font-bold text-[32px] text-left">
                   Withdrawal History
                 </h3>
                 {seller.withdrawals.length === 0 ? (
@@ -467,14 +466,14 @@ const SellerProfile = () => {
                       className="flex justify-between items-center border-b py-3"
                     >
                       <div className="text-left">
-                        <p className="font-bold text-sm">
-                          ₦{Number(w.amount).toLocaleString()}
+                        <p className="text-xs text-gray-400">
+                          {new Date(w.createdAt).toLocaleDateString("en-GB")}
                         </p>
                         <p className="text-xs text-gray-400">
                           {w.bankName} · {w.accountNumber}
                         </p>
-                        <p className="text-xs text-gray-400">
-                          {new Date(w.createdAt).toLocaleDateString("en-GB")}
+                        <p className="font-bold">
+                          ₦{Number(w.amount).toLocaleString()}
                         </p>
                       </div>
                       <span
