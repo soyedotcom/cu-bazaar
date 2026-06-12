@@ -53,7 +53,9 @@ const requestWithdrawal = async (req, res) => {
 
     if (!seller) return res.status(404).json({ error: "Seller not found" });
 
-    if (Number(seller.availableBalance) < amount)
+    const reference = `WD-${sellerId}-${Date.now()}`;
+
+    if (Number(seller.availableBalance) < Number(amount))
       return res.status(400).json({ error: "Insufficient available balance" });
 
     // Deduct immediately to prevent double withdrawal
@@ -61,8 +63,6 @@ const requestWithdrawal = async (req, res) => {
       where: { userId: sellerId },
       data: { availableBalance: { decrement: amount } },
     });
-
-    const reference = `WD-${sellerId.slice(0, 8)}-${Date.now()}`;
 
     const withdrawal = await prisma.withdrawal.create({
       data: {
@@ -81,10 +81,10 @@ const requestWithdrawal = async (req, res) => {
     // Initiate payout via KoraPay
     try {
       await korapaySecret.post(`${baseUrl}/transactions/disburse`, {
-        reference: `WD-${sellerId}-${Date.now()}`,
+        reference,
+        amount: Number(amount),
         destination: {
           type: "bank_account",
-          amount: Number(amount),
           currency: "NGN",
           narration: `Withdrawal to ${bankName} - ${accountNumber}`,
           customer: {
