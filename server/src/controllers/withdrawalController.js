@@ -82,9 +82,9 @@ const requestWithdrawal = async (req, res) => {
     try {
       await korapaySecret.post(`${baseUrl}/transactions/disburse`, {
         reference,
-        amount: Number(amount),
         destination: {
           type: "bank_account",
+          amount: Number(amount),
           currency: "NGN",
           narration: `Withdrawal to ${bankName} - ${accountNumber}`,
           customer: {
