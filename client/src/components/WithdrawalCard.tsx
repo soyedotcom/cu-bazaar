@@ -33,7 +33,7 @@ const WithdrawCard = ({ availableBalance, onClose, onSuccess }: Props) => {
   useEffect(() => {
     const fetchBanks = async () => {
       try {
-        const res = await api.get("/withdrawals/banks");
+        const res = await api.get("/seller/withdrawals/banks");
         setBanks(res.data.data);
       } catch {
         setError("Failed to load banks. Please try again.");
@@ -59,14 +59,14 @@ const WithdrawCard = ({ availableBalance, onClose, onSuccess }: Props) => {
     setAccountName("");
     setError("");
     try {
-      const res = await api.post("/withdrawals/verify-account", {
+      const res = await api.post("/seller/withdrawals/verify-account", {
         bank: selectedBank.code,
         account: accountNumber,
       });
       setAccountName(res.data.data.account_name);
 
       // Check bank availability after verification
-      const availRes = await api.post("/withdrawals/bank-availability", {
+      const availRes = await api.post("/seller/withdrawals/bank-availability", {
         bankCode: selectedBank.code,
       });
 

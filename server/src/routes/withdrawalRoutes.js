@@ -11,15 +11,15 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 import { roleMiddleware } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
-router.post("/withdrawals/webhook", handleWebhook);
+router.post("/webhook", handleWebhook);
 
 router.use(authMiddleware);
 router.use(roleMiddleware("SELLER"));
 
 router.get("/", getWithdrawals);
 router.post("/", requestWithdrawal);
-router.get("/withdrawals/banks", getBanks);
-router.post("/withdrawals/verify-account", verifyAccount);
-router.post("/withdrawals/bank-availability", bankAvailability);
+router.get("/banks", getBanks);
+router.post("/verify-account", verifyAccount);
+router.post("/bank-availability", bankAvailability);
 
 export default router;
