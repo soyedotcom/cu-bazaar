@@ -5,7 +5,6 @@ import {
   getBanks,
   handleWebhook,
   verifyAccount,
-  bankAvailability,
 } from "../controllers/withdrawalController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { roleMiddleware } from "../middleware/roleMiddleware.js";
@@ -20,6 +19,5 @@ router.get("/", getWithdrawals);
 router.post("/", requestWithdrawal);
 router.get("/banks", getBanks);
 router.post("/verify-account", verifyAccount);
-router.post("/bank-availability", bankAvailability);
 
 export default router;

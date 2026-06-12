@@ -1,11 +1,14 @@
 import { prisma } from "../config/database.js";
-import { korapay } from "../config/korapay.js";
+import { korapayPublic } from "../config/korapay.js";
+import { korapaySecret } from "../config/korapay.js";
 
 const baseUrl = process.env.KORAPAY_BASE_URL;
 
 const getBanks = async (req, res) => {
   try {
-    const response = await korapay.get(`${baseUrl}/misc/banks?countryCode=NG`);
+    const response = await korapayPublic.get(
+      `${baseUrl}/misc/banks?countryCode=NG`,
+    );
     return res.status(200).json({ status: true, data: response.data.data });
   } catch (error) {
     // console.error(error);
@@ -20,33 +23,13 @@ const getBanks = async (req, res) => {
 const verifyAccount = async (req, res) => {
   try {
     const { bank, account } = req.body;
-    const response = await korapay.get(`${baseUrl}/misc/banks/resolve`, {
+    const response = await korapayPublic.get(`${baseUrl}/misc/banks/resolve`, {
       params: { bank, account, currency: "NGN" },
     });
     return res.status(200).json({ status: true, data: response.data.data });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ error: "Account verification failed" });
-  }
-};
-
-const bankAvailability = async (req, res) => {
-  try {
-    const { bankCode } = req.body;
-    const response = await korapay.get(`${baseUrl}/payouts/availability`, {
-      params: { type: "bank_account", currency: "NGN" },
-    });
-
-    const banks = response.data.data;
-    const bankEntry = Array.isArray(banks)
-      ? banks.find((b) => b.code === bankCode)
-      : null;
-
-    const status = bankEntry?.status?.toLowerCase() ?? "unavailable";
-    return res.status(200).json({ status });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Could not check bank availability" });
   }
 };
 
@@ -196,6 +179,5 @@ export {
   getWithdrawals,
   getBanks,
   verifyAccount,
-  bankAvailability,
   handleWebhook,
 };
