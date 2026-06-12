@@ -252,7 +252,7 @@ const confirmDelivery = async (req, res) => {
     if (isSeller && orderItem.sellerConfirmed)
       return res.status(400).json({ error: "Already confirmed" });
 
-    const deliveryDate = newDate();
+    const deliveryDate = new Date();
 
     const updateData = isBuyer
       ? { buyerConfirmed: true }
@@ -287,6 +287,23 @@ const confirmDelivery = async (req, res) => {
           description: `Funds released for order item ${orderItemId}`,
         },
       });
+
+      const allItems = await prisma.orderItem.findMany({
+        where: { orderId: orderItem.orderId },
+      });
+
+      const allDelivered = allItems.every((item) =>
+        item.id === parseInt(orderItemId)
+          ? true
+          : item.status === "DELIVERED",
+      );
+
+      if (allDelivered) {
+        await prisma.order.update({
+          where: { id: orderItem.orderId },
+          data: { status: "DELIVERED" },
+        });
+      }
     }
 
     return res
