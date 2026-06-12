@@ -87,21 +87,24 @@ const requestWithdrawal = async (req, res) => {
           amount: parseFloat(Number(amount).toFixed(2)),
           currency: "NGN",
           narration: `Withdrawal to ${bankName} - ${accountNumber}`,
-          customer: {
-            name: accountName,
-            email: req.user.email,
-          },
           bank_account: {
             bank: bankCode,
             account: accountNumber,
           },
+          customer: {
+            name: accountName,
+            email: req.user.email,
+          },
         },
       };
+      console.log("Payout payload:", JSON.stringify(payload));
 
-      await axios.post(
+      const proxyRes = await axios.post(
         `https://nnkbw73pdg.execute-api.us-east-1.amazonaws.com/korapay/disburse`,
         payload,
       );
+
+      console.log("Payout response:", JSON.stringify(proxyResponse.data));
 
       await prisma.withdrawal.update({
         where: { id: withdrawal.id },
@@ -133,7 +136,10 @@ const requestWithdrawal = async (req, res) => {
         where: { id: withdrawal.id },
         data: { status: "FAILED" },
       });
-      return res.status(500).json({ error: "Payout failed, balance restored" });
+
+      const koraRes =
+        error.response?.data?.message ?? "Payout failed, balance restored";
+      return res.status(500).json({ error: koraRes });
     }
 
     return res.status(200).json({ status: "success", data: { withdrawal } });
