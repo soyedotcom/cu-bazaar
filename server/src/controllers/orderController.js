@@ -1,5 +1,5 @@
 import { prisma } from "../config/database.js";
-import { korapay } from "../config/korapay.js";
+import { korapaySecret } from "../config/korapay.js";
 import { calculateFees } from "../utils/fees.js";
 import crypto from "crypto";
 
@@ -57,7 +57,7 @@ const createOrder = async (req, res) => {
       data: { paymentReference: reference },
     });
 
-    const paymentRes = await korapay.post("/charges/initialize", {
+    const paymentRes = await korapaySecret.post("/charges/initialize", {
       reference,
       amount: totalAmount,
       currency: "NGN",
@@ -157,7 +157,7 @@ const verifyPayment = async (req, res) => {
   try {
     const { reference } = req.params;
 
-    const verifyRes = await korapay.get(`/charges/${reference}`);
+    const verifyRes = await korapaySecret.get(`/charges/${reference}`);
     const payment = verifyRes.data.data;
 
     if (payment.status === "success") {
@@ -293,9 +293,7 @@ const confirmDelivery = async (req, res) => {
       });
 
       const allDelivered = allItems.every((item) =>
-        item.id === parseInt(orderItemId)
-          ? true
-          : item.status === "DELIVERED",
+        item.id === parseInt(orderItemId) ? true : item.status === "DELIVERED",
       );
 
       if (allDelivered) {
