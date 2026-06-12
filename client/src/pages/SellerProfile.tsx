@@ -95,10 +95,11 @@ const SellerProfile = () => {
 
   const confirmDelivery = async (orderItemId: number) => {
     try {
-      await api.patch(`/orders/confirm/${orderItemId}`);
+      const res = await api.patch(`/orders/confirm/${orderItemId}`);
+      console.log("confirm response: ", res.data);
       fetchSeller();
     } catch (err) {
-      console.log(err);
+      console.log("Error: ", err);
     }
   };
 

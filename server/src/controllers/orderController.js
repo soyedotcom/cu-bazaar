@@ -21,7 +21,6 @@ const createOrder = async (req, res) => {
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
 
-    // create pending order
     const order = await prisma.order.create({
       data: {
         userId,
@@ -51,7 +50,6 @@ const createOrder = async (req, res) => {
       },
     });
 
-    // initialize KoraPay payment
     const reference = `CUB-${order.id.slice(0, 8)}-${Date.now()}`;
 
     await prisma.order.update({
@@ -160,14 +158,69 @@ const verifyPayment = async (req, res) => {
     const { reference } = req.params;
 
     const verifyRes = await korapay.get(`/charges/${reference}`);
-    const data = verifyRes.data.data;
+    const payment = verifyRes.data.data;
+
+    if (payment.status === "success") {
+      const order = await prisma.order.findUnique({
+        where: { paymentReference: reference },
+        include: { items: true },
+      });
+
+      if (!order) return res.status(404).json({ error: "Order not found" });
+
+      // Prevent duplicate processing
+      if (order.paymentStatus !== "PAID") {
+        await prisma.order.update({
+          where: { id: order.id },
+          data: {
+            paymentStatus: "PAID",
+            paidAt: new Date(),
+          },
+        });
+
+        await prisma.orderItem.updateMany({
+          where: { orderId: order.id },
+          data: {
+            paymentStatus: "PAID",
+          },
+        });
+
+        for (const item of order.items) {
+          await prisma.sellerProfile.update({
+            where: { userId: item.sellerId },
+            data: {
+              pendingBalance: {
+                increment: item.sellerAmount,
+              },
+            },
+          });
+
+          await prisma.walletTransaction.create({
+            data: {
+              sellerId: item.sellerId,
+              amount: item.sellerAmount,
+              type: "CREDIT_PENDING",
+              description: `Payment received for order ${order.id.slice(0, 8)}`,
+              reference,
+            },
+          });
+        }
+
+        // Clear buyer's cart
+        await prisma.cartItem.deleteMany({
+          where: {
+            userId: order.userId,
+          },
+        });
+      }
+    }
 
     return res.status(200).json({
       status: "success",
       data: {
-        status: data.status,
-        amount: data.amount,
-        reference: data.reference,
+        status: payment.status,
+        amount: payment.amount,
+        reference: payment.reference,
       },
     });
   } catch (error) {

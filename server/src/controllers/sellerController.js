@@ -136,6 +136,7 @@ const updateSellerProfile = async (req, res) => {
   }
 };
 
+
 const deleteSeller = async (req, res) => {
   try {
     const userId = req.user.id;
