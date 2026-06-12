@@ -45,7 +45,7 @@ const verifyAccount = async (req, res) => {
 const requestWithdrawal = async (req, res) => {
   try {
     const sellerId = req.user.id;
-    const reference = `WD-${sellerId}-${Date.now()}`;
+    const reference = `WD-${sellerId.slice(0, 10)}-${Date.now()}`;
     const { amount, bankName, bankSlug, bankCode, accountNumber, accountName } =
       req.body;
 
