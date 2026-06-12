@@ -198,6 +198,8 @@ model Withdrawal {
   bankName      String
   accountNumber String
   accountName   String
+  bankSlug      String @default("")
+  bankCode      String @default("")
 
   createdAt   DateTime  @default(now())
   processedAt DateTime?
