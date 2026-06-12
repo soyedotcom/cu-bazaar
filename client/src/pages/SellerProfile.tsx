@@ -129,6 +129,7 @@ const SellerProfile = () => {
       o.status !== "DELIVERED" &&
       o.status !== "CANCELLED",
   );
+
   const pastOrders = seller.orders.filter(
     (o) => o.status === "DELIVERED" || o.status === "CANCELLED",
   );
@@ -394,7 +395,11 @@ const SellerProfile = () => {
                     />
                     <div className="flex flex-col gap-1 flex-1 text-left">
                       <p className="font-bold">{item.product.name}</p>
-                      <p className="text-sm text-gray-400">
+                      <p className="font-bold">
+                        Delivered To: {item.order.user.name} at{" "}
+                        {item.order.user.hall} {item.order.user.room}
+                      </p>
+                      <p className="text-gray-400">
                         Qty: {item.quantity} · ₦
                         {Number(item.price).toLocaleString()}
                       </p>
