@@ -61,7 +61,7 @@ const AddToCartCard = ({ product, onClose }: Props) => {
             <p className="font-bold text-[32px]">
               ₦{Number(product.price).toLocaleString()}
             </p>
-            <img src="/" alt="Product Rating" />
+            {/* <img src="/" alt="Product Rating" /> */}
           </section>
 
           <div className="grow mt-4">

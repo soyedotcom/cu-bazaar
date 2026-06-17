@@ -65,7 +65,7 @@ const ProductCard = ({ product }: Props) => {
           </div>
 
           <div className="mt-auto">
-            <img src="/" alt="product rating" />
+            {/* <img src="/" alt="product rating" /> */}
           </div>
         </section>
       </section>
