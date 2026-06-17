@@ -379,20 +379,50 @@ async function main() {
   // -------------------------------------------------------
   // FETCH references needed for orders
   // -------------------------------------------------------
-  const testUser = await prisma.user.findUnique({ where: { email: "test@cubazzar.com" } });
-  const kosi = await prisma.user.findUnique({ where: { email: "kosi@cubazzar.com" }, include: { sellerProfile: true } });
-  const daniel = await prisma.user.findUnique({ where: { email: "daniel@cubazzar.com" }, include: { sellerProfile: true } });
-  const sarah = await prisma.user.findUnique({ where: { email: "sarah@cubazzar.com" }, include: { sellerProfile: true } });
-  const michael = await prisma.user.findUnique({ where: { email: "michael@cubazzar.com" }, include: { sellerProfile: true } });
+  const testUser = await prisma.user.findUnique({
+    where: { email: "test@cubazzar.com" },
+  });
+  const kosi = await prisma.user.findUnique({
+    where: { email: "kosi@cubazzar.com" },
+    include: { sellerProfile: true },
+  });
+  const daniel = await prisma.user.findUnique({
+    where: { email: "daniel@cubazzar.com" },
+    include: { sellerProfile: true },
+  });
+  const sarah = await prisma.user.findUnique({
+    where: { email: "sarah@cubazzar.com" },
+    include: { sellerProfile: true },
+  });
+  const michael = await prisma.user.findUnique({
+    where: { email: "michael@cubazzar.com" },
+    include: { sellerProfile: true },
+  });
 
-  const hoodie = await prisma.product.findFirst({ where: { name: "Oversized Streetwear Hoodie" } });
-  const cargoPants = await prisma.product.findFirst({ where: { name: "Cargo Pants" } });
-  const cookies = await prisma.product.findFirst({ where: { name: "Chocolate Chip Cookies" } });
-  const juice = await prisma.product.findFirst({ where: { name: "Fresh Fruit Juice" } });
-  const keyboard = await prisma.product.findFirst({ where: { name: "Mechanical Keyboard" } });
-  const ssd = await prisma.product.findFirst({ where: { name: "External SSD 1TB" } });
-  const jollof = await prisma.product.findFirst({ where: { name: "Jollof Rice Plate" } });
-  const chinChin = await prisma.product.findFirst({ where: { name: "Chin Chin Pack" } });
+  const hoodie = await prisma.product.findFirst({
+    where: { name: "Oversized Streetwear Hoodie" },
+  });
+  const cargoPants = await prisma.product.findFirst({
+    where: { name: "Cargo Pants" },
+  });
+  const cookies = await prisma.product.findFirst({
+    where: { name: "Chocolate Chip Cookies" },
+  });
+  const juice = await prisma.product.findFirst({
+    where: { name: "Fresh Fruit Juice" },
+  });
+  const keyboard = await prisma.product.findFirst({
+    where: { name: "Mechanical Keyboard" },
+  });
+  const ssd = await prisma.product.findFirst({
+    where: { name: "External SSD 1TB" },
+  });
+  const jollof = await prisma.product.findFirst({
+    where: { name: "Jollof Rice Plate" },
+  });
+  const chinChin = await prisma.product.findFirst({
+    where: { name: "Chin Chin Pack" },
+  });
 
   // -------------------------------------------------------
   // ORDERS — Test User as buyer
@@ -731,8 +761,8 @@ async function main() {
   await prisma.sellerProfile.update({
     where: { userId: kosi.sellerProfile.userId },
     data: {
-      availableBalance: new Prisma.Decimal(950),   // from order10
-      pendingBalance: new Prisma.Decimal(1900),     // from order9 (sellerConfirmed, not yet released)
+      availableBalance: new Prisma.Decimal(950), // from order10
+      pendingBalance: new Prisma.Decimal(1900), // from order9 (sellerConfirmed, not yet released)
     },
   });
 
