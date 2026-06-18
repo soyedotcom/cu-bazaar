@@ -11,8 +11,10 @@ const signup = async (req, res) => {
       .json({ error: "Name, email, and password are required" });
   }
 
-  if (!email.includes("stu.cu.edu.ng")) {
-    return res.status(400).json({ error: "Your student email must be used" });
+  if (!email.toLowerCase().endsWith("@stu.cu.edu.ng")) {
+    return res.status(400).json({
+      error: "Your Covenant University student email must be used",
+    });
   }
 
   if (password !== confirmPassword) {
