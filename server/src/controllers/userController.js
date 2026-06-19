@@ -64,8 +64,13 @@ const updateUserProfile = async (req, res) => {
       hashedPassword = await bcrypt.hash(password, 10);
     }
 
-    if (!email.includes("stu.cu.edu.ng")) {
-      return res.status(400).json({ error: "Your student email must be used" });
+    if (
+      !email.toLowerCase().endsWith("@stu.cu.edu.ng") &&
+      !email.toLowerCase().endsWith("@covenantuniversity.edu.ng")
+    ) {
+      return res.status(400).json({
+        error: "Your Covenant University student email must be used",
+      });
     }
 
     const updatedUser = await prisma.user.update({
