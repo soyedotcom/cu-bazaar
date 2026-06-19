@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -29,99 +30,102 @@ function App() {
     page.pathname === "/become-a-seller";
 
   return (
-    <main className="flex flex-col">
-      {!isAuth && <Navbar />}
+    <>
+      <Toaster position="top-center" />
+      <main className="flex flex-col">
+        {!isAuth && <Navbar />}
 
-      <Routes>
-        {/* Public */}
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/shop/store/:shopName" element={<ShopPage />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/product/:id" element={<Product />} />
-        <Route path="/dealsanddiscounts" element={<DealsandDiscounts />} />
-        <Route path="/newsandevents" element={<NewsandEvents />} />
-        <Route path="/showcase" element={<Showcase />} />
+        <Routes>
+          {/* Public */}
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/shop/store/:shopName" element={<ShopPage />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="/dealsanddiscounts" element={<DealsandDiscounts />} />
+          <Route path="/newsandevents" element={<NewsandEvents />} />
+          <Route path="/showcase" element={<Showcase />} />
 
-        {/* Auth (redirect if already logged in) */}
-        <Route
-          path="/signin"
-          element={
-            <PublicRoute>
-              <SignIn />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <PublicRoute>
-              <SignUp />
-            </PublicRoute>
-          }
-        />
+          {/* Auth (redirect if already logged in) */}
+          <Route
+            path="/signin"
+            element={
+              <PublicRoute>
+                <SignIn />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <SignUp />
+              </PublicRoute>
+            }
+          />
 
-        {/* Protected */}
-        <Route
-          path="/deliveries"
-          element={
-            <ProtectedRoute>
-              <Deliveries />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/wishlist"
-          element={
-            <ProtectedRoute>
-              <Wishlist />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <ProtectedRoute>
-              <Cart />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/become-a-seller"
-          element={
-            <ProtectedRoute>
-              <SellerSignUp />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/seller/dashboard"
-          element={
-            <ProtectedRoute>
-              <SellerProfile />
-            </ProtectedRoute>
-          }
-        />
+          {/* Protected */}
+          <Route
+            path="/deliveries"
+            element={
+              <ProtectedRoute>
+                <Deliveries />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <ProtectedRoute>
+                <Wishlist />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <Cart />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/become-a-seller"
+            element={
+              <ProtectedRoute>
+                <SellerSignUp />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/seller/dashboard"
+            element={
+              <ProtectedRoute>
+                <SellerProfile />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/payment/callback"
-          element={
-            <ProtectedRoute>
-              <PaymentCallback />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </main>
+          <Route
+            path="/payment/callback"
+            element={
+              <ProtectedRoute>
+                <PaymentCallback />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </main>
+    </>
   );
 }
 
