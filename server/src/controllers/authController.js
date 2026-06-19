@@ -33,6 +33,8 @@ const signup = async (req, res) => {
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
+  const defaultAvatar =
+    "https://res.cloudinary.com/cu-bazaar/image/upload/v1781093595/cu-bazaar/bzssy0qrmceglsj6fyry.jpg";
 
   const newUser = await prisma.user.create({
     data: {
@@ -41,6 +43,7 @@ const signup = async (req, res) => {
       password: hashedPassword,
       hall,
       room,
+      avatar: defaultAvatar,
     },
   });
 
