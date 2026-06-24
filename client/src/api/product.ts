@@ -7,11 +7,10 @@ export const fetchProducts = async (params?: {
   section?: string | null;
   page?: number;
   limit?: number;
-  signal?: AbortSignal; //remove later
 }) => {
   // const res = await api.get("/shop", { params });
   // return res.data;
-  const { signal, ...rest } = params || {};
-  const res = await api.get("/shop", { params: rest, signal });
+  const { ...rest } = params || {};
+  const res = await api.get("/shop", { params: rest });
   return res.data;
 };
