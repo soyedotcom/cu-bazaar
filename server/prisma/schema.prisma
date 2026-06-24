@@ -8,14 +8,13 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  name     String
-  email    String  @unique
-  hall     String
-  room     String
-  password String
-  avatar   String?
-
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  hall          String
+  room          String
+  password      String
+  avatar        String?        @default("https://res.cloudinary.com/cu-bazaar/image/upload/v1781093595/cu-bazaar/bzssy0qrmceglsj6fyry.jpg")
   cartItems     CartItem[]
   wishlistItems WishlistItem[]
   orders        Order[]
