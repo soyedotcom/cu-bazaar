@@ -43,6 +43,7 @@ export const subNavData: Category[] = [
         sections: [
           { name: "Snacks", icon: <FashionIcon /> },
           { name: "Drinks", icon: <FashionIcon /> },
+          { name: "Meals", icon: <FashionIcon /> },
         ],
       },
 
