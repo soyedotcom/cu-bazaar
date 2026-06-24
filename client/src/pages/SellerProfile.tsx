@@ -290,7 +290,7 @@ const SellerProfile = () => {
                         <td className="py-4 pr-6">{p.stock ?? "—"}</td>
                         <td className="py-4 pr-6">
                           <span
-                            className={`font-bold px-3.5 py-1.5 rounded-full ${p.published ? "bg-green-200 text-green-700" : "bg-gray-200 text-gray-500"}`}
+                            className={`font-bold text-sm px-3.5 py-1.5 rounded-full ${p.published ? "bg-green-200 text-green-700" : "bg-gray-200 text-gray-500"}`}
                           >
                             {p.published ? "Published" : "Draft"}
                           </span>
