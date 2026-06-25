@@ -48,10 +48,8 @@ const Shop = () => {
           section,
           page: currentPage,
           limit: 20,
-          signal: controller.signal, //remove later
         });
 
-        if (controller.signal.aborted) return; //remove later
         const incoming = data.data.products || [];
 
         if (filtersChanged) {
